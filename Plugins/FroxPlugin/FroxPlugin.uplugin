@@ -1,0 +1,28 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "FroxPlugin",
+	"Description": "Frox Compute Flow System",
+	"Category": "Other",
+	"CreatedBy": "noob_ppc",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"Installed": false,
+  "Modules": [
+    {
+      "Name": "FroxPlugin",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "FroxEditorPlugin",
+      "Type": "Editor",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

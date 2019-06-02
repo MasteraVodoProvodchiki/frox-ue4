@@ -14,7 +14,7 @@ public:
 	virtual bool NodeInvoke_Implementation(const FRandomStream& RandomStream);
 };
 
-UCLASS(Blueprintable, HideDropDown)
+UCLASS(Blueprintable)
 class UAddLogic : public UOperationLogic
 {
 	GENERATED_BODY()
@@ -22,7 +22,7 @@ class UAddLogic : public UOperationLogic
 public:
 };
 
-UCLASS(Blueprintable, HideDropDown)
+UCLASS(Blueprintable)
 class USubLogic : public UOperationLogic
 {
 	GENERATED_BODY()

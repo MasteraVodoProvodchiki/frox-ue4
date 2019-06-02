@@ -6,7 +6,7 @@
 void UFroxComputeFlowComponent::GenerateFlow()
 {
 	// ComputeFlow->
-	// Create ComputeFlow
+	// Create ComputeFlow by FlowDesc
 }
 
 #undef LOCTEXT_NAMESPACE

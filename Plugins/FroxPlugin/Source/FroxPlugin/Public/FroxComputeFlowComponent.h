@@ -13,5 +13,7 @@ class FROXPLUGIN_API UFroxComputeFlowComponent : public UActorComponent
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Spine)
-	UFroxComputeFlowAsset* Graph;
+	UFroxComputeFlowAsset* ComputeFlow;
+
+	void GenerateFlow();
 };

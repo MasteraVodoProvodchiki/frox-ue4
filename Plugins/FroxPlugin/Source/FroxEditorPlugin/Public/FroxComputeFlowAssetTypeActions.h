@@ -12,6 +12,7 @@ public:
 	virtual UClass* GetSupportedClass() const override;
 	virtual uint32 GetCategories() override;
 	virtual FColor GetTypeColor() const override;
+	virtual void OpenAssetEditor(const TArray<UObject*>& InObjects, TSharedPtr<class IToolkitHost> EditWithinLevelEditor = TSharedPtr<IToolkitHost>()) override;
 
 	virtual bool IsImportedAsset() const override
 	{
@@ -22,6 +23,8 @@ public:
 	virtual void GetResolvedSourceFilePaths(const TArray<UObject*>& TypeAssets, TArray<FString>& OutSourceFilePaths) const override;
 
 	// End of IAssetTypeActions interface
+
+	static void RegistrateCustomPartAssetType();
 
 private:
 	EAssetTypeCategories::Type MyAssetCategory;

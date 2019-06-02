@@ -3,6 +3,7 @@
 #include "FroxEditorPlugin.h"
 
 #include "FroxComputeFlowAssetTypeActions.h"
+#include "ToolBarCommands.h"
 
 #include "Core.h"
 #include "PropertyEditorModule.h"
@@ -19,11 +20,10 @@ void FFroxEditorPluginModule::StartupModule()
 	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 
 	//Custom detail views
+	FFroxComputeFlowAssetTypeActions::RegistrateCustomPartAssetType();
 
-	IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
-	EAssetTypeCategories::Type froxComputeFlowAssetCategoryBit = AssetTools.RegisterAdvancedAssetCategory(FName(TEXT("FroxAssetCategory")), LOCTEXT("FroxAssetCategory", "Frox"));
-
-	AssetTools.RegisterAssetTypeActions(MakeShareable(new FFroxComputeFlowAssetTypeActions(froxComputeFlowAssetCategoryBit)));
+	//Registrate ToolBarCommand for costom graph
+	FToolBarCommandsCommands::Register();
 
 	if (GUnrealEd)
 	{

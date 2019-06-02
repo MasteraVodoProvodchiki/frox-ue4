@@ -12,6 +12,9 @@ public:
 
 	FName GetComputeFlowName() const;
 
+	UPROPERTY()
+	class UEdGraph* UpdateGraph;
+
 protected:
 	UPROPERTY()
 	FName computeFlowFileName;

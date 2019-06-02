@@ -27,11 +27,11 @@ public class FroxEditorPlugin : ModuleRules
 			{
 				"Core",
                 "CoreUObject",
+                "InputCore",
                 "Engine",
                 "UnrealEd",
                 "FroxPlugin",
 
-                "PropertyEditor",
                 "AssetTools",
                 "AssetRegistry"
 
@@ -46,9 +46,15 @@ public class FroxEditorPlugin : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
+                "Slate",
+                "SlateCore",
+                "PropertyEditor",
+                "UnrealEd",
+                "EditorStyle",
+                "GraphEditor"
 				// ... add private dependencies that you statically link with here ...	
 			}
-			);
+            );
 		
 		
 		DynamicallyLoadedModuleNames.AddRange(

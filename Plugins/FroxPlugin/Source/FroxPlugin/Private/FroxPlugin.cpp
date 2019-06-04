@@ -28,7 +28,7 @@ void FFroxPluginModule::StartupModule()
 	if (FroxLibraryHandle)
 	{
 		// Call the test function in the third party library that opens a message box
-		froxLib = frox::FroxInit();
+		FroxLib = frox::FroxInit();
 	}
 	else
 	{
@@ -40,11 +40,11 @@ void FFroxPluginModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
-	if (froxLib)
+	if (FroxLib)
 	{
 		// Call the test function in the third party library that opens a message box
-		frox::FroxShutdown(froxLib);
-		froxLib = nullptr;
+		frox::FroxShutdown(FroxLib);
+		FroxLib = nullptr;
 	}
 
 	// Free the dll handle

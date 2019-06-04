@@ -18,16 +18,21 @@ public:
 
 	static inline FFroxPluginModule& Get()
 	{
-		return FModuleManager::LoadModuleChecked<FFroxPluginModule>("FFroxPluginModule");
+		return FModuleManager::LoadModuleChecked<FFroxPluginModule>("FroxPlugin");
 	}
 
 	static inline bool IsAvailable()
 	{
-		return FModuleManager::Get().IsModuleLoaded("FFroxPluginModule");
+		return FModuleManager::Get().IsModuleLoaded("FroxPlugin");
+	}
+
+	frox::Frox* GetFrox() const
+	{
+		return FroxLib;
 	}
 
 private:
 	/** Handle to the test dll we will load */
 	void*	FroxLibraryHandle;
-	frox::Frox* froxLib;
+	frox::Frox* FroxLib;
 };

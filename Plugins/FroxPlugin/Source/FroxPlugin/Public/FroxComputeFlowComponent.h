@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
+#include "Frox/Frox/Frox.h"
 
 #include "FroxComputeFlowComponent.generated.h"
 
@@ -15,5 +16,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Spine)
 	UFroxComputeFlowAsset* ComputeFlow;
 
+	// UActorComponent
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	// End UActorComponent
+
+private:
 	void GenerateFlow();
+	void ReleaseFlow();
+
+private:
+	frox::ComputeFlow* Flow;
 };

@@ -1,6 +1,6 @@
 #include "FroxNods.h"
+#include "OperationLogic.h"
 
-// #include "UICustom.h"
 #include "EdGraph/EdGraphPin.h"
 
 
@@ -56,12 +56,17 @@ bool UFroxNodeBase::CycleInspection(uint32 UniqueID)
 }
 #endif //WITH_EDITORONLY_DATA
 
+const char* UOpartionNode::GetTypeName() const
+{
+	return OperationInstance ? OperationInstance->GetTypeName() : "none";
+}
 
 #if WITH_EDITORONLY_DATA
 void UOpartionNode::AllocateDefaultPins()
 {
-	UEdGraphPin* Inputs = CreatePin(EGPD_Input, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("In"));
-	UEdGraphPin* Outputs = CreatePin(EGPD_Output, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Out"));
+	UEdGraphPin* Left = CreatePin(EGPD_Input, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Left"));
+	UEdGraphPin* Right = CreatePin(EGPD_Input, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Right"));
+	UEdGraphPin* Output = CreatePin(EGPD_Output, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Out"));
 }
 
 void UOpartionNode::PostEditChangeProperty(struct FPropertyChangedEvent& e)
@@ -75,6 +80,7 @@ FText UOpartionNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 	return FText::FromString("Not Rule");
 }
 #endif //WITH_EDITORONLY_DATA
+
 TArray<UFroxNodeBase*> UOpartionNode::GetChildNodes(FRandomStream& RandomStream)
 {
 	UEdGraphPin* OutPin = Pins[1];

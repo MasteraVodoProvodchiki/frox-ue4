@@ -42,6 +42,7 @@ class FROXPLUGIN_API UFroxNodeBase : public UEdGraphNode
 	GENERATED_BODY()
 
 public:
+	virtual const char* GetTypeName() const { return "none"; }
 	virtual TArray<UFroxNodeBase*> GetChildNodes(FRandomStream& RandomStream);
 #if WITH_EDITORONLY_DATA
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;
@@ -57,6 +58,8 @@ class FROXPLUGIN_API UOpartionNode : public UFroxNodeBase
 	GENERATED_BODY()
 
 public:
+	virtual const char* GetTypeName() const override;
+
 #if WITH_EDITORONLY_DATA
 	virtual void AllocateDefaultPins() override;
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;

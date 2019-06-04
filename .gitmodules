@@ -1,0 +1,3 @@
+[submodule "Plugins/FroxPlugin/Source/ThirdParty/Frox"]
+	path = Plugins/FroxPlugin/Source/ThirdParty/Frox
+	url = https://github.com/MasteraVodoProvodchiki/frox.git

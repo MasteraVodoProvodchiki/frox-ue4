@@ -4,7 +4,7 @@
 #include "Core.h"
 #include "Modules/ModuleManager.h"
 #include "Interfaces/IPluginManager.h"
-#include "FroxPluginLibrary/ExampleLibrary.h"
+#include "Frox/Frox/Frox.h"
 
 #define LOCTEXT_NAMESPACE "FFroxPluginModule"
 
@@ -18,17 +18,17 @@ void FFroxPluginModule::StartupModule()
 	// Add on the relative location of the third party dll and load it
 	FString LibraryPath;
 #if PLATFORM_WINDOWS
-	LibraryPath = FPaths::Combine(*BaseDir, TEXT("Binaries/ThirdParty/FroxPluginLibrary/Win64/ExampleLibrary.dll"));
+	LibraryPath = FPaths::Combine(*BaseDir, TEXT("Binaries/ThirdParty/FroxPluginLibrary/Win64/Frox.dll"));
 #elif PLATFORM_MAC
-    LibraryPath = FPaths::Combine(*BaseDir, TEXT("Source/ThirdParty/FroxPluginLibrary/Mac/Release/libExampleLibrary.dylib"));
+    LibraryPath = FPaths::Combine(*BaseDir, TEXT("Source/ThirdParty/FroxPluginLibrary/Mac/Release/libFrox.dylib"));
 #endif // PLATFORM_WINDOWS
 
-	ExampleLibraryHandle = !LibraryPath.IsEmpty() ? FPlatformProcess::GetDllHandle(*LibraryPath) : nullptr;
+	FroxLibraryHandle = !LibraryPath.IsEmpty() ? FPlatformProcess::GetDllHandle(*LibraryPath) : nullptr;
 
-	if (ExampleLibraryHandle)
+	if (FroxLibraryHandle)
 	{
 		// Call the test function in the third party library that opens a message box
-		ExampleLibraryFunction();
+		froxLib = frox::FroxInit();
 	}
 	else
 	{
@@ -40,10 +40,16 @@ void FFroxPluginModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+	if (froxLib)
+	{
+		// Call the test function in the third party library that opens a message box
+		frox::FroxShutdown(froxLib);
+		froxLib = nullptr;
+	}
 
 	// Free the dll handle
-	FPlatformProcess::FreeDllHandle(ExampleLibraryHandle);
-	ExampleLibraryHandle = nullptr;
+	FPlatformProcess::FreeDllHandle(FroxLibraryHandle);
+	FroxLibraryHandle = nullptr;
 }
 
 #undef LOCTEXT_NAMESPACE

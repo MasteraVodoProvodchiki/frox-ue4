@@ -4,6 +4,10 @@
 
 #include "Modules/ModuleManager.h"
 
+namespace frox {
+class Frox;
+} // End frox.
+
 class FFroxPluginModule : public IModuleInterface
 {
 public:
@@ -12,7 +16,18 @@ public:
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
+	static inline FFroxPluginModule& Get()
+	{
+		return FModuleManager::LoadModuleChecked<FFroxPluginModule>("FFroxPluginModule");
+	}
+
+	static inline bool IsAvailable()
+	{
+		return FModuleManager::Get().IsModuleLoaded("FFroxPluginModule");
+	}
+
 private:
 	/** Handle to the test dll we will load */
-	void*	ExampleLibraryHandle;
+	void*	FroxLibraryHandle;
+	frox::Frox* froxLib;
 };

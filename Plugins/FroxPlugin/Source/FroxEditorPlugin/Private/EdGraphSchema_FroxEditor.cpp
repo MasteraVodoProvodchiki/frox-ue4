@@ -120,13 +120,13 @@ void UEdGraphSchema_FroxEditor::GetGraphContextActions(FGraphContextMenuBuilder&
 	const UEdGraph* Graph = ContextMenuBuilder.CurrentGraph;
 	TArray<TSharedPtr<FEdGraphSchemaAction> > Actions;
 
+	FroxSchemaUtils::AddAction<UInputPropertyNode>(TEXT("Add Input Property"), TEXT("Add input property node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	FroxSchemaUtils::AddAction<UOutputPropertyNode>(TEXT("Add Output Property"), TEXT("Add output property node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 
-	FroxSchemaUtils::AddAction<UOpartionNode>(TEXT("Add Operation Node"), TEXT("Add operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-/*
-	FroxSchemaUtils::AddAction<UBranchNode>(TEXT("Add Brunch Node"), TEXT("Add brunch node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<URuleNode>(TEXT("Add Rule Node"), TEXT("Add ruleh node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<USwitcherNode>(TEXT("Add Switch Node"), TEXT("Add switch node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-*/
+	FroxSchemaUtils::AddAction<UAddOpartionNode>(TEXT("Add Add Operation Node"), TEXT("Add Add operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	FroxSchemaUtils::AddAction<USubOpartionNode>(TEXT("Add Sub Operation Node"), TEXT("Add Sub operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	FroxSchemaUtils::AddAction<UMulOpartionNode>(TEXT("Add Mul Operation Node"), TEXT("Add Mul operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	FroxSchemaUtils::AddAction<UDivOpartionNode>(TEXT("Add Div Operation Node"), TEXT("Add Div operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 
 	for (TSharedPtr<FEdGraphSchemaAction> Action : Actions)
 	{

@@ -56,10 +56,35 @@ bool UFroxNodeBase::CycleInspection(uint32 UniqueID)
 }
 #endif //WITH_EDITORONLY_DATA
 
+
+#if WITH_EDITORONLY_DATA
+void UInputPropertyNode::AllocateDefaultPins()
+{
+	UEdGraphPin* Output = CreatePin(EGPD_Output, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Out"));
+}
+
+FText UInputPropertyNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
+{
+	return FText::FromString("InputProperty");
+}
+
+void UOutputPropertyNode::AllocateDefaultPins()
+{
+	UEdGraphPin* In = CreatePin(EGPD_Input, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("In"));
+}
+
+FText UOutputPropertyNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
+{
+	return FText::FromString("OutputProperty");
+}
+#endif //WITH_EDITORONLY_DATA
+
+/*
 const char* UOpartionNode::GetTypeName() const
 {
 	return OperationInstance ? OperationInstance->GetTypeName() : "none";
 }
+*/
 
 #if WITH_EDITORONLY_DATA
 void UOpartionNode::AllocateDefaultPins()
@@ -71,13 +96,13 @@ void UOpartionNode::AllocateDefaultPins()
 
 void UOpartionNode::PostEditChangeProperty(struct FPropertyChangedEvent& e)
 {
-	if (Operation) OperationInstance = NewObject<UOperationLogic>(this, Operation);
+	// if (Operation) OperationInstance = NewObject<UOperationLogic>(this, Operation);
 	UFroxNodeBase::PostEditChangeProperty(e);
 }
 FText UOpartionNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
-	if (Operation) return FText::FromString(Operation->GetName());
-	return FText::FromString("Not Rule");
+	// if (Operation) return FText::FromString(Operation->GetName());
+	return FText::FromString(this->GetTypeName());
 }
 #endif //WITH_EDITORONLY_DATA
 
@@ -86,6 +111,7 @@ TArray<UFroxNodeBase*> UOpartionNode::GetChildNodes(FRandomStream& RandomStream)
 	UEdGraphPin* OutPin = Pins[1];
 	TArray<UFroxNodeBase*> ChildNodes;
 
+	/*
 	if (!Operation)
 	{
 		return ChildNodes;
@@ -99,6 +125,7 @@ TArray<UFroxNodeBase*> UOpartionNode::GetChildNodes(FRandomStream& RandomStream)
 	}
 	if (OperationInstance->NodeInvoke(RandomStream))
 	{
+	*/
 		for (int i = 0; i < OutPin->LinkedTo.Num(); i++)
 		{
 			if (OutPin->LinkedTo[i])
@@ -106,6 +133,9 @@ TArray<UFroxNodeBase*> UOpartionNode::GetChildNodes(FRandomStream& RandomStream)
 				ChildNodes.Add((UFroxNodeBase*)OutPin->LinkedTo[i]->GetOwningNode());
 			}
 		}
+	/*
 	}
+	*/
+
 	return ChildNodes;
 }

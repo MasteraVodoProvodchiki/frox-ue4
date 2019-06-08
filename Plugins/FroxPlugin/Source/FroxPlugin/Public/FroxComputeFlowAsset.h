@@ -1,6 +1,33 @@
 #pragma once
 
+#include "ComputeFlowKeyType.h"
+
 #include "FroxComputeFlowAsset.generated.h"
+
+USTRUCT()
+struct FComputeFlowEntry
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, Category = Frox)
+	FName EntryName;
+
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(EditAnywhere, Category = Frox, Meta = (ToolTip = "Optional description to explain what this blackboard entry does."))
+	FString EntryDescription;
+#endif // WITH_EDITORONLY_DATA
+
+	/** key type and additional properties */
+	UPROPERTY(EditAnywhere, Instanced, Category = Frox)
+	UComputeFlowKeyType* KeyType;
+
+
+	FComputeFlowEntry()
+		: KeyType(nullptr)
+	{}
+
+	bool operator==(const FComputeFlowEntry& Other) const;
+};
 
 UCLASS(BlueprintType, ClassGroup = (Frox))
 class FROXPLUGIN_API UFroxComputeFlowAsset : public UObject
@@ -14,6 +41,10 @@ public:
 
 	UPROPERTY()
 	class UEdGraph* UpdateGraph;
+
+	/** computeflow keys */
+	UPROPERTY(EditAnywhere, Category=Frox)
+	TArray<FComputeFlowEntry> Keys;
 
 protected:
 	UPROPERTY()

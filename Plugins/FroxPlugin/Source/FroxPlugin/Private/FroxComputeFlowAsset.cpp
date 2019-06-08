@@ -2,6 +2,12 @@
 
 #define LOCTEXT_NAMESPACE "FFroxPluginModule"
 
+bool FComputeFlowEntry::operator==(const FComputeFlowEntry& Other) const
+{
+	return (EntryName == Other.EntryName) &&
+		((KeyType && Other.KeyType && KeyType->GetClass() == Other.KeyType->GetClass()) || (KeyType == NULL && Other.KeyType == NULL));
+}
+
 FName UFroxComputeFlowAsset::GetComputeFlowName() const
 {
 	return computeFlowFileName;

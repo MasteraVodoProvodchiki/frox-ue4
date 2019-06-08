@@ -136,7 +136,7 @@ void FFroxComputeFlowAssetEditor::AddToolbarExtension(FToolBarBuilder &builder)
 	builder.AddToolBarButton(FToolBarCommandsCommands::Get().ShowMessage, NAME_None, FText::FromString("Show Message"), FText::FromString("Click to show message"), IconBrush, NAME_None);
 }
 
-void FFroxComputeFlowAssetEditor::RegisterTabSpawners(const TSharedRef<class FTabManager>& TabManager)
+void FFroxComputeFlowAssetEditor::RegisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
 {
 	WorkspaceMenuCategory = TabManager->AddLocalWorkspaceMenuCategory(FText::FromString("Custom Editor"));
 	auto WorkspaceMenuCategoryRef = WorkspaceMenuCategory.ToSharedRef();
@@ -154,7 +154,7 @@ void FFroxComputeFlowAssetEditor::RegisterTabSpawners(const TSharedRef<class FTa
 		.SetIcon(FSlateIcon(FEditorStyle::GetStyleSetName(), "LevelEditor.Tabs.Details"));
 }
 
-void FFroxComputeFlowAssetEditor::UnregisterTabSpawners(const TSharedRef<class FTabManager>& TabManager)
+void FFroxComputeFlowAssetEditor::UnregisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
 {
 	FAssetEditorToolkit::UnregisterTabSpawners(TabManager);
 
@@ -261,7 +261,7 @@ void FFroxComputeFlowAssetEditor::ShowMessage()
 
 // Editor Actions......................................................................................................
 
-void FFroxComputeFlowAssetEditor::OnSelectedNodesChanged(const TSet<class UObject*>& NewSelection)
+void FFroxComputeFlowAssetEditor::OnSelectedNodesChanged(const TSet<UObject*>& NewSelection)
 {
 	TArray<UObject*> SelectedObjects;
 	for (UObject* Object : NewSelection)
@@ -271,7 +271,7 @@ void FFroxComputeFlowAssetEditor::OnSelectedNodesChanged(const TSet<class UObjec
 	PropertyEditor->SetObjects(SelectedObjects);
 }
 
-void FFroxComputeFlowAssetEditor::OnNodeDoubleClicked(class UEdGraphNode* Node)
+void FFroxComputeFlowAssetEditor::OnNodeDoubleClicked(UEdGraphNode* Node)
 {
 
 }
@@ -299,7 +299,7 @@ void FFroxComputeFlowAssetEditor::DeleteSelectedNodes()
 	DeleteNodes(NodesToDelete);
 }
 
-bool FFroxComputeFlowAssetEditor::CanDeleteNode(class UEdGraphNode* Node)
+bool FFroxComputeFlowAssetEditor::CanDeleteNode(UEdGraphNode* Node)
 {
 	return true;
 }
@@ -309,7 +309,7 @@ bool FFroxComputeFlowAssetEditor::CanDeleteNodes() const
 	return true;
 }
 
-void FFroxComputeFlowAssetEditor::DeleteNodes(const TArray<class UEdGraphNode*>& NodesToDelete)
+void FFroxComputeFlowAssetEditor::DeleteNodes(const TArray<UEdGraphNode*>& NodesToDelete)
 {
 	if (NodesToDelete.Num() > 0)
 	{

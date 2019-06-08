@@ -4,15 +4,11 @@
 
 FName UFroxComputeFlowAsset::GetComputeFlowName() const
 {
-#if WITH_EDITORONLY_DATA
 	return computeFlowFileName;
-#else
-	return computeFlowFileName;
-#endif
 }
 
 #if WITH_EDITORONLY_DATA
-void UFroxComputeFlowAsset::SetComputeFlowName(const FName &ComputeFlowFileName)
+void UFroxComputeFlowAsset::SetComputeFlowName(const FName& ComputeFlowFileName)
 {
 	computeFlowFileName = ComputeFlowFileName;
 }

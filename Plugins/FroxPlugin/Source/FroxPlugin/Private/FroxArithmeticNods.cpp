@@ -4,9 +4,9 @@
 #if WITH_EDITORONLY_DATA
 void UOpartionInput2OuputNode::AllocateDefaultPins()
 {
-	UEdGraphPin* Left = CreatePin(EGPD_Input, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Left"));
-	UEdGraphPin* Right = CreatePin(EGPD_Input, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Right"));
-	UEdGraphPin* Output = CreatePin(EGPD_Output, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Out"));
+	UEdGraphPin* Left = CreatePin(EGPD_Input, TEXT(""), TEXT("Left"));
+	UEdGraphPin* Right = CreatePin(EGPD_Input, TEXT(""), TEXT("Right"));
+	UEdGraphPin* Output = CreatePin(EGPD_Output, TEXT(""), TEXT("Out"));
 }
 
 void UOpartionInput2OuputNode::PostEditChangeProperty(struct FPropertyChangedEvent& e)

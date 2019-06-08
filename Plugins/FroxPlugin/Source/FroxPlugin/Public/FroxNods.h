@@ -25,11 +25,6 @@ enum class ERootType
 };
 */
 
-struct FPinDataTypes
-{
-	static const FString PinType_Root;
-};
-
 class FROXPLUGIN_API FNodePropertyObserver
 {
 public:

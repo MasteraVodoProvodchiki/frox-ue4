@@ -3,10 +3,6 @@
 
 #include "EdGraph/EdGraphPin.h"
 
-
-const FString FPinDataTypes::PinType_Root = "root";
-
-
 #if WITH_EDITORONLY_DATA
 void UFroxNodeBase::PostEditChangeProperty(struct FPropertyChangedEvent& e)
 {
@@ -48,11 +44,10 @@ bool UFroxNodeBase::CycleInspection(uint32 UniqueID)
 }
 #endif //WITH_EDITORONLY_DATA
 
-
 #if WITH_EDITORONLY_DATA
 void UInputPropertyNode::AllocateDefaultPins()
 {
-	UEdGraphPin* Output = CreatePin(EGPD_Output, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Out"));
+	UEdGraphPin* Output = CreatePin(EGPD_Output, TEXT(""), TEXT("Out"));
 }
 
 FText UInputPropertyNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
@@ -62,7 +57,7 @@ FText UInputPropertyNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 
 void UOutputPropertyNode::AllocateDefaultPins()
 {
-	UEdGraphPin* In = CreatePin(EGPD_Input, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("In"));
+	UEdGraphPin* In = CreatePin(EGPD_Input, TEXT(""), TEXT("In"));
 }
 
 FText UOutputPropertyNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
@@ -81,13 +76,11 @@ const char* UOpartionNode::GetTypeName() const
 #if WITH_EDITORONLY_DATA
 void UOpartionNode::PostEditChangeProperty(struct FPropertyChangedEvent& e)
 {
-	// if (Operation) OperationInstance = NewObject<UOperationLogic>(this, Operation);
 	UFroxNodeBase::PostEditChangeProperty(e);
 }
 
 FText UOpartionNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
-	// if (Operation) return FText::FromString(Operation->GetName());
 	return FText::FromString(this->GetTypeName());
 }
 #endif //WITH_EDITORONLY_DATA
@@ -96,17 +89,16 @@ FText UOpartionNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 #if WITH_EDITORONLY_DATA
 void UMakeZeroFrameNode::AllocateDefaultPins()
 {
-	UEdGraphPin* Width = CreatePin(EGPD_Input, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Width"));
+	UEdGraphPin* Width = CreatePin(EGPD_Input, TEXT(""), TEXT("Width"));
 	Width->DefaultValue = "1";
-	UEdGraphPin* Height = CreatePin(EGPD_Input, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Height"));
+	UEdGraphPin* Height = CreatePin(EGPD_Input, TEXT(""), TEXT("Height"));
 	Height->DefaultValue = "1";
 
-	UEdGraphPin* Output = CreatePin(EGPD_Output, FPinDataTypes::PinType_Root, TEXT(""), NULL, false, false, TEXT("Out"));
+	UEdGraphPin* Output = CreatePin(EGPD_Output, TEXT(""), TEXT("Out"));
 }
 
 FText UMakeZeroFrameNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
-	// if (Operation) return FText::FromString(Operation->GetName());
 	return FText::FromString(this->GetTypeName());
 }
 #endif //WITH_EDITORONLY_DATA

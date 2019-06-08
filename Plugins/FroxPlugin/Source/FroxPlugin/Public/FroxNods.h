@@ -4,6 +4,11 @@
 #include "OperationLogic.h"
 #include "FroxNods.generated.h"
 
+namespace frox {
+	class ComputeNode;
+	class ComputeFlow;
+} // End frox
+
 template<typename TEnum>
 static FString GetEnumValueAsString(const FString& Name, TEnum Value)
 {
@@ -82,6 +87,7 @@ class FROXPLUGIN_API UOpartionNode : public UFroxNodeBase
 
 public:
 	virtual const char* GetTypeName() const { return "none"; }
+	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const;
 
 #if WITH_EDITORONLY_DATA
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;
@@ -95,7 +101,8 @@ class FROXPLUGIN_API UMakeZeroFrameNode : public UOpartionNode
 	GENERATED_BODY()
 
 public:
-	virtual const char* GetTypeName() const { return "makezero"; }
+	virtual const char* GetTypeName() const override { return "makezeroframe"; }
+	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
 
 #if WITH_EDITORONLY_DATA
 	virtual void AllocateDefaultPins() override;

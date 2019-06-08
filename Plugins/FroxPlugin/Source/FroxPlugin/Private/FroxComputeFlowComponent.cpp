@@ -11,29 +11,138 @@
 
 #define LOCTEXT_NAMESPACE "FFroxPluginModule"
 
+UFroxComputeFlowComponent::UFroxComputeFlowComponent(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	PrimaryComponentTick.bCanEverTick = true;
+	bWantsInitializeComponent = true;
+}
+
+void UFroxComputeFlowComponent::InitializeComponent()
+{
+	Super::InitializeComponent();
+
+	if (ComputeFlowAsset)
+	{
+		InitializeFlow(*ComputeFlowAsset);
+	}
+}
+
+void UFroxComputeFlowComponent::UninitializeComponent()
+{
+	ReleaseFlow();
+	Super::UninitializeComponent();
+}
+
 void UFroxComputeFlowComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GenerateFlow();
+	if (ComputeFlow)
+	{
+		// ComputeFlow->Start();
+	}
 }
 
 void UFroxComputeFlowComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	ReleaseFlow();
+	if (ComputeFlow)
+	{
+		// ComputeFlow->Stop();
+	}
 
 	Super::EndPlay(EndPlayReason);
 }
 
-void UFroxComputeFlowComponent::GenerateFlow()
+void UFroxComputeFlowComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
-	// ComputeFlow->
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (_bRunning && ComputeFlow)
+	{
+		// Wait
+		ComputeFlow->Fetch();
+
+		// Get Outputs
+
+		// Update Values
+		for (const FComputeFlowEntry& entry : ComputeFlowAsset->Keys)
+		{
+			// entry.
+		}
+
+		// Push Calculation
+		ComputeFlow->Perform();
+	}
+}
+
+void UFroxComputeFlowComponent::Start()
+{
+	_bRunning = true;
+}
+
+void UFroxComputeFlowComponent::Stop()
+{
+	_bRunning = false;
+}
+
+bool UFroxComputeFlowComponent::IsRunning() const
+{
+	return _bRunning;
+}
+
+int32 UFroxComputeFlowComponent::GetValueAsInt(const FName& KeyName) const
+{
+	const int32* Found = IntValues.Find(KeyName);
+	return Found ? *Found : 0;
+}
+
+float UFroxComputeFlowComponent::GetValueAsFloat(const FName& KeyName) const
+{
+	const float* Found = FloatValues.Find(KeyName);
+	return Found ? *Found : 0;
+}
+
+bool UFroxComputeFlowComponent::GetValueAsBool(const FName& KeyName) const
+{
+	const bool* Found = BoolValues.Find(KeyName);
+	return Found ? *Found : 0;
+}
+
+void UFroxComputeFlowComponent::SetValueAsInt(const FName& KeyName, int32 IntValue)
+{
+	IntValues.Add(KeyName, IntValue);
+}
+
+void UFroxComputeFlowComponent::SetValueAsFloat(const FName& KeyName, float FloatValue)
+{
+	FloatValues.Add(KeyName, FloatValue);
+}
+
+void UFroxComputeFlowComponent::SetValueAsBool(const FName& KeyName, bool BoolValue)
+{
+	BoolValues.Add(KeyName, BoolValue);
+}
+
+bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
+{
 	// Create ComputeFlow by FlowDesc
 	frox::Frox* FroxLib = FFroxPluginModule::Get().GetFrox();
+	check(FroxLib != nullptr);
 
-	Flow = FroxLib->CreateComputeFlow();
+	ComputeFlow = FroxLib->CreateComputeFlow();
+	check(ComputeFlow != nullptr);
 
-	UEdGraph* UpdateGraph = ComputeFlow->UpdateGraph;
+	UEdGraph* UpdateGraph = NewAsset.UpdateGraph;
+	check(UpdateGraph != nullptr);
+
+
+	// NewAsset.Keys;
+	for (const FComputeFlowEntry& entry : NewAsset.Keys)
+	{
+		// entry.
+	}
+
 
 	// Create All Nodes
 	struct NodePair
@@ -49,10 +158,12 @@ void UFroxComputeFlowComponent::GenerateFlow()
 	TArray<UOutputPropertyNode*> Outputs;
 	for (UEdGraphNode* Node : UpdateGraph->Nodes)
 	{
+		// Node Operation
 		UOpartionNode* OperationGraphNode = Cast<UOpartionNode>(Node);
 		if (OperationGraphNode)
 		{
-			frox::ComputeNode* ComputeNode = Flow->CreateNode(OperationGraphNode->GetTypeName());
+			frox::ComputeNode* ComputeNode = OperationGraphNode->CreateFroxNode(ComputeFlow);
+			check(ComputeNode != nullptr);
 
 			Pairs.Add(NodePair{
 				OperationGraphNode,
@@ -61,6 +172,7 @@ void UFroxComputeFlowComponent::GenerateFlow()
 			continue;
 		}
 
+		// Input
 		UInputPropertyNode* InputGraphNode = Cast<UInputPropertyNode>(Node);
 		if (InputGraphNode)
 		{
@@ -68,12 +180,14 @@ void UFroxComputeFlowComponent::GenerateFlow()
 			continue;
 		}
 
+		// Output
 		UOutputPropertyNode* OutputGraphNode = Cast<UOutputPropertyNode>(Node);
 		if (OutputGraphNode)
 		{
 			Outputs.Add(OutputGraphNode);
 		}
 	}
+
 
 	// Set inputs
 	for (UInputPropertyNode* Input : Inputs)
@@ -108,15 +222,16 @@ void UFroxComputeFlowComponent::GenerateFlow()
 							.IndexOfByPredicate([LinkedTo](UEdGraphPin* Pin) {
 								return Pin == LinkedTo;
 							});
+						check(InPinIndex != -1);
 
 						// Create Input By Prop
 						frox::ComputeFramePtr frame = FroxLib->CreateScalar(1.f); // Input->PropertyName;
 						InComputeNode->SetInput(InPinIndex, frame);
 					}
 				}
-			}
-		}
-	}
+			} // End Every In Pin
+		} // End Every Out Pin
+	} // End every input
 
 	// Connect operations
 	for (const NodePair& OutPair : Pairs)
@@ -153,8 +268,9 @@ void UFroxComputeFlowComponent::GenerateFlow()
 							.IndexOfByPredicate([LinkedTo](UEdGraphPin* Pin) {
 								return Pin == LinkedTo;
 							});
+						check(InPinIndex != -1);
 
-						Flow->ConnectNodes(OutComputeNode, OutPinIndex, InComputeNode, InPinIndex);
+						ComputeFlow->ConnectNodes(OutComputeNode, OutPinIndex, InComputeNode, InPinIndex);
 					}
 				}
 			} // End Every In Pin
@@ -193,22 +309,27 @@ void UFroxComputeFlowComponent::GenerateFlow()
 							.IndexOfByPredicate([LinkedTo](UEdGraphPin* Pin) {
 								return Pin == LinkedTo;
 							});
+						check(OutPinIndex != -1);
 
 						frox::ComputeFramePtr frame = InComputeNode->GetOutput(OutPinIndex);
 						// Input->PropertyName;
 					}
 				}
-			}
-		}
-	}
+			} // End Every Out Pin
+		} // End Every In Pin
+	} // End every output
+
+	return true;
 }
 
 void UFroxComputeFlowComponent::ReleaseFlow()
 {
-	if (Flow)
+	if (ComputeFlow)
 	{
 		frox::Frox* FroxLib = FFroxPluginModule::Get().GetFrox();
-		FroxLib->DestroyComputeFlow(Flow);
+		check(FroxLib != nullptr);
+
+		FroxLib->DestroyComputeFlow(ComputeFlow);
 	}
 }
 

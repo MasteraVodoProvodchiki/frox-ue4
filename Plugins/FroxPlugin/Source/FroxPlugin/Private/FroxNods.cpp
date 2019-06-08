@@ -2,6 +2,7 @@
 #include "OperationLogic.h"
 
 #include "EdGraph/EdGraphPin.h"
+#include "Frox/Frox/ComputeFlow.h"
 
 #if WITH_EDITORONLY_DATA
 void UFroxNodeBase::PostEditChangeProperty(struct FPropertyChangedEvent& e)
@@ -66,12 +67,11 @@ FText UOutputPropertyNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 }
 #endif //WITH_EDITORONLY_DATA
 
-/*
-const char* UOpartionNode::GetTypeName() const
+frox::ComputeNode* UOpartionNode::CreateFroxNode(frox::ComputeFlow* Flow) const
 {
-	return OperationInstance ? OperationInstance->GetTypeName() : "none";
+	check(Flow != nullptr);
+	return Flow->CreateNode(this->GetTypeName());
 }
-*/
 
 #if WITH_EDITORONLY_DATA
 void UOpartionNode::PostEditChangeProperty(struct FPropertyChangedEvent& e)
@@ -85,6 +85,12 @@ FText UOpartionNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 }
 #endif //WITH_EDITORONLY_DATA
 
+frox::ComputeNode* UMakeZeroFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) const
+{
+	check(Flow != nullptr);
+	return Flow->CreateNode(this->GetTypeName());
+	// set w/h
+}
 
 #if WITH_EDITORONLY_DATA
 void UMakeZeroFrameNode::AllocateDefaultPins()

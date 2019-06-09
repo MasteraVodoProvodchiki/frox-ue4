@@ -25,6 +25,7 @@ UObject* UFroxComputeFlowAssetFactory::FactoryCreateNew(UClass* Class, UObject* 
 	const FString Filter(TEXT("Frox ComputeFlow Files (*.json)|*.json"));
 
 	UFroxComputeFlowAsset* Asset = NewObject<UFroxComputeFlowAsset>(InParent, Class, Name, Flags);
+	/*
 	TArray<FString> OpenFilenames;
 	int32 FilterIndex = -1;
 	if (FDesktopPlatformModule::Get()->OpenFileDialog(
@@ -40,6 +41,7 @@ UObject* UFroxComputeFlowAssetFactory::FactoryCreateNew(UClass* Class, UObject* 
 		Asset->SetComputeFlowName(FName(*OpenFilenames[0]));
 		ImportSourceFile(Asset);
 	}
+	*/
 
 	return Asset;
 }

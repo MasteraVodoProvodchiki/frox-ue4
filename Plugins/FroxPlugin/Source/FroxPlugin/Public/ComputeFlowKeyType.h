@@ -5,7 +5,7 @@
 #include "ComputeFlowKeyType.generated.h"
 
 UCLASS(Blueprintable, HideDropDown)
-class UComputeFlowKeyType : public UObject
+class FROXPLUGIN_API UComputeFlowKeyType : public UObject
 {
 	GENERATED_BODY()
 
@@ -14,7 +14,7 @@ public:
 };
 
 UCLASS(Blueprintable)
-class UComputeFlowKeyType_Uint8 : public UObject
+class UComputeFlowKeyType_Uint8 : public UComputeFlowKeyType
 {
 	GENERATED_BODY()
 
@@ -23,7 +23,7 @@ public:
 };
 
 UCLASS(Blueprintable)
-class UComputeFlowKeyType_Float : public UObject
+class UComputeFlowKeyType_Float : public UComputeFlowKeyType
 {
 	GENERATED_BODY()
 
@@ -32,7 +32,7 @@ public:
 };
 
 UCLASS(Blueprintable)
-class UComputeFlowKeyType_Bool : public UObject
+class UComputeFlowKeyType_Bool : public UComputeFlowKeyType
 {
 	GENERATED_BODY()
 
@@ -41,7 +41,7 @@ public:
 };
 
 UCLASS(Blueprintable)
-class UComputeFlowKeyType_Frame : public UObject
+class UComputeFlowKeyType_Frame : public UComputeFlowKeyType
 {
 	GENERATED_BODY()
 

@@ -12,5 +12,7 @@ public:
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
+	/** Frox Editor app identifier string */
+	static const FName FroxEditorAppIdentifier;
 private:
 };

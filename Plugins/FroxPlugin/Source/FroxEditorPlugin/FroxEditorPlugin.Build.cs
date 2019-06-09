@@ -51,7 +51,8 @@ public class FroxEditorPlugin : ModuleRules
                 "PropertyEditor",
                 "UnrealEd",
                 "EditorStyle",
-                "GraphEditor"
+                "GraphEditor",
+                "Kismet"
 				// ... add private dependencies that you statically link with here ...	
 			}
             );

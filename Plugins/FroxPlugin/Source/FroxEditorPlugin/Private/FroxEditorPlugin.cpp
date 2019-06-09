@@ -15,6 +15,8 @@
 
 #define LOCTEXT_NAMESPACE "FFroxEditorPluginModule"
 
+const FName FFroxEditorPluginModule::FroxEditorAppIdentifier(TEXT("FroxEditorApp"));
+
 void FFroxEditorPluginModule::StartupModule()
 {
 	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");

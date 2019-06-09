@@ -19,7 +19,7 @@ FFroxComputeFlowEditorApplicationMode::FFroxComputeFlowEditorApplicationMode(TSh
 	ComputeFlowTabFactories.RegisterFactory(MakeShareable(new FFroxComputeFlowDetailsSummoner(InComputeFlowEditor)));
 	ComputeFlowTabFactories.RegisterFactory(MakeShareable(new FFroxComputePropsViewSummoner(InComputeFlowEditor)));
 	
-	TabLayout = FTabManager::NewLayout("Standalone_FroxEditor_Layout_v1")
+	TabLayout = FTabManager::NewLayout("Standalone_FroxEditor_Layout_v2")
 		->AddArea
 		(
 			FTabManager::NewPrimaryArea()->SetOrientation(Orient_Vertical)
@@ -157,7 +157,7 @@ FFroxComputePropsEditorApplicationMode::FFroxComputePropsEditorApplicationMode(T
 	ComputePropsTabFactories.RegisterFactory(MakeShareable(new FFroxComputePropsEditorSummoner(InComputeFlowEditor)));
 	ComputePropsTabFactories.RegisterFactory(MakeShareable(new FFroxComputePropsDetailsSummoner(InComputeFlowEditor)));
 
-	TabLayout = FTabManager::NewLayout("Standalone_FroxEditor_Layout_v1")
+	TabLayout = FTabManager::NewLayout("Standalone_FroxPropsEditor_Layout_v2")
 		->AddArea
 		(
 			FTabManager::NewPrimaryArea()->SetOrientation(Orient_Vertical)

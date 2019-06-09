@@ -16,12 +16,12 @@
 
 // #include "BehaviorTreeEditorCommands.h"
 
-#define LOCTEXT_NAMESPACE "BehaviorTreeEditorToolbar"
+#define LOCTEXT_NAMESPACE "FroxComputeFlowEditorToolbar"
 
-class SBehaviorTreeModeSeparator : public SBorder
+class SFroxComputeFlowModeSeparator : public SBorder
 {
 public:
-	SLATE_BEGIN_ARGS(SBehaviorTreeModeSeparator) {}
+	SLATE_BEGIN_ARGS(SFroxComputeFlowModeSeparator) {}
 	SLATE_END_ARGS()
 
 	void Construct(const FArguments& InArg)
@@ -91,7 +91,7 @@ void FFroxComputeFlowEditorToolbar::FillModesToolbar(FToolBarBuilder& ToolbarBui
 		.SmallIconImage(FEditorStyle::GetBrush("FroxEditor.SwitchToComputeFlowMode.Small"))
 	);
 
-	ComputeFlowEditorPtr->AddToolbarWidget(SNew(SBehaviorTreeModeSeparator));
+	ComputeFlowEditorPtr->AddToolbarWidget(SNew(SFroxComputeFlowModeSeparator));
 
 	ComputeFlowEditorPtr->AddToolbarWidget(
 		SNew(SModeWidget, FFroxComputeFlowAssetEditor::GetLocalizedMode(FFroxComputeFlowAssetEditor::ComputePropsMode), FFroxComputeFlowAssetEditor::ComputePropsMode)

@@ -365,6 +365,12 @@ void SFroxComputePropsView::Construct(const FArguments& InArgs, TSharedRef<FUICo
 	// build debug toolbar
 	FToolBarBuilder ToolbarBuilder(CommandList, FMultiBoxCustomization::None, GetToolbarExtender(InCommandList));
 
+	ToolbarBuilder.BeginSection(TEXT("Debugging"));
+	{
+	}
+	ToolbarBuilder.EndSection();
+
+
 	ChildSlot
 		[
 			SNew(SBorder)

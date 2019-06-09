@@ -68,6 +68,54 @@ FText FFroxComputeFlowAssetEditor::GetToolkitToolTipText() const
 }
 
 
+
+void FFroxComputeFlowAssetEditor::PostUndo(bool bSuccess)
+{
+	if (bSuccess)
+	{
+		if (ComputeFlowPropsView.IsValid())
+		{
+			ComputeFlowPropsView->SetObject(GetComputeFlow());
+		}
+
+		if (ComputeFlowPropsEditor.IsValid())
+		{
+			ComputeFlowPropsEditor->SetObject(GetComputeFlow());
+		}
+	}
+}
+
+void FFroxComputeFlowAssetEditor::PostRedo(bool bSuccess)
+{
+	if (bSuccess)
+	{
+		if (ComputeFlowPropsView.IsValid())
+		{
+			ComputeFlowPropsView->SetObject(GetComputeFlow());
+		}
+
+		if (ComputeFlowPropsEditor.IsValid())
+		{
+			ComputeFlowPropsEditor->SetObject(GetComputeFlow());
+		}
+	}
+}
+
+void FFroxComputeFlowAssetEditor::NotifyPostChange(const FPropertyChangedEvent& PropertyChangedEvent, UProperty* PropertyThatChanged)
+{
+	if (PropertyChangedEvent.ChangeType != EPropertyChangeType::Interactive)
+	{
+		if (ComputeFlowPropsView.IsValid())
+		{
+			ComputeFlowPropsView->SetObject(GetComputeFlow());
+		}
+		if (ComputeFlowPropsEditor.IsValid())
+		{
+			ComputeFlowPropsEditor->SetObject(GetComputeFlow());
+		}
+	}
+}
+
 void FFroxComputeFlowAssetEditor::RegisterTabSpawners(const TSharedRef<class FTabManager>& InTabManager)
 {
 	DocumentManager->SetTabManager(InTabManager);

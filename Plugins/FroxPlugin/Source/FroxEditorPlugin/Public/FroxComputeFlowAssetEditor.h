@@ -6,13 +6,14 @@
 #include "Misc/NotifyHook.h"
 #include "GraphEditor.h"
 #include "IDetailsView.h"
+#include "EditorUndoClient.h"
 
 class FDocumentTracker;
 class FDocumentTabFactory;
 class UFroxComputeFlowAsset;
 struct FComputeFlowEntry;
 
-class FFroxComputeFlowAssetEditor : public FWorkflowCentricApplication, public FNotifyHook
+class FFroxComputeFlowAssetEditor : public FWorkflowCentricApplication, public FEditorUndoClient, public FNotifyHook
 {
 public:
 	~FFroxComputeFlowAssetEditor();
@@ -31,6 +32,15 @@ public:
 	virtual FText GetToolkitName() const override;
 	virtual FText GetToolkitToolTipText() const override;
 	//~ End IToolkit Interface
+
+	//~ Begin FEditorUndoClient Interface
+	virtual void PostUndo(bool bSuccess) override;
+	virtual void PostRedo(bool bSuccess) override;
+	// End of FEditorUndoClient
+
+	//~ Begin FNotifyHook Interface
+	virtual void NotifyPostChange(const FPropertyChangedEvent& PropertyChangedEvent, UProperty* PropertyThatChanged) override;
+	// End of FNotifyHook
 
 	/** Access the compute flow for this editor */
 	UFroxComputeFlowAsset* GetComputeFlow() { return PropBeingEdited; }

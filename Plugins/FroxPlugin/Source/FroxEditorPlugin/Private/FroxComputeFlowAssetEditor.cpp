@@ -186,17 +186,6 @@ void FFroxComputeFlowAssetEditor::InitCustAssetEditor(const EToolkitMode::Type M
 	}
 
 	// Toolbar
-	/*
-	MyToolBarCommands = MakeShareable(new FUICommandList);
-	MyToolBarCommands->MapAction(FToolBarCommandsCommands::Get().ShowMessage,
-		FExecuteAction::CreateSP(this, &FFroxComputeFlowAssetEditor::ShowMessage)
-	);
-
-	ToolbarExtender = MakeShareable(new FExtender);
-	ToolbarExtender->AddToolBarExtension("Asset", EExtensionHook::After, MyToolBarCommands, FToolBarExtensionDelegate::CreateRaw(this, &FFroxComputeFlowAssetEditor::AddToolbarExtension));
-	AddToolbarExtender(ToolbarExtender);
-	*/
-
 	if (!ToolbarBuilder.IsValid())
 	{
 		ToolbarBuilder = MakeShareable(new FFroxComputeFlowEditorToolbar(SharedThis(this)));
@@ -353,28 +342,17 @@ void FFroxComputeFlowAssetEditor::HandleComputeFlowEntrySelected(const FComputeF
 
 void FFroxComputeFlowAssetEditor::HandleComputeFlowEntryChanged(UFroxComputeFlowAsset* InComputeFlow, FComputeFlowEntry* const InKey)
 {
-	/*
 	if (ComputeFlowPropsView.IsValid())
 	{
 		// re-set object in computeflow view to keep it up to date
 		ComputeFlowPropsView->SetObject(InComputeFlow);
 	}
-	*/
 }
 
 bool FFroxComputeFlowAssetEditor::HandleIsComputeFlowPropsModeActive() const
 {
 	return GetCurrentMode() == ComputePropsMode;
 }
-
-/*
-void FFroxComputeFlowAssetEditor::AddToolbarExtension(FToolBarBuilder &builder)
-{
-	FSlateIcon IconBrush = FSlateIcon(FEditorStyle::GetStyleSetName(), "LevelEditor.ViewOptions", "LevelEditor.ViewOptions.Small");
-
-	builder.AddToolBarButton(FToolBarCommandsCommands::Get().ShowMessage, NAME_None, FText::FromString("Show Message"), FText::FromString("Click to show message"), IconBrush, NAME_None);
-}
-*/
 
 TSharedRef<SDockTab> FFroxComputeFlowAssetEditor::SpawnTab_Viewport(const FSpawnTabArgs& Args)
 {
@@ -551,14 +529,6 @@ TSharedRef<SGraphEditor> FFroxComputeFlowAssetEditor::CreateGraphEditorWidget(UE
 	GraphEditor = _GraphEditor;
 	return _GraphEditor;
 }
-
-
-/*
-void FFroxComputeFlowAssetEditor::ShowMessage()
-{
-	// FMyClassDetails::ShowNotification("Message Show");
-}
-*/
 
 // Editor Actions......................................................................................................
 void FFroxComputeFlowAssetEditor::OnSelectedNodesChanged(const TSet<UObject*>& NewSelection)

@@ -19,20 +19,7 @@
 #include "Styling/CoreStyle.h"
 #include "ScopedTransaction.h"
 #include "AssetRegistryModule.h"
-/*
-#include "Fonts/SlateFontInfo.h"
-#include "Modules/ModuleManager.h"
-#include "UObject/UObjectHash.h"
-#include "UObject/UnrealType.h"
-#include "Widgets/Layout/SBorder.h"
-#include "Widgets/Text/STextBlock.h"
-#include "Framework/MultiBox/MultiBoxDefs.h"
-#include "Framework/MultiBox/MultiBoxBuilder.h"
-#include "SGraphActionMenu.h"
 
-#include "BehaviorTreeEditorCommands.h"
-#include "ARFilter.h"
-*/
 #define LOCTEXT_NAMESPACE "SFroxComputePropsView"
 
 DEFINE_LOG_CATEGORY(LogComputePropsView);
@@ -193,10 +180,10 @@ private:
 		{
 			if (!ComputeFlowEntryAction->bIsNew)
 			{
-				// Preload behavior trees before we transact otherwise they will add objects to 
+				// Preload compute flow before we transact otherwise they will add objects to 
 				// the transaction buffer whether we change them or not.
 				// Blueprint regeneration does this in UEdGraphNode::CreatePin.
-				LoadAllBehaviorTrees();
+				LoadAllComputeFlows();
 			}
 
 			const FScopedTransaction Transaction(LOCTEXT("ComputeFLowEntryRenameTransaction", "Rename ComputeFlow Entry"));
@@ -217,7 +204,7 @@ private:
 		ComputeFlowEntryAction->bIsNew = false;
 	}
 
-	void LoadAllBehaviorTrees()
+	void LoadAllComputeFlows()
 	{
 		FAssetRegistryModule& AssetRegistry = FModuleManager::LoadModuleChecked<FAssetRegistryModule>(TEXT("AssetRegistry"));
 
@@ -228,13 +215,13 @@ private:
 		TArray<FAssetData> AssetData;
 		AssetRegistry.Get().GetAssets(Filter, AssetData);
 
-		FScopedSlowTask SlowTask((float)AssetData.Num(), LOCTEXT("UpdatingBehaviorTrees", "Updating behavior trees"));
+		FScopedSlowTask SlowTask((float)AssetData.Num(), LOCTEXT("UpdatingComputeFlows", "Updating compute flows"));
 		SlowTask.MakeDialog();
 
-		for (const auto& BehaviorTreeAsset : AssetData)
+		for (const auto& ComputeFlowAsset : AssetData)
 		{
-			SlowTask.EnterProgressFrame(1.0f, FText::Format(LOCTEXT("CheckingBehaviorTree", "Key renamed, loading {0}"), FText::FromName(BehaviorTreeAsset.AssetName)));
-			BehaviorTreeAsset.GetAsset();
+			SlowTask.EnterProgressFrame(1.0f, FText::Format(LOCTEXT("CheckingComputeFlow", "Key renamed, loading {0}"), FText::FromName(ComputeFlowAsset.AssetName)));
+			ComputeFlowAsset.GetAsset();
 		}
 	}
 
@@ -243,7 +230,7 @@ private:
 
 	void UpdateExternalComputeFlowKeyReferences(const FName& OldKey, const FName& NewKey) const
 	{
-		// update all behavior trees that reference this key
+		// update all compute flows that reference this key
 		check(ActionPtr.Pin()->GetTypeId() == FEdGraphSchemaAction_ComputeFlowEntry::StaticGetTypeId());
 		TSharedPtr<FEdGraphSchemaAction_ComputeFlowEntry> ComputeFlowEntryAction = StaticCastSharedPtr<FEdGraphSchemaAction_ComputeFlowEntry>(ActionPtr.Pin());
 

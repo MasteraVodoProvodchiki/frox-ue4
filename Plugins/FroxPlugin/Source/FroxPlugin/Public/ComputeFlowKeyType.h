@@ -22,6 +22,24 @@ public:
 
 };
 
+UCLASS(EditInlineNew, meta = (DisplayName = "UInt16"))
+class UComputeFlowKeyType_Uint16 : public UComputeFlowKeyType
+{
+	GENERATED_BODY()
+
+public:
+
+};
+
+UCLASS(EditInlineNew, meta = (DisplayName = "UInt32"))
+class UComputeFlowKeyType_Uint32 : public UComputeFlowKeyType
+{
+	GENERATED_BODY()
+
+public:
+
+};
+
 UCLASS(EditInlineNew, meta = (DisplayName = "Float"))
 class UComputeFlowKeyType_Float : public UComputeFlowKeyType
 {

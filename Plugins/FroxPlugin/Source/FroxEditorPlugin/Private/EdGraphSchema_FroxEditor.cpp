@@ -1,8 +1,9 @@
 #include "EdGraphSchema_FroxEditor.h"
 
-// #include "UICustomEditor.h"
-#include "FroxNods.h"
-#include "FroxArithmeticNods.h"
+
+#include "Nodes/FroxNods.h"
+#include "Nodes/FroxArithmeticNods.h"
+#include "Nodes/FroxMakeNods.h"
 
 #include "EdGraph/EdGraph.h"
 #include "EdGraph/EdGraphPin.h"
@@ -124,12 +125,15 @@ void UEdGraphSchema_FroxEditor::GetGraphContextActions(FGraphContextMenuBuilder&
 
 	FroxSchemaUtils::AddAction<UInputPropertyNode>(TEXT("Add Input Property"), TEXT("Add input property node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UOutputPropertyNode>(TEXT("Add Output Property"), TEXT("Add output property node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	
+	FroxSchemaUtils::AddAction<UMakeFrameNode>(TEXT("Add Make Node"), TEXT("Add make node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UMakeZeroFrameNode>(TEXT("Add Make Zero Node"), TEXT("Add make zero node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 
 	FroxSchemaUtils::AddAction<UAddOpartionNode>(TEXT("Add Add Operation Node"), TEXT("Add Add operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<USubOpartionNode>(TEXT("Add Sub Operation Node"), TEXT("Add Sub operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UMulOpartionNode>(TEXT("Add Mul Operation Node"), TEXT("Add Mul operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UDivOpartionNode>(TEXT("Add Div Operation Node"), TEXT("Add Div operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	FroxSchemaUtils::AddAction<UAvgOpartionNode>(TEXT("Add Avg Operation Node"), TEXT("Add Avg operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 
 	for (TSharedPtr<FEdGraphSchemaAction> Action : Actions)
 	{

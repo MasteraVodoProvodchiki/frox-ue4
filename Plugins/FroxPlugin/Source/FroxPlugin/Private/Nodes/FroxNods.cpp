@@ -84,27 +84,3 @@ FText UOpartionNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 	return FText::FromString(this->GetTypeName());
 }
 #endif //WITH_EDITORONLY_DATA
-
-frox::ComputeNode* UMakeZeroFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) const
-{
-	check(Flow != nullptr);
-	return Flow->CreateNode(this->GetTypeName());
-	// set w/h
-}
-
-#if WITH_EDITORONLY_DATA
-void UMakeZeroFrameNode::AllocateDefaultPins()
-{
-	UEdGraphPin* Width = CreatePin(EGPD_Input, TEXT(""), TEXT("Width"));
-	Width->DefaultValue = "1";
-	UEdGraphPin* Height = CreatePin(EGPD_Input, TEXT(""), TEXT("Height"));
-	Height->DefaultValue = "1";
-
-	UEdGraphPin* Output = CreatePin(EGPD_Output, TEXT(""), TEXT("Out"));
-}
-
-FText UMakeZeroFrameNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
-{
-	return FText::FromString(this->GetTypeName());
-}
-#endif //WITH_EDITORONLY_DATA

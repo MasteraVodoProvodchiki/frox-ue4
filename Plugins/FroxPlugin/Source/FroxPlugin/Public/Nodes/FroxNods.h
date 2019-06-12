@@ -94,18 +94,3 @@ public:
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 #endif //WITH_EDITORONLY_DATA
 };
-
-UCLASS()
-class FROXPLUGIN_API UMakeZeroFrameNode : public UOpartionNode
-{
-	GENERATED_BODY()
-
-public:
-	virtual const char* GetTypeName() const override { return "makezeroframe"; }
-	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
-
-#if WITH_EDITORONLY_DATA
-	virtual void AllocateDefaultPins() override;
-	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
-#endif //WITH_EDITORONLY_DATA
-};

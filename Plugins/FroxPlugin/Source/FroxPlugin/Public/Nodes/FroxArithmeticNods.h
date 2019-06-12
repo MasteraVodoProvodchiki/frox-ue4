@@ -4,7 +4,7 @@
 #include "FroxArithmeticNods.generated.h"
 
 UCLASS(HideDropDown)
-class FROXPLUGIN_API UOpartionInput2OuputNode : public UOpartionNode
+class FROXPLUGIN_API UOpartionBasicNode : public UOpartionNode
 {
 	GENERATED_BODY()
 
@@ -12,9 +12,30 @@ public:
 	virtual const char* GetTypeName() const { return "none"; }
 
 #if WITH_EDITORONLY_DATA
-	virtual void AllocateDefaultPins() override;
-	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;
+#endif //WITH_EDITORONLY_DATA
+};
+
+UCLASS(HideDropDown)
+class FROXPLUGIN_API UOpartionInput1OuputNode : public UOpartionBasicNode
+{
+	GENERATED_BODY()
+
+public:
+#if WITH_EDITORONLY_DATA
+	virtual void AllocateDefaultPins() override;
+#endif //WITH_EDITORONLY_DATA
+};
+
+UCLASS(HideDropDown)
+class FROXPLUGIN_API UOpartionInput2OuputNode : public UOpartionNode
+{
+	GENERATED_BODY()
+
+public:
+#if WITH_EDITORONLY_DATA
+	virtual void AllocateDefaultPins() override;
 #endif //WITH_EDITORONLY_DATA
 };
 
@@ -52,4 +73,13 @@ class FROXPLUGIN_API UDivOpartionNode : public UOpartionInput2OuputNode
 
 public:
 	virtual const char* GetTypeName() const override { return "div"; }
+};
+
+UCLASS()
+class FROXPLUGIN_API UAvgOpartionNode : public UOpartionInput1OuputNode
+{
+	GENERATED_BODY()
+
+public:
+	virtual const char* GetTypeName() const override { return "avg"; }
 };

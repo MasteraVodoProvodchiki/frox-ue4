@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FroxNods.h"
-#include "ComputeFlowKeyType.h"
+#include "FroxComputeFrame.h"
 #include "FroxMakeNods.generated.h"
 
 UCLASS()
@@ -28,8 +28,8 @@ public:
 	int Height = 1;
 
 	/** type of frame  */
-	UPROPERTY(EditAnywhere, Instanced, Category = Frox)
-	UComputeFlowKeyType* Type;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	EFroxTypeEnum Type;
 
 	/** value of frame  */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)

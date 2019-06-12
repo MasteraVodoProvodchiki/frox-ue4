@@ -1,7 +1,5 @@
 #pragma once
 
-#pragma once
-
 #include "ComputeFlowKeyType.generated.h"
 
 UCLASS(EditInlineNew, Abstract, CollapseCategories, HideDropDown)

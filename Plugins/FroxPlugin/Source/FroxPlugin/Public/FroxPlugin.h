@@ -8,6 +8,8 @@ namespace frox {
 class Frox;
 } // End frox.
 
+DECLARE_LOG_CATEGORY_EXTERN(LogFrox, Warning, All);
+
 class FFroxPluginModule : public IModuleInterface
 {
 public:

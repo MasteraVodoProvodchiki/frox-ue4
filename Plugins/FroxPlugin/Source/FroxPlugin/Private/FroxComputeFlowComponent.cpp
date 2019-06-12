@@ -1,7 +1,8 @@
 #include "FroxComputeFlowComponent.h"
 #include "FroxComputeFlowAsset.h"
+#include "FroxComputeFrame.h"
 #include "FroxPlugin.h"
-#include "FroxNods.h"
+#include "Nodes/FroxNods.h"
 
 #include "Frox/Frox/ComputeFlow.h"
 #include "Frox/Frox/ComputeFrame.h"
@@ -64,12 +65,52 @@ void UFroxComputeFlowComponent::TickComponent(float DeltaTime, enum ELevelTick T
 		ComputeFlow->Fetch();
 
 		// Get Outputs
-
-		// Update Values
 		for (const FComputeFlowEntry& entry : ComputeFlowAsset->Keys)
 		{
-			// entry.
-		}
+			auto FoundOuput = OuputHoles.Find(entry.EntryName);
+			if (FoundOuput)
+			{
+				const FHole& Ouput = *FoundOuput;	
+				for (const FHoleNode& Node : Ouput.Nodes)
+				{
+					frox::ComputeFramePtr FroxFrame = Node.Node->GetOutput(Node.PinId);
+					if (FroxFrame)
+					{
+						UFroxComputeFrame* ComputeFrame = GetValueAsFrame(entry.EntryName);
+						if (ComputeFrame != nullptr)
+						{
+							ComputeFrame->SetFroxFrame(FroxFrame);
+							SetValueAsFrame(entry.EntryName, ComputeFrame);
+						}
+						else
+						{
+							ComputeFrame = NewObject<UFroxComputeFrame>();
+							ComputeFrame->SetFroxFrame(FroxFrame);
+							SetValueAsFrame(entry.EntryName, ComputeFrame);
+						}
+					}
+				}
+			} // End input
+		} // End every key
+
+		// Update Inputs
+		for (const FComputeFlowEntry& entry : ComputeFlowAsset->Keys)
+		{
+			auto FoundInput = InputHoles.Find(entry.EntryName);
+			if (FoundInput)
+			{
+				const FHole& Input = *FoundInput;
+				UFroxComputeFrame* ComputeFrame = GetValueAsFrame(entry.EntryName);
+				if (ComputeFrame != nullptr)
+				{
+					frox::ComputeFramePtr FroxFrame = ComputeFrame->GetFroxFrame();
+					for (const FHoleNode& Node : Input.Nodes)
+					{
+						Node.Node->SetInput(Node.PinId, FroxFrame);
+					}
+				}
+			} // End input
+		} // End every key
 
 		// Push Calculation
 		ComputeFlow->Perform();
@@ -100,28 +141,43 @@ int32 UFroxComputeFlowComponent::GetValueAsInt(const FName& KeyName) const
 float UFroxComputeFlowComponent::GetValueAsFloat(const FName& KeyName) const
 {
 	const float* Found = FloatValues.Find(KeyName);
-	return Found ? *Found : 0;
+	return Found ? *Found : 0.f;
 }
 
 bool UFroxComputeFlowComponent::GetValueAsBool(const FName& KeyName) const
 {
 	const bool* Found = BoolValues.Find(KeyName);
-	return Found ? *Found : 0;
+	return Found ? *Found : false;
+}
+
+UFroxComputeFrame* UFroxComputeFlowComponent::GetValueAsFrame(const FName& KeyName) const
+{
+	auto Found = FrameValues.Find(KeyName);
+	return Found ? *Found : nullptr;
 }
 
 void UFroxComputeFlowComponent::SetValueAsInt(const FName& KeyName, int32 IntValue)
 {
 	IntValues.Add(KeyName, IntValue);
+	OnValueChanged.Broadcast(KeyName);
 }
 
 void UFroxComputeFlowComponent::SetValueAsFloat(const FName& KeyName, float FloatValue)
 {
 	FloatValues.Add(KeyName, FloatValue);
+	OnValueChanged.Broadcast(KeyName);
 }
 
 void UFroxComputeFlowComponent::SetValueAsBool(const FName& KeyName, bool BoolValue)
 {
 	BoolValues.Add(KeyName, BoolValue);
+	OnValueChanged.Broadcast(KeyName);
+}
+
+void UFroxComputeFlowComponent::SetValueAsFrame(const FName& KeyName, UFroxComputeFrame* ComputeFrame)
+{
+	FrameValues.Add(KeyName, ComputeFrame);
+	OnValueChanged.Broadcast(KeyName);
 }
 
 bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
@@ -192,8 +248,6 @@ bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 	// Set inputs
 	for (UInputPropertyNode* Input : Inputs)
 	{
-		Input->PropertyName;
-
 		// Only for output
 		TArray<UEdGraphPin*> OutputPins = Input->Pins.FilterByPredicate([](UEdGraphPin* Pin) {
 			return Pin->Direction == EEdGraphPinDirection::EGPD_Output;
@@ -225,8 +279,9 @@ bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 						check(InPinIndex != -1);
 
 						// Create Input By Prop
-						frox::ComputeFramePtr frame = FroxLib->CreateScalar(1.f); // Input->PropertyName;
-						InComputeNode->SetInput(InPinIndex, frame);
+						auto FoundInput = InputHoles.Find(Input->PropertyName);
+						FHole& InputHole = !FoundInput ? InputHoles.Add(Input->PropertyName, FHole{}) : *FoundInput;
+						InputHole.Nodes.Add(FHoleNode{ InComputeNode, uint32(InPinIndex) });
 					}
 				}
 			} // End Every In Pin
@@ -280,8 +335,6 @@ bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 	// Set outputs
 	for (UOutputPropertyNode* Output : Outputs)
 	{
-		Output->PropertyName;
-
 		// Only for inputs
 		TArray<UEdGraphPin*> InputPins = Output->Pins.FilterByPredicate([](UEdGraphPin* Pin) {
 			return Pin->Direction == EEdGraphPinDirection::EGPD_Input;
@@ -301,7 +354,7 @@ bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 
 					if (OutPair)
 					{
-						frox::ComputeNode* InComputeNode = OutPair->ComputeNode;
+						frox::ComputeNode* OutComputeNode = OutPair->ComputeNode;
 						int32 OutPinIndex = NextNode->Pins
 							.FilterByPredicate([](UEdGraphPin* Pin) {
 								return Pin->Direction == EEdGraphPinDirection::EGPD_Output;
@@ -311,8 +364,12 @@ bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 							});
 						check(OutPinIndex != -1);
 
-						frox::ComputeFramePtr frame = InComputeNode->GetOutput(OutPinIndex);
-						// Input->PropertyName;
+						frox::ComputeFramePtr frame = OutComputeNode->GetOutput(OutPinIndex);
+						
+						// Add hole
+						auto FoundIOutput= OuputHoles.Find(Output->PropertyName);
+						FHole& OuputHole = !FoundIOutput ? OuputHoles.Add(Output->PropertyName, FHole{}) : *FoundIOutput;
+						OuputHole.Nodes.Add(FHoleNode{ OutComputeNode, uint32(OutPinIndex) });
 					}
 				}
 			} // End Every Out Pin

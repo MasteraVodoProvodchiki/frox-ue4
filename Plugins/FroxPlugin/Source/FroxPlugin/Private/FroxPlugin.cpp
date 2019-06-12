@@ -8,6 +8,44 @@
 
 #define LOCTEXT_NAMESPACE "FFroxPluginModule"
 
+DEFINE_LOG_CATEGORY(LogFrox);
+
+class FroxLogListerner : public frox::ILogListerner
+{
+	FroxLogListerner()
+	{}
+
+public:
+	static FroxLogListerner* Instance()
+	{
+		static FroxLogListerner LogListerner;
+		return &LogListerner;
+	}
+
+	// ILogListerner override
+	virtual void OnFroxLog(frox::ELogType Type, const char* Message, const char* Space = nullptr) override
+	{
+		FString FullMessage = Space != nullptr ?
+			FString::Printf(TEXT("%s - %s"), Space, Message) :
+			FString::Printf(TEXT("%s"), Message);
+
+		switch (Type)
+		{
+		case frox::Info:
+			// UE_LOG(LogFrox, Error, "%s", *FullMessage);
+			break;
+		case frox::Warning:
+			UE_LOG(LogFrox, Error, TEXT("%s"), *FullMessage);
+			break;
+		case frox::Error:
+			UE_LOG(LogFrox, Error, TEXT("%s"), *FullMessage);
+			break;
+		default:
+			break;
+		}
+	}
+};
+
 void FFroxPluginModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
@@ -28,6 +66,8 @@ void FFroxPluginModule::StartupModule()
 	if (FroxLibraryHandle)
 	{
 		// Call the test function in the third party library that opens a message box
+		frox::FroxDesc FroxDesc;
+		FroxDesc.LogListerner = FroxLogListerner::Instance();
 		FroxLib = frox::FroxInit();
 	}
 	else

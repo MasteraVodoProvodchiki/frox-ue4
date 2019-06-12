@@ -6,11 +6,23 @@
 #include "FroxComputeFlowComponent.generated.h"
 
 class UFroxComputeFlowAsset;
+class FroxComputeFrame;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FValueChanged, FName, Name);
 
 UCLASS(ClassGroup = (Frox), meta = (BlueprintSpawnableComponent))
 class FROXPLUGIN_API UFroxComputeFlowComponent : public UActorComponent
 {
 	GENERATED_UCLASS_BODY()
+	struct FHoleNode
+	{
+		frox::ComputeNode* Node;
+		uint32 PinId;
+	};
+	struct FHole
+	{
+		TArray<FHoleNode> Nodes;
+	};
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Frox)
@@ -44,6 +56,9 @@ public:
 	bool GetValueAsBool(const FName& KeyName = NAME_None) const;
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	UFroxComputeFrame* GetValueAsFrame(const FName& KeyName = NAME_None) const;
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
 	void SetValueAsInt(const FName& KeyName = NAME_None, int32 IntValue = 0);
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
@@ -51,6 +66,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
 	void SetValueAsBool(const FName& KeyName = NAME_None, bool BoolValue = true);
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	void SetValueAsFrame(const FName& KeyName, UFroxComputeFrame* ComputeFrame);
+
+	UPROPERTY(BlueprintAssignable, Category = "Frox|Components|Data")
+	FValueChanged OnValueChanged;
 
 private:
 	/** setup component for using given computeflow asset */
@@ -66,4 +87,10 @@ private:
 	TMap<FName, int32> IntValues;
 	TMap<FName, float> FloatValues;
 	TMap<FName, bool> BoolValues;
+
+	UPROPERTY()
+	TMap<FName, UFroxComputeFrame*> FrameValues;
+
+	TMap<FName, FHole> InputHoles;
+	TMap<FName, FHole> OuputHoles;
 };

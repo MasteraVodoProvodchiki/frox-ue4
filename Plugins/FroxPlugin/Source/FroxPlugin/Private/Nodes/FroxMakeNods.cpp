@@ -1,45 +1,57 @@
 #include "Nodes/FroxMakeNods.h"
 #include "OperationLogic.h"
 #include "Utils.h"
+#include "FroxPlugin.h"
 
 #include "EdGraph/EdGraphPin.h"
 #include "Frox/Frox/ComputeFlow.h"
 #include "Frox/Frox/MakeFrameComputeNode.h"
 
+#define LOCTEXT_NAMESPACE "UMakeFrameNode"
+
 frox::ComputeNode* UMakeFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) const
 {
 	check(Flow != nullptr);
-	auto makeNode = Flow->CreateNode<frox::MakeFrameComputeNode>();
-	makeNode->SetWidth(Width);
-	makeNode->SetHeight(Width);
 
-	frox::EComputeFrameType type = KeyTypeToFroxType(Type);
+	auto MakeNode = Flow->CreateNode<frox::MakeFrameComputeNode>();
+	check(MakeNode != nullptr);
+
+	MakeNode->SetWidth(Width);
+	MakeNode->SetHeight(Width);
+
+	if (Type == EFroxTypeEnum::FTE_None)
+	{
+		UE_LOG(LogFrox, Error, TEXT("Type isn't set!"));
+		return MakeNode;
+	}
+
+	frox::EComputeFrameType type = UFroxComputeFrame::UETypeToFroxType(Type);
 	check(type != frox::EComputeFrameType::ECFT_None);
 
-	makeNode->SetType(type);
+	MakeNode->SetType(type);
 
 	switch (type)
 	{
 	case frox::ECFT_Bool:
-		makeNode->SetValue(Value.ToBool());
+		MakeNode->SetValue(Value.ToBool());
 		break;
 	case frox::ECFT_UInt8:
-		makeNode->SetValue(FCString::Atoi(*Value));
+		MakeNode->SetValue(FCString::Atoi(*Value));
 		break;
 	case frox::ECFT_UInt16:
-		makeNode->SetValue(FCString::Atoi(*Value));
+		MakeNode->SetValue(FCString::Atoi(*Value));
 		break;
 	case frox::ECFT_UInt32:
-		makeNode->SetValue(FCString::Atoi(*Value));
+		MakeNode->SetValue(FCString::Atoi(*Value));
 		break;
 	case frox::ECFT_Float:
-		makeNode->SetValue(FCString::Atof(*Value));
+		MakeNode->SetValue(FCString::Atof(*Value));
 		break;
 	default:
 		break;
 	}
 
-	return makeNode;
+	return MakeNode;
 }
 
 #if WITH_EDITORONLY_DATA
@@ -73,3 +85,5 @@ FText UMakeZeroFrameNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 	return FText::FromString(this->GetTypeName());
 }
 #endif //WITH_EDITORONLY_DATA
+
+#undef LOCTEXT_NAMESPACE

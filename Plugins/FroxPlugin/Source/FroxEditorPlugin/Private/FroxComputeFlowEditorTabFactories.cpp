@@ -59,7 +59,7 @@ TSharedRef<SWidget> FFroxComputePropsEditorSummoner::CreateTabBody(const FWorkfl
 
 FText FFroxComputePropsEditorSummoner::GetTabToolTipText(const FWorkflowTabSpawnInfo& Info) const
 {
-	return LOCTEXT("BlackboardEditorTabTooltip", "The Blackboard editor is for editing and debugging blackboard key/value pairs.");
+	return LOCTEXT("FroxComputePropsDetailsTabTooltip", "The Blackboard editor is for editing and debugging blackboard key/value pairs.");
 }
 
 /////////////////////////////////////////////////////

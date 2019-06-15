@@ -14,6 +14,24 @@ class UOpartionNode;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FValueChanged, FName, Name);
 
+UENUM(BlueprintType)		//"BlueprintType" is essential to include
+enum class EFroxComputeFlowPerformResult : uint8
+{
+	None 		UMETA(DisplayName = "None"),
+	InProcess	UMETA(DisplayName = "InProcess"),
+	Success		UMETA(DisplayName = "Success"),
+	Error 		UMETA(DisplayName = "Error")
+};
+
+USTRUCT(BlueprintType)
+struct FFroxComputeFlowPerformResult
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, Category = Frox)
+	EFroxComputeFlowPerformResult Result;
+};
+
 UCLASS(ClassGroup = (Frox), meta = (BlueprintSpawnableComponent))
 class FROXPLUGIN_API UFroxComputeFlowComponent : public UActorComponent
 {
@@ -23,6 +41,7 @@ class FROXPLUGIN_API UFroxComputeFlowComponent : public UActorComponent
 		frox::ComputeNode* Node;
 		uint32 PinId;
 	};
+
 	struct FHole
 	{
 		TArray<FHoleNode> Nodes;
@@ -43,6 +62,9 @@ public:
 	// End UActorComponent
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "Frox|Components", Meta = (Latent, WorldContext = "WorldContextObject", LatentInfo = "LatentInfo"))
+	void Perform(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FFroxComputeFlowPerformResult& PerformResult);
+
 	UFUNCTION(BlueprintCallable, Category="Frox|Components")
 	void Start();
 
@@ -79,6 +101,11 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Frox|Components|Data")
 	FValueChanged OnValueChanged;
 
+	void OnPerformed();
+
+	/** The final call related to screenshots, after they've been taken, and after they've been compared (or not if automation isn't running). */
+	FSimpleMulticastDelegate OnPerformCompleted;
+
 private:
 	/** setup component for using given computeflow asset */
 	bool InitializeFlow(UFroxComputeFlowAsset& NewAsset);
@@ -86,12 +113,15 @@ private:
 	void InitializeFlowInputs(const TArray<UInputPropertyNode*>& Inputs, const TArray<NodePair>& Pairs);
 	void InitializeFlowOutputs(const TArray<UOutputPropertyNode*>& Outputs, const TArray<NodePair>& Pairs);
 	void ReleaseFlow();
-	void TickFlow();
+
+	void FetchFlow();
+	void PerformFlow();
 
 private:
 	frox::ComputeFlow* ComputeFlow;
+	TSharedPtr<class FComputeFlowListerner> ComputeFlowListerner;
 
-	bool _bRunning = true;
+	bool _bRunning = false;
 
 	// TODO. Add ValuesMem and Values Offset instead of maps
 	TMap<FName, int32> IntValues;

@@ -8,9 +8,98 @@
 #include "Frox/Frox/ComputeFrame.h"
 #include "Frox/Frox/ComputeNode.h"
 
+#include "Engine/Engine.h"
+#include "Engine/World.h"
+#include "Async.h"
 #include "EdGraph/EdGraph.h"
+#include "LatentActions.h"
 
 #define LOCTEXT_NAMESPACE "FFroxPluginModule"
+
+// FPendingLatentAction
+class FFlowPerfromDelayAction : public FPendingLatentAction
+{
+public:
+	UFroxComputeFlowComponent* CallbackComponent;
+	FName ExecutionFunction;
+	int32 OutputLink;
+	FWeakObjectPtr CallbackTarget;
+	FFroxComputeFlowPerformResult* DialogResults = nullptr;
+
+	FFlowPerfromDelayAction(
+		UFroxComputeFlowComponent* FlowComponent,
+		const FLatentActionInfo& LatentInfo,
+		FFroxComputeFlowPerformResult& PlayerSelection
+	)
+	{
+		check(FlowComponent != nullptr);
+		CallbackComponent = FlowComponent;
+		CallbackComponent->OnPerformCompleted.AddRaw(this, &FFlowPerfromDelayAction::OnPerformCompleted);
+
+		ExecutionFunction = LatentInfo.ExecutionFunction;
+		OutputLink = LatentInfo.Linkage;
+		CallbackTarget = LatentInfo.CallbackTarget;
+		DialogResults = &PlayerSelection;
+	
+		DialogResults->Result = EFroxComputeFlowPerformResult::InProcess;
+	}
+
+	virtual ~FFlowPerfromDelayAction()
+	{
+		check(CallbackComponent != nullptr);
+		CallbackComponent->OnPerformCompleted.RemoveAll(this);
+	}
+
+	/** BEGIN FPendingLatentAction overrides */
+	virtual void UpdateOperation(FLatentResponse& Response) override
+	{
+		check(DialogResults);
+		Response.FinishAndTriggerIf(DialogResults->Result != EFroxComputeFlowPerformResult::InProcess, ExecutionFunction, OutputLink, CallbackTarget);
+	}
+	/** BEGIN FPendingLatentAction overrides */
+
+	void ReceivePerformResult(EFroxComputeFlowPerformResult Result)
+	{
+		check(DialogResults);
+		DialogResults->Result = Result;
+	}
+
+	void OnPerformCompleted()
+	{
+		ReceivePerformResult(EFroxComputeFlowPerformResult::Success);
+	}
+};
+
+DECLARE_DELEGATE(FComputeFlowListernerPerformedCallBack);
+
+// IComputeFlowListerner
+class FComputeFlowListerner 
+	: public TSharedFromThis<FComputeFlowListerner>
+	, public frox::IComputeFlowListerner
+{
+public:
+	FComputeFlowListernerPerformedCallBack OnPerformCompleted;
+
+	FComputeFlowListerner(FComputeFlowListernerPerformedCallBack InOnPerformCompleted)
+		: OnPerformCompleted(InOnPerformCompleted)
+	{}
+
+	~FComputeFlowListerner()
+	{}
+
+	/** BEGIN IComputeFlowListerner overrides */
+	virtual void OnPerformed() override
+	{
+		// Push Main Thread
+		auto Self = AsShared();
+		AsyncTask(ENamedThreads::GameThread, [Self]()
+		{
+			Self->OnPerformCompleted.ExecuteIfBound();
+		});
+	}
+	/** BEGIN IComputeFlowListerner overrides */
+};
+
 
 UFroxComputeFlowComponent::UFroxComputeFlowComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -61,7 +150,26 @@ void UFroxComputeFlowComponent::TickComponent(float DeltaTime, enum ELevelTick T
 
 	if (_bRunning && ComputeFlow)
 	{
-		TickFlow();
+		FetchFlow();
+		PerformFlow();
+	}
+}
+
+void UFroxComputeFlowComponent::Perform(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FFroxComputeFlowPerformResult& PerformResult)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		if (LatentActionManager.FindExistingAction<FFlowPerfromDelayAction>(LatentInfo.CallbackTarget, LatentInfo.UUID) == nullptr)
+		{
+			LatentActionManager.AddNewAction(
+				LatentInfo.CallbackTarget,
+				LatentInfo.UUID,
+				new FFlowPerfromDelayAction(this, LatentInfo, PerformResult)
+			);
+
+			PerformFlow();
+		}
 	}
 }
 
@@ -134,7 +242,11 @@ bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 	frox::Frox* FroxLib = FFroxPluginModule::Get().GetFrox();
 	check(FroxLib != nullptr);
 
-	ComputeFlow = FroxLib->CreateComputeFlow();
+	FComputeFlowListernerPerformedCallBack CallBack;
+	CallBack.BindUObject(this, &UFroxComputeFlowComponent::OnPerformed);
+	ComputeFlowListerner = TSharedPtr<FComputeFlowListerner>(new FComputeFlowListerner(CallBack));
+
+	ComputeFlow = FroxLib->CreateComputeFlow(ComputeFlowListerner.Get());
 	check(ComputeFlow != nullptr);
 
 	UEdGraph* UpdateGraph = NewAsset.UpdateGraph;
@@ -350,10 +462,11 @@ void UFroxComputeFlowComponent::ReleaseFlow()
 		check(FroxLib != nullptr);
 
 		FroxLib->DestroyComputeFlow(ComputeFlow);
+		ComputeFlowListerner = nullptr;
 	}
 }
 
-void UFroxComputeFlowComponent::TickFlow()
+void UFroxComputeFlowComponent::FetchFlow()
 {
 	check(ComputeFlow != nullptr)
 
@@ -388,6 +501,11 @@ void UFroxComputeFlowComponent::TickFlow()
 			}
 		} // End input
 	} // End every key
+}
+
+void UFroxComputeFlowComponent::PerformFlow()
+{
+	check(ComputeFlow != nullptr)
 
 	// Update Inputs
 	for (const FComputeFlowEntry& entry : ComputeFlowAsset->Keys)
@@ -410,6 +528,12 @@ void UFroxComputeFlowComponent::TickFlow()
 
 	// Push Calculation
 	ComputeFlow->Perform();
+}
+
+void UFroxComputeFlowComponent::OnPerformed()
+{
+	FetchFlow();
+	OnPerformCompleted.Broadcast();
 }
 
 #undef LOCTEXT_NAMESPACE

@@ -8,6 +8,10 @@
 class UFroxComputeFlowAsset;
 class FroxComputeFrame;
 
+class UInputPropertyNode;
+class UOutputPropertyNode;
+class UOpartionNode;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FValueChanged, FName, Name);
 
 UCLASS(ClassGroup = (Frox), meta = (BlueprintSpawnableComponent))
@@ -23,6 +27,8 @@ class FROXPLUGIN_API UFroxComputeFlowComponent : public UActorComponent
 	{
 		TArray<FHoleNode> Nodes;
 	};
+
+	using NodePair = TKeyValuePair<UOpartionNode*, frox::ComputeNode*>;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Frox)
@@ -76,7 +82,11 @@ public:
 private:
 	/** setup component for using given computeflow asset */
 	bool InitializeFlow(UFroxComputeFlowAsset& NewAsset);
+	void InitializeFlowOperations(const TArray<UOpartionNode*>& Operations, const TArray<NodePair>& Pairs);
+	void InitializeFlowInputs(const TArray<UInputPropertyNode*>& Inputs, const TArray<NodePair>& Pairs);
+	void InitializeFlowOutputs(const TArray<UOutputPropertyNode*>& Outputs, const TArray<NodePair>& Pairs);
 	void ReleaseFlow();
+	void TickFlow();
 
 private:
 	frox::ComputeFlow* ComputeFlow;

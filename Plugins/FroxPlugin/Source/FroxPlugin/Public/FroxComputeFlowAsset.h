@@ -13,7 +13,7 @@ struct FComputeFlowEntry
 	FName EntryName;
 
 #if WITH_EDITORONLY_DATA
-	UPROPERTY(EditAnywhere, Category = Frox, Meta = (ToolTip = "Optional description to explain what this blackboard entry does."))
+	UPROPERTY(EditAnywhere, Category = Frox, Meta = (ToolTip = "Optional description."))
 	FString EntryDescription;
 #endif // WITH_EDITORONLY_DATA
 

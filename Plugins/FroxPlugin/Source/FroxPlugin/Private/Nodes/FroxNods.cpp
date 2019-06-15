@@ -56,6 +56,11 @@ FText UInputPropertyNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 	return FText::FromString("InputProperty");
 }
 
+FLinearColor UInputPropertyNode::GetNodeTitleColor() const
+{
+	return FLinearColor(11.f / 255.f, 102.f / 255.f, 35.f / 255.f);
+}
+
 void UOutputPropertyNode::AllocateDefaultPins()
 {
 	UEdGraphPin* In = CreatePin(EGPD_Input, TEXT(""), TEXT("In"));
@@ -64,6 +69,11 @@ void UOutputPropertyNode::AllocateDefaultPins()
 FText UOutputPropertyNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
 	return FText::FromString("OutputProperty");
+}
+
+FLinearColor UOutputPropertyNode::GetNodeTitleColor() const
+{
+	return FLinearColor(11.f / 255.f, 102.f / 255.f, 35.f / 255.f);
 }
 #endif //WITH_EDITORONLY_DATA
 

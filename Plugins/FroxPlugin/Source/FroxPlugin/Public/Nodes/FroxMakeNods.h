@@ -16,6 +16,7 @@ public:
 #if WITH_EDITORONLY_DATA
 	virtual void AllocateDefaultPins() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
+	virtual FLinearColor GetNodeTitleColor() const override;
 #endif //WITH_EDITORONLY_DATA
 
 public:

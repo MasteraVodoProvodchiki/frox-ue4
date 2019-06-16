@@ -70,6 +70,11 @@ FText UMakeFrameNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
 	return FText::FromString(this->GetTypeName());
 }
+
+FLinearColor UMakeFrameNode::GetNodeTitleColor() const
+{
+	return FLinearColor(1.f, 0.5f, 0.f);
+}
 #endif //WITH_EDITORONLY_DATA
 
 frox::ComputeNode* UMakeZeroFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) const
@@ -85,10 +90,6 @@ FText UMakeZeroFrameNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 	return FText::FromString(this->GetTypeName());
 }
 
-FLinearColor UMakeZeroFrameNode::GetNodeTitleColor() const
-{
-	return FLinearColor(1.f, 0.5f, 0.f);
-}
 #endif //WITH_EDITORONLY_DATA
 
 #undef LOCTEXT_NAMESPACE

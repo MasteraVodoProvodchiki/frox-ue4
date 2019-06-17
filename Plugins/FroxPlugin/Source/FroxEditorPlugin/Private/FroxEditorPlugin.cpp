@@ -4,6 +4,7 @@
 
 #include "FroxComputeFlowAssetTypeActions.h"
 #include "ToolBarCommands.h"
+#include "FroxGraphNodeFactory.h"
 
 #include "Core.h"
 #include "PropertyEditorModule.h"
@@ -12,6 +13,7 @@
 #include "UnrealEd/Public/ComponentVisualizer.h"
 #include "UnrealEd/Public/UnrealEdGlobals.h"
 #include "Editor/UnrealEd/Classes/Editor/UnrealEdEngine.h"
+#include "EdGraphUtilities.h"
 
 #define LOCTEXT_NAMESPACE "FFroxEditorPluginModule"
 
@@ -26,6 +28,10 @@ void FFroxEditorPluginModule::StartupModule()
 
 	//Registrate ToolBarCommand for costom graph
 	FToolBarCommandsCommands::Register();
+
+	// Register custom graph nodes
+	TSharedPtr<FFroxGraphNodeFactory> GraphPanelNodeFactory = MakeShareable(new FFroxGraphNodeFactory);
+	FEdGraphUtilities::RegisterVisualNodeFactory(GraphPanelNodeFactory);
 
 	if (GUnrealEd)
 	{

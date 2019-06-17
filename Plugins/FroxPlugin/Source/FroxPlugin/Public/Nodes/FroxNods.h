@@ -42,12 +42,28 @@ class FROXPLUGIN_API UFroxNodeBase : public UEdGraphNode
 	GENERATED_BODY()
 
 public:
+	DECLARE_MULTICAST_DELEGATE_OneParam(FOnNodeVisualsChanged, UFroxNodeBase*);
+
 #if WITH_EDITORONLY_DATA
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;
 	bool CycleInspection(uint32 UniqueID);
 #endif //WITH_EDITORONLY_DATA
 
+	/** Identify that this node has undergone changes that will require synchronization with a compiled script.*/
+	void MarkNodeRequiresSynchronization(FString Reason, bool bRaiseGraphNeedsRecompile);
+
+	/** Get the change id for this node. This change id is updated whenever the node is manipulated in a way that should force a recompile.*/
+	const FGuid& GetChangeId() const { return ChangeId; }
+
+	FOnNodeVisualsChanged& OnVisualsChanged();
+
 	TSharedPtr<FNodePropertyObserver> PropertyObserver;	
+
+protected:
+	UPROPERTY()
+	FGuid ChangeId;
+
+	FOnNodeVisualsChanged VisualsChangedDelegate;
 };
 
 UCLASS()

@@ -45,6 +45,19 @@ bool UFroxNodeBase::CycleInspection(uint32 UniqueID)
 }
 #endif //WITH_EDITORONLY_DATA
 
+void UFroxNodeBase::MarkNodeRequiresSynchronization(FString Reason, bool bRaiseGraphNeedsRecompile)
+{
+	Modify();
+	ChangeId = FGuid::NewGuid();
+
+	VisualsChangedDelegate.Broadcast(this);
+}
+
+UFroxNodeBase::FOnNodeVisualsChanged& UFroxNodeBase::OnVisualsChanged()
+{
+	return VisualsChangedDelegate;
+}
+
 #if WITH_EDITORONLY_DATA
 void UInputPropertyNode::AllocateDefaultPins()
 {

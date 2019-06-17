@@ -4,6 +4,7 @@
 #include "Nodes/FroxNods.h"
 #include "Nodes/FroxArithmeticNods.h"
 #include "Nodes/FroxMakeNods.h"
+#include "Nodes/FroxSubFlowNods.h"
 
 #include "EdGraph/EdGraph.h"
 #include "EdGraph/EdGraphPin.h"
@@ -134,6 +135,8 @@ void UEdGraphSchema_FroxEditor::GetGraphContextActions(FGraphContextMenuBuilder&
 	FroxSchemaUtils::AddAction<UMulOpartionNode>(TEXT("Add Mul Operation Node"), TEXT("Add Mul operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UDivOpartionNode>(TEXT("Add Div Operation Node"), TEXT("Add Div operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UAvgOpartionNode>(TEXT("Add Avg Operation Node"), TEXT("Add Avg operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+
+	FroxSchemaUtils::AddAction<USubFlowNode>(TEXT("Add SubFlow Operation Node"), TEXT("Add SubFlow operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 
 	for (TSharedPtr<FEdGraphSchemaAction> Action : Actions)
 	{

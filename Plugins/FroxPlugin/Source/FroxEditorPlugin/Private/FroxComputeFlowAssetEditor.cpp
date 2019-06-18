@@ -9,6 +9,7 @@
 #include "SFroxComputePropsEditor.h"
 #include "FroxComputeFlowCommands.h"
 #include "FroxEditorPlugin.h"
+#include "FroxComputePropsDataDetails.h"
 
 #include "SDockTab.h"
 #include "GenericCommands.h"
@@ -332,12 +333,10 @@ void FFroxComputeFlowAssetEditor::HandleComputeFlowEntrySelected(const FComputeF
 	// refresh details view
 	const bool bForceRefresh = true;
 
-	/*
-	if (ensure(ComputeFlowPropsDetailsView.IsValid()))
+	if (ensure(ComputePropsDetailsView.IsValid()))
 	{
-		ComputeFlowPropsDetailsView->SetObject(GetComputeFlow(), bForceRefresh);
+		ComputePropsDetailsView->SetObject(GetComputeFlow(), bForceRefresh);
 	}
-	*/
 }
 
 void FFroxComputeFlowAssetEditor::HandleComputeFlowEntryChanged(UFroxComputeFlowAsset* InComputeFlow, FComputeFlowEntry* const InKey)
@@ -352,6 +351,16 @@ void FFroxComputeFlowAssetEditor::HandleComputeFlowEntryChanged(UFroxComputeFlow
 bool FFroxComputeFlowAssetEditor::HandleIsComputeFlowPropsModeActive() const
 {
 	return GetCurrentMode() == ComputePropsMode;
+}
+
+int32 FFroxComputeFlowAssetEditor::HandleGetSelectedBlackboardItemIndex(bool& bIsInherited)
+{
+	if (ComputeFlowPropsEditor.IsValid())
+	{
+		return ComputeFlowPropsEditor->GetSelectedEntryIndex(bIsInherited);
+	}
+
+	return INDEX_NONE;
 }
 
 TSharedRef<SDockTab> FFroxComputeFlowAssetEditor::SpawnTab_Viewport(const FSpawnTabArgs& Args)
@@ -404,44 +413,24 @@ TSharedRef<SWidget> FFroxComputeFlowAssetEditor::SpawnComputePropsEditor()
 
 TSharedRef<SWidget> FFroxComputeFlowAssetEditor::SpawnComputePropsDetails()
 {
-	/*
 	const bool bIsUpdatable = false;
-	const bool bAllowFavorites = true;
 	const bool bIsLockable = false;
 	const bool bAllowSearch = true;
-	const bool bObjectsUseNameArea = false;
 	const bool bHideSelectionTip = true;
 
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	FDetailsViewArgs DetailsViewArgs(bIsUpdatable, bIsLockable, bAllowSearch, FDetailsViewArgs::HideNameArea, bHideSelectionTip);
 	DetailsViewArgs.NotifyHook = this;
-	BlackboardDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
+	ComputePropsDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
 
-	FOnGetSelectedBlackboardItemIndex OnGetSelectedBlackboardItemIndex = FOnGetSelectedBlackboardItemIndex::CreateSP(this, &FFroxComputeFlowAssetEditor::HandleGetSelectedBlackboardItemIndex);
-	FOnGetDetailCustomizationInstance LayoutVariableDetails = FOnGetDetailCustomizationInstance::CreateStatic(&FFroxComputeFlowAssetEditor::MakeInstance, OnGetSelectedBlackboardItemIndex);
-	BlackboardDetailsView->RegisterInstancedCustomPropertyLayout(UBlackboardData::StaticClass(), LayoutVariableDetails);
+	FOnGetSelectedComputePropsItemIndex OnGetSelectedBlackboardItemIndex = FOnGetSelectedComputePropsItemIndex::CreateSP(this, &FFroxComputeFlowAssetEditor::HandleGetSelectedBlackboardItemIndex);
+	FOnGetDetailCustomizationInstance LayoutVariableDetails = FOnGetDetailCustomizationInstance::CreateStatic(&FFroxComputePropsDataDetails::MakeInstance, OnGetSelectedBlackboardItemIndex);
+	ComputePropsDetailsView->RegisterInstancedCustomPropertyLayout(UFroxComputeFlowAsset::StaticClass(), LayoutVariableDetails);
 
 	UFroxComputeFlowAsset* ComputeFlow = GetComputeFlow();
-	if (ComputeFlow)
-	{
-		ComputeFlow->UpdateDeprecatedKeys();
-	}
+	ComputePropsDetailsView->SetObject(ComputeFlow);
 
-	BlackboardDetailsView->SetObject(ComputeFlow);
-	BlackboardDetailsView->SetEnabled(TAttribute<bool>::Create(TAttribute<bool>::FGetter::CreateSP(this, &FBehaviorTreeEditor::CanEditWithDebuggerActive)));
-
-	return BlackboardDetailsView.ToSharedRef();
-	*/
-	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
-	const FDetailsViewArgs DetailsViewArgs(false, false, true, FDetailsViewArgs::HideNameArea, true, this);
-	TSharedRef<IDetailsView> PropertyEditorRef = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
-	PropertyEditor = PropertyEditorRef;
-
-	//DetailsView->SetObject(NULL);
-	//DetailsView->SetIsPropertyEditingEnabledDelegate(FIsPropertyEditingEnabled::CreateSP(this, &FFroxComputeFlowAssetEditor::IsPropertyEditable));
-	//DetailsView->OnFinishedChangingProperties().AddSP(this, &FFroxComputeFlowAssetEditor::OnFinishedChangingProperties);
-
-	return PropertyEditorRef;
+	return ComputePropsDetailsView.ToSharedRef();
 }
 
 

@@ -66,6 +66,9 @@ public:
 	/** Check whether computeflow mode is current */
 	bool HandleIsComputeFlowPropsModeActive() const;
 
+	/** Delegate handler used to retrieve current blackboard selection */
+	int32 HandleGetSelectedBlackboardItemIndex(bool& bOutIsInherited);
+
 	TSharedRef<SWidget> SpawnProperties();
 	TSharedRef<SWidget> SpawnComputePropsView();
 	TSharedRef<SWidget> SpawnComputePropsEditor();
@@ -123,6 +126,9 @@ protected:
 	TSharedPtr<class FFroxComputeFlowEditorToolbar> ToolbarBuilder;
 	TSharedPtr<FExtender> ToolbarExtender;
 	TSharedPtr<FUICommandList> MyToolBarCommands;
+
+	/** The details view we use to display the computeprops */
+	TSharedPtr<IDetailsView> ComputePropsDetailsView;
 
 	/** The computeflow props view widget */
 	TSharedPtr<class SFroxComputePropsView> ComputeFlowPropsView;

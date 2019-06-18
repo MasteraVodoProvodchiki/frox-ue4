@@ -112,10 +112,15 @@ void USubFlowNode::AllocateDefaultPins()
 		for (const FComputeFlowEntry& entry : ComputeFlow->Keys)
 		{
 			FString PinName = entry.EntryName.ToString();
-			CreatePin(EGPD_Input, TEXT(""), *PinName);
+			if (entry.Direction == EComputeFlowEntryDirection::ECFED_Input)
+			{			
+				CreatePin(EGPD_Input, TEXT(""), *PinName);
+			}
+			else if (entry.Direction == EComputeFlowEntryDirection::ECFED_Output)
+			{
+				CreatePin(EGPD_Output, TEXT(""), *PinName);
+			}
 		}
-
-		UEdGraphPin* Output = CreatePin(EGPD_Output, TEXT(""), TEXT("Out"));
 	}
 }
 

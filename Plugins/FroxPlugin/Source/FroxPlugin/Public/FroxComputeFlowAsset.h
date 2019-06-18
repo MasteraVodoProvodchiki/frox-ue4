@@ -4,6 +4,13 @@
 
 #include "FroxComputeFlowAsset.generated.h"
 
+UENUM(BlueprintType)
+enum class EComputeFlowEntryDirection : uint8
+{
+	ECFED_Input,
+	ECFED_Output,
+};
+
 USTRUCT()
 struct FComputeFlowEntry
 {
@@ -21,6 +28,8 @@ struct FComputeFlowEntry
 	UPROPERTY(EditAnywhere, Instanced, Category = Frox)
 	UComputeFlowKeyType* KeyType;
 
+	UPROPERTY(EditAnywhere, Category = Frox)
+	EComputeFlowEntryDirection Direction;
 
 	FComputeFlowEntry()
 		: KeyType(nullptr)

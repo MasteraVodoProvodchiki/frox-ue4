@@ -4,8 +4,11 @@
 
 bool FComputeFlowEntry::operator==(const FComputeFlowEntry& Other) const
 {
-	return (EntryName == Other.EntryName) &&
-		((KeyType && Other.KeyType && KeyType->GetClass() == Other.KeyType->GetClass()) || (KeyType == NULL && Other.KeyType == NULL));
+	return (EntryName == Other.EntryName) && ((
+			KeyType && Other.KeyType && 
+			KeyType->GetClass() == Other.KeyType->GetClass() && 
+			Direction == Other.Direction
+		) || (KeyType == NULL && Other.KeyType == NULL));
 }
 
 FName UFroxComputeFlowAsset::GetComputeFlowName() const

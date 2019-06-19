@@ -68,7 +68,7 @@ void UMakeFrameNode::AllocateDefaultPins()
 
 FText UMakeFrameNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
-	return FText::FromString(this->GetTypeName());
+	return FText::FromString(this->GetTitle());
 }
 
 FLinearColor UMakeFrameNode::GetNodeTitleColor() const
@@ -87,7 +87,7 @@ frox::ComputeNode* UMakeZeroFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) c
 #if WITH_EDITORONLY_DATA
 FText UMakeZeroFrameNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
-	return FText::FromString(this->GetTypeName());
+	return FText::FromString(this->GetTitle());
 }
 
 #endif //WITH_EDITORONLY_DATA

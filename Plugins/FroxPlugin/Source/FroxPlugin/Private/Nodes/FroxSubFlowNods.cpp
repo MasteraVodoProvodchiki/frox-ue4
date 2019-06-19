@@ -126,7 +126,7 @@ void USubFlowNode::AllocateDefaultPins()
 
 FText USubFlowNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
-	return FText::FromString(this->GetTypeName());
+	return FText::FromString(this->GetTitle());
 }
 
 FLinearColor USubFlowNode::GetNodeTitleColor() const

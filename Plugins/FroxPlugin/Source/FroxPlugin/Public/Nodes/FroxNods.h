@@ -105,6 +105,7 @@ class FROXPLUGIN_API UOpartionNode : public UFroxNodeBase
 
 public:
 	virtual const char* GetTypeName() const { return "none"; }
+	virtual const char* GetTitle() const { return "none"; }
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const;
 
 #if WITH_EDITORONLY_DATA

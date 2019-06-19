@@ -12,6 +12,8 @@ class FROXPLUGIN_API USubFlowNode : public UOpartionNode
 
 public:
 	virtual const char* GetTypeName() const override { return "subflow"; }
+	virtual const char* GetTitle() const override { return "SubFlow"; }
+
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 

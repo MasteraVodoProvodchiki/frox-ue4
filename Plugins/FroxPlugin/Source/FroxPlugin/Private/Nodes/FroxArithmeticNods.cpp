@@ -4,7 +4,7 @@
 #if WITH_EDITORONLY_DATA
 FText UOpartionBasicNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
-	return FText::FromString(this->GetTypeName());
+	return FText::FromString(this->GetTitle());
 }
 
 void UOpartionBasicNode::PostEditChangeProperty(struct FPropertyChangedEvent& e)

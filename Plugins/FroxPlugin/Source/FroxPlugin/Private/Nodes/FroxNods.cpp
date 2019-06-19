@@ -104,6 +104,6 @@ void UOpartionNode::PostEditChangeProperty(struct FPropertyChangedEvent& e)
 
 FText UOpartionNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
-	return FText::FromString(this->GetTypeName());
+	return FText::FromString(this->GetTitle());
 }
 #endif //WITH_EDITORONLY_DATA

@@ -11,6 +11,8 @@ class FROXPLUGIN_API UMakeFrameNode : public UOpartionNode
 
 public:
 	virtual const char* GetTypeName() const override { return "makeframe"; }
+	virtual const char* GetTitle() const override { return "MakeFrame"; }
+
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
 
 #if WITH_EDITORONLY_DATA
@@ -44,6 +46,8 @@ class FROXPLUGIN_API UMakeZeroFrameNode : public UMakeFrameNode
 
 public:
 	virtual const char* GetTypeName() const override { return "makezeroframe"; }
+	virtual const char* GetTitle() const override { return "MakeZeroFrame"; }
+
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
 
 #if WITH_EDITORONLY_DATA

@@ -53,6 +53,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Frox)
 	UFroxComputeFlowAsset* ComputeFlowAsset;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Frox)
+	bool bAutoStart = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Frox)
+	float PerformFrequency = 1000.f;
+
 	/** BEGIN UActorComponent overrides */
 	virtual void InitializeComponent() override;
 	virtual void UninitializeComponent() override;
@@ -133,4 +139,6 @@ private:
 
 	TMap<FName, FHole> InputHoles;
 	TMap<FName, FHole> OuputHoles;
+
+	float CurrentTime = 0.f;
 };

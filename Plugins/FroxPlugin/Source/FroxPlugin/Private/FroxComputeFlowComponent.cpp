@@ -128,9 +128,9 @@ void UFroxComputeFlowComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (ComputeFlow)
+	if (ComputeFlow && bAutoStart)
 	{
-		// ComputeFlow->Start();
+		_bRunning = true;
 	}
 }
 
@@ -150,8 +150,12 @@ void UFroxComputeFlowComponent::TickComponent(float DeltaTime, enum ELevelTick T
 
 	if (_bRunning && ComputeFlow)
 	{
-		FetchFlow();
-		PerformFlow();
+		CurrentTime += DeltaTime;
+		if (CurrentTime >= (1.f / PerformFrequency) && ComputeFlow->GetNumActiveTasks() == 0)
+		{
+			PerformFlow();
+			CurrentTime = 0.f;
+		}
 	}
 }
 

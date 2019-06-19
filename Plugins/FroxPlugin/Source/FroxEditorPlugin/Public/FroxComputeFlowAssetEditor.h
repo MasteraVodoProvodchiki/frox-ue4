@@ -82,7 +82,6 @@ public:
 	static FText GetLocalizedMode(FName InMode);
 
 protected:
-	void OnGraphChanged(const FEdGraphEditAction& Action);
 	void SelectAllNodes();
 	bool CanSelectAllNodes() const;
 	void DeleteSelectedNodes();
@@ -106,14 +105,8 @@ protected:
 	/** Called when a node is double clicked */
 	void OnNodeDoubleClicked(class UEdGraphNode* Node);
 
-	// void ShowMessage();
-
 
 	TSharedRef<class SGraphEditor> CreateGraphEditorWidget(UEdGraph* InGraph);
-	TSharedRef<SDockTab> SpawnTab_Viewport(const FSpawnTabArgs& Args);
-
-	FDelegateHandle OnGraphChangedDelegateHandle;
-
 
 	TSharedPtr<SGraphEditor> GraphEditor;
 	TSharedPtr<FUICommandList> GraphEditorCommands;
@@ -124,8 +117,6 @@ protected:
 	TWeakPtr<FDocumentTabFactory> GraphEditorTabFactoryPtr;
 
 	TSharedPtr<class FFroxComputeFlowEditorToolbar> ToolbarBuilder;
-	TSharedPtr<FExtender> ToolbarExtender;
-	TSharedPtr<FUICommandList> MyToolBarCommands;
 
 	/** The details view we use to display the computeprops */
 	TSharedPtr<IDetailsView> ComputePropsDetailsView;
@@ -135,9 +126,6 @@ protected:
 
 	/** The computeflow props editor widget */
 	TSharedPtr<class SFroxComputePropsEditor> ComputeFlowPropsEditor;
-
-	bool bGraphStateChanged;
-	// void AddToolbarExtension(FToolBarBuilder &builder);
 
 public:
 	/** Modes in mode switcher */

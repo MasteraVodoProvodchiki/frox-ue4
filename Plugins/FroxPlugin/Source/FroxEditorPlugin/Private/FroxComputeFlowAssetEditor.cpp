@@ -29,14 +29,7 @@ const FName FFroxComputeFlowAssetEditor::ComputeFlowMode(TEXT("ComputeFlow"));
 const FName FFroxComputeFlowAssetEditor::ComputePropsMode(TEXT("ComputeProps"));
 
 FFroxComputeFlowAssetEditor::~FFroxComputeFlowAssetEditor()
-{
-	/*
-	if (GraphEditor->GetCurrentGraph())
-	{
-		GraphEditor->GetCurrentGraph()->RemoveOnGraphChangedHandler(OnGraphChangedDelegateHandle);
-	}
-	*/
-}
+{}
 
 FName FFroxComputeFlowAssetEditor::GetToolkitFName() const
 {
@@ -124,49 +117,10 @@ void FFroxComputeFlowAssetEditor::RegisterTabSpawners(const TSharedRef<class FTa
 	FWorkflowCentricApplication::RegisterTabSpawners(InTabManager);
 }
 
-/*
-void FFroxComputeFlowAssetEditor::RegisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
-{
-	WorkspaceMenuCategory = TabManager->AddLocalWorkspaceMenuCategory(FText::FromString("Custom Editor"));
-	auto WorkspaceMenuCategoryRef = WorkspaceMenuCategory.ToSharedRef();
-
-	FAssetEditorToolkit::RegisterTabSpawners(TabManager);
-
-	TabManager->RegisterTabSpawner(FFroxEditorTabs::ViewportID, FOnSpawnTab::CreateSP(this, &FFroxComputeFlowAssetEditor::SpawnTab_Viewport))
-		.SetDisplayName(FText::FromString("Viewport"))
-		.SetGroup(WorkspaceMenuCategoryRef)
-		.SetIcon(FSlateIcon(FEditorStyle::GetStyleSetName(), "LevelEditor.Tabs.Viewports"));
-
-	TabManager->RegisterTabSpawner(FFroxEditorTabs::DetailsID, FOnSpawnTab::CreateSP(this, &FFroxComputeFlowAssetEditor::SpawnTab_Details))
-		.SetDisplayName(FText::FromString("Details"))
-		.SetGroup(WorkspaceMenuCategoryRef)
-		.SetIcon(FSlateIcon(FEditorStyle::GetStyleSetName(), "LevelEditor.Tabs.Details"));
-}
-
-void FFroxComputeFlowAssetEditor::UnregisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
-{
-	FAssetEditorToolkit::UnregisterTabSpawners(TabManager);
-
-	TabManager->UnregisterTabSpawner(FFroxEditorTabs::ViewportID);
-	TabManager->UnregisterTabSpawner(FFroxEditorTabs::DetailsID);
-
-}
-*/
-
 void FFroxComputeFlowAssetEditor::InitCustAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr< class IToolkitHost >& InitToolkitHost, UFroxComputeFlowAsset* PropData)
 {
 	FAssetEditorManager::Get().CloseOtherEditors(PropData, this);
 	PropBeingEdited = PropData;
-
-	/*
-	if (!PropBeingEdited->UpdateGraph)
-	{
-		UFroxComputeFlowGraph* FlowGraph = NewObject<UFroxComputeFlowGraph>(PropBeingEdited, UEdGraph::StaticClass(), NAME_None, RF_Transactional);
-		PropBeingEdited->UpdateGraph = FlowGraph;
-	}
-
-	GraphEditor = CreateGraphEditorWidget(PropBeingEdited->UpdateGraph);
-	*/
 
 	TSharedPtr<FFroxComputeFlowAssetEditor> ThisPtr(SharedThis(this));
 	if (!DocumentManager.IsValid())
@@ -197,45 +151,7 @@ void FFroxComputeFlowAssetEditor::InitCustAssetEditor(const EToolkitMode::Type M
 
 	// Initialize the asset editor and spawn nothing (dummy layout)
 	const TSharedRef<FTabManager::FLayout> DummyLayout = FTabManager::NewLayout("NullLayout")->AddArea(FTabManager::NewPrimaryArea());
-	/*
-	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("FroxEditor_Layout")
-		->AddArea
-		(
-			FTabManager::NewPrimaryArea()
-			->SetOrientation(Orient_Vertical)
-			->Split
-			(
-				FTabManager::NewStack()
-				->SetSizeCoefficient(0.1f)
-				->SetHideTabWell(true)
-				->AddTab(GetToolbarTabId(), ETabState::OpenedTab)
-			)
-			->Split
-			(
-				FTabManager::NewSplitter()
-				->SetOrientation(Orient_Horizontal)
-				->SetSizeCoefficient(0.2f)
-				->Split
-				(
-
-					FTabManager::NewStack()
-					->SetSizeCoefficient(0.8f)
-					->SetHideTabWell(true)
-					->AddTab(FFroxEditorTabs::ViewportID, ETabState::OpenedTab)
-
-				)
-				->Split
-				(
-					FTabManager::NewStack()
-					->SetSizeCoefficient(0.2f)
-					->SetHideTabWell(true)
-					->AddTab(FFroxEditorTabs::DetailsID, ETabState::OpenedTab)
-				)
-			)
-
-		);
-	*/
-
+	
 	const bool bCreateDefaultStandaloneMenu = true;
 	const bool bCreateDefaultToolbar = true;
 	InitAssetEditor(Mode, InitToolkitHost, FFroxEditorPluginModule::FroxEditorAppIdentifier, DummyLayout, bCreateDefaultStandaloneMenu, bCreateDefaultToolbar, PropData);
@@ -244,10 +160,6 @@ void FFroxComputeFlowAssetEditor::InitCustAssetEditor(const EToolkitMode::Type M
 
 	AddApplicationMode(ComputeFlowMode, MakeShareable(new FFroxComputeFlowEditorApplicationMode(SharedThis(this))));
 	AddApplicationMode(ComputePropsMode, MakeShareable(new FFroxComputePropsEditorApplicationMode(SharedThis(this))));
-
-	// Listen for graph changed event
-	// OnGraphChangedDelegateHandle = GraphEditor->GetCurrentGraph()->AddOnGraphChangedHandler(FOnGraphChanged::FDelegate::CreateRaw(this, &FFroxComputeFlowAssetEditor::OnGraphChanged));
-	bGraphStateChanged = true;
 
 	// Enteries View
 	ComputeFlowPropsView = SNew(SFroxComputePropsView, GetToolkitCommands(), GetComputeFlow());
@@ -363,18 +275,6 @@ int32 FFroxComputeFlowAssetEditor::HandleGetSelectedBlackboardItemIndex(bool& bI
 	return INDEX_NONE;
 }
 
-TSharedRef<SDockTab> FFroxComputeFlowAssetEditor::SpawnTab_Viewport(const FSpawnTabArgs& Args)
-{
-	return SNew(SDockTab)
-		.Label(FText::FromString("Compute Flow"))
-		.TabColorScale(GetTabColorScale());
-	/*
-		[
-			GraphEditor.ToSharedRef()
-		];
-	*/
-}
-
 TSharedRef<SWidget> FFroxComputeFlowAssetEditor::SpawnProperties()
 {
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
@@ -418,21 +318,24 @@ TSharedRef<SWidget> FFroxComputeFlowAssetEditor::SpawnComputePropsDetails()
 	const bool bAllowSearch = true;
 	const bool bHideSelectionTip = true;
 
+	// Create DetailsView
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	FDetailsViewArgs DetailsViewArgs(bIsUpdatable, bIsLockable, bAllowSearch, FDetailsViewArgs::HideNameArea, bHideSelectionTip);
 	DetailsViewArgs.NotifyHook = this;
 	ComputePropsDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
 
+	// Connect select index
 	FOnGetSelectedComputePropsItemIndex OnGetSelectedBlackboardItemIndex = FOnGetSelectedComputePropsItemIndex::CreateSP(this, &FFroxComputeFlowAssetEditor::HandleGetSelectedBlackboardItemIndex);
 	FOnGetDetailCustomizationInstance LayoutVariableDetails = FOnGetDetailCustomizationInstance::CreateStatic(&FFroxComputePropsDataDetails::MakeInstance, OnGetSelectedBlackboardItemIndex);
 	ComputePropsDetailsView->RegisterInstancedCustomPropertyLayout(UFroxComputeFlowAsset::StaticClass(), LayoutVariableDetails);
 
+	// Set Object
 	UFroxComputeFlowAsset* ComputeFlow = GetComputeFlow();
 	ComputePropsDetailsView->SetObject(ComputeFlow);
 
+	// Return
 	return ComputePropsDetailsView.ToSharedRef();
 }
-
 
 TSharedRef<SGraphEditor> FFroxComputeFlowAssetEditor::CreateGraphEditorWidget(UEdGraph* InGraph)
 {
@@ -760,11 +663,6 @@ void FFroxComputeFlowAssetEditor::DeleteSelectedDuplicatableNodes()
 			GraphEditor->SetNodeSelection(Node, true);
 		}
 	}
-}
-
-void FFroxComputeFlowAssetEditor::OnGraphChanged(const FEdGraphEditAction& Action)
-{
-	bGraphStateChanged = true;
 }
 
 FText FFroxComputeFlowAssetEditor::GetLocalizedMode(FName InMode)

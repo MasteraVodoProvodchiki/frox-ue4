@@ -36,18 +36,11 @@ UCLASS(ClassGroup = (Frox), meta = (BlueprintSpawnableComponent))
 class FROXPLUGIN_API UFroxComputeFlowComponent : public UActorComponent
 {
 	GENERATED_UCLASS_BODY()
-	struct FHoleNode
-	{
-		frox::ComputeNode* Node;
-		uint32 PinId;
-	};
 
 	struct FHole
 	{
-		TArray<FHoleNode> Nodes;
+		uint32 EntryId;
 	};
-
-	using NodePair = TKeyValuePair<UOpartionNode*, frox::ComputeNode*>;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Frox)
@@ -115,9 +108,6 @@ public:
 private:
 	/** setup component for using given computeflow asset */
 	bool InitializeFlow(UFroxComputeFlowAsset& NewAsset);
-	void InitializeFlowOperations(const TArray<UOpartionNode*>& Operations, const TArray<NodePair>& Pairs);
-	void InitializeFlowInputs(const TArray<UInputPropertyNode*>& Inputs, const TArray<NodePair>& Pairs);
-	void InitializeFlowOutputs(const TArray<UOutputPropertyNode*>& Outputs, const TArray<NodePair>& Pairs);
 	void ReleaseFlow();
 
 	void FetchFlow();

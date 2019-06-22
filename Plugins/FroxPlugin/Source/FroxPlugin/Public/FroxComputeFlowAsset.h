@@ -4,6 +4,17 @@
 
 #include "FroxComputeFlowAsset.generated.h"
 
+namespace frox {
+	class ComputeFlow;
+	class IComputeFlowListerner;
+	class ComputeNode;
+} // End frox
+
+class UInputPropertyNode;
+class UOutputPropertyNode;
+class UOpartionNode;
+
+
 UENUM(BlueprintType)
 enum class EComputeFlowEntryDirection : uint8
 {
@@ -43,8 +54,15 @@ class FROXPLUGIN_API UFroxComputeFlowAsset : public UObject
 {
 	GENERATED_BODY()
 
+	using NodePair = TKeyValuePair<UOpartionNode*, frox::ComputeNode*>;
+
 public:
 	virtual void BeginDestroy() override;
+
+	frox::ComputeFlow* CreateFlow(frox::IComputeFlowListerner* Listerner) const;
+	void InitializeFlowOperations(frox::ComputeFlow* ComputeFlow, const TArray<UOpartionNode*>& Operations, const TArray<NodePair>& Pairs) const;
+	void InitializeFlowInputs(frox::ComputeFlow* ComputeFlow, const TArray<UInputPropertyNode*>& Inputs, const TArray<NodePair>& Pairs) const;
+	void InitializeFlowOutputs(frox::ComputeFlow* ComputeFlow, const TArray<UOutputPropertyNode*>& Outputs, const TArray<NodePair>& Pairs) const;
 
 	FName GetComputeFlowName() const;
 

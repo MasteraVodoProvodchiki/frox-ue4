@@ -9,6 +9,49 @@
 
 #define LOCTEXT_NAMESPACE "UMakeFrameNode"
 
+/// Base
+#if WITH_EDITORONLY_DATA
+void UMakeFrameBaseNode::AllocateDefaultPins()
+{
+	/*
+		UEdGraphPin* Width = CreatePin(EGPD_Input, TEXT(""), TEXT("Width"));
+		Width->DefaultValue = "1";
+		UEdGraphPin* Height = CreatePin(EGPD_Input, TEXT(""), TEXT("Height"));
+		Height->DefaultValue = "1";
+	*/
+	UEdGraphPin* Output = CreatePin(EGPD_Output, TEXT(""), TEXT("Out"));
+}
+
+FText UMakeFrameBaseNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
+{
+	return FText::FromString(this->GetTitle());
+}
+
+FLinearColor UMakeFrameBaseNode::GetNodeTitleColor() const
+{
+	return FLinearColor(1.f, 0.5f, 0.f);
+}
+#endif //WITH_EDITORONLY_DATA
+
+bool UMakeFrameBaseNode::FillNode(frox::MakeFrameBaseComputeNode& FroxNode) const
+{
+	FroxNode.SetWidth(Width);
+	FroxNode.SetHeight(Width);
+
+	if (Type == EFroxTypeEnum::FTE_None)
+	{
+		UE_LOG(LogFrox, Error, TEXT("Type isn't set!"));
+		return false;
+	}
+
+	frox::EComputeFrameType type = UFroxComputeFrame::UETypeToFroxType(Type);
+	check(type != frox::EComputeFrameType::ECFT_None);
+
+	FroxNode.SetType(type);
+	return true;
+}
+
+/// Make By Value
 frox::ComputeNode* UMakeFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) const
 {
 	check(Flow != nullptr);
@@ -16,19 +59,13 @@ frox::ComputeNode* UMakeFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) const
 	auto MakeNode = Flow->CreateNode<frox::MakeFrameComputeNode>();
 	check(MakeNode != nullptr);
 
-	MakeNode->SetWidth(Width);
-	MakeNode->SetHeight(Width);
-
-	if (Type == EFroxTypeEnum::FTE_None)
+	if (!FillNode(*MakeNode))
 	{
-		UE_LOG(LogFrox, Error, TEXT("Type isn't set!"));
 		return MakeNode;
 	}
 
 	frox::EComputeFrameType type = UFroxComputeFrame::UETypeToFroxType(Type);
 	check(type != frox::EComputeFrameType::ECFT_None);
-
-	MakeNode->SetType(type);
 
 	switch (type)
 	{
@@ -54,29 +91,7 @@ frox::ComputeNode* UMakeFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) const
 	return MakeNode;
 }
 
-#if WITH_EDITORONLY_DATA
-void UMakeFrameNode::AllocateDefaultPins()
-{
-/*
-	UEdGraphPin* Width = CreatePin(EGPD_Input, TEXT(""), TEXT("Width"));
-	Width->DefaultValue = "1";
-	UEdGraphPin* Height = CreatePin(EGPD_Input, TEXT(""), TEXT("Height"));
-	Height->DefaultValue = "1";
-*/
-	UEdGraphPin* Output = CreatePin(EGPD_Output, TEXT(""), TEXT("Out"));
-}
-
-FText UMakeFrameNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
-{
-	return FText::FromString(this->GetTitle());
-}
-
-FLinearColor UMakeFrameNode::GetNodeTitleColor() const
-{
-	return FLinearColor(1.f, 0.5f, 0.f);
-}
-#endif //WITH_EDITORONLY_DATA
-
+/// Make By Zero
 frox::ComputeNode* UMakeZeroFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) const
 {
 	check(Flow != nullptr);
@@ -84,12 +99,21 @@ frox::ComputeNode* UMakeZeroFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) c
 	// set w/h
 }
 
-#if WITH_EDITORONLY_DATA
-FText UMakeZeroFrameNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
+/// Make By Noise
+frox::ComputeNode* UMakeNoiseFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) const
 {
-	return FText::FromString(this->GetTitle());
+	check(Flow != nullptr);
+
+	auto MakeNode = Flow->CreateNode<frox::MakeNoiseFrameComputeNode>();
+	check(MakeNode != nullptr);
+
+	if (!FillNode(*MakeNode))
+	{
+		return MakeNode;
+	}
+
+	return MakeNode;
 }
 
-#endif //WITH_EDITORONLY_DATA
 
 #undef LOCTEXT_NAMESPACE

@@ -4,6 +4,8 @@
 #include "Nodes/FroxNods.h"
 #include "Nodes/FroxArithmeticNods.h"
 #include "Nodes/FroxMakeNods.h"
+#include "Nodes/FroxConvertNods.h"
+#include "Nodes/FroxCropNods.h"
 #include "Nodes/FroxSubFlowNods.h"
 
 #include "EdGraph/EdGraph.h"
@@ -129,12 +131,16 @@ void UEdGraphSchema_FroxEditor::GetGraphContextActions(FGraphContextMenuBuilder&
 	
 	FroxSchemaUtils::AddAction<UMakeFrameNode>(TEXT("Add Make Node"), TEXT("Add make node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UMakeZeroFrameNode>(TEXT("Add Make Zero Node"), TEXT("Add make zero node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	FroxSchemaUtils::AddAction<UMakeNoiseFrameNode>(TEXT("Add Make Noise Node"), TEXT("Add make noise node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 
 	FroxSchemaUtils::AddAction<UAddOpartionNode>(TEXT("Add Add Operation Node"), TEXT("Add Add operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<USubOpartionNode>(TEXT("Add Sub Operation Node"), TEXT("Add Sub operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UMulOpartionNode>(TEXT("Add Mul Operation Node"), TEXT("Add Mul operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UDivOpartionNode>(TEXT("Add Div Operation Node"), TEXT("Add Div operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UAvgOpartionNode>(TEXT("Add Avg Operation Node"), TEXT("Add Avg operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+
+	FroxSchemaUtils::AddAction<UConvertToOpartionNode>(TEXT("Add ConverTo Operation Node"), TEXT("Add ConverTo operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	FroxSchemaUtils::AddAction<UCropOpartionNode>(TEXT("Add Crop Operation Node"), TEXT("Add Crop operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 
 	FroxSchemaUtils::AddAction<USubFlowNode>(TEXT("Add SubFlow Operation Node"), TEXT("Add SubFlow operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 

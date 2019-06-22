@@ -4,22 +4,24 @@
 #include "FroxComputeFrame.h"
 #include "FroxMakeNods.generated.h"
 
+namespace frox {
+class MakeFrameBaseComputeNode;
+} // End frox
+
 UCLASS()
-class FROXPLUGIN_API UMakeFrameNode : public UOpartionNode
+class FROXPLUGIN_API UMakeFrameBaseNode : public UOpartionNode
 {
 	GENERATED_BODY()
 
 public:
-	virtual const char* GetTypeName() const override { return "makeframe"; }
-	virtual const char* GetTitle() const override { return "MakeFrame"; }
-
-	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
-
 #if WITH_EDITORONLY_DATA
 	virtual void AllocateDefaultPins() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 	virtual FLinearColor GetNodeTitleColor() const override;
 #endif //WITH_EDITORONLY_DATA
+
+protected:
+	bool FillNode(frox::MakeFrameBaseComputeNode& FroxNode) const;
 
 public:
 	/** width of frame */
@@ -33,7 +35,20 @@ public:
 	/** type of frame  */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	EFroxTypeEnum Type;
+};
 
+UCLASS()
+class FROXPLUGIN_API UMakeFrameNode : public UMakeFrameBaseNode
+{
+	GENERATED_BODY()
+
+public:
+	virtual const char* GetTypeName() const override { return "makeframe"; }
+	virtual const char* GetTitle() const override { return "MakeFrame"; }
+
+	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
+
+public:
 	/** value of frame  */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	FString Value;
@@ -49,8 +64,16 @@ public:
 	virtual const char* GetTitle() const override { return "MakeZeroFrame"; }
 
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
+};
 
-#if WITH_EDITORONLY_DATA
-	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
-#endif //WITH_EDITORONLY_DATA
+UCLASS()
+class FROXPLUGIN_API UMakeNoiseFrameNode : public UMakeFrameBaseNode
+{
+	GENERATED_BODY()
+
+public:
+	virtual const char* GetTypeName() const override { return "makenoiseframe"; }
+	virtual const char* GetTitle() const override { return "MakeNoiseFrame"; }
+
+	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
 };

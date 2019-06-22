@@ -8,7 +8,15 @@ public class FroxUE4 : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] {
+            "Core",
+            "CoreUObject",
+            "Engine",
+            "InputCore",
+            "ProceduralMeshComponent",
+            "NavigationSystem",
+            "FroxPlugin"
+        });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

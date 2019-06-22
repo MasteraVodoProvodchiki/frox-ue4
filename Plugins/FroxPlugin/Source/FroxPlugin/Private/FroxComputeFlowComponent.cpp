@@ -242,10 +242,7 @@ void UFroxComputeFlowComponent::SetValueAsFrame(const FName& KeyName, UFroxCompu
 
 bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 {
-	// Create ComputeFlow by FlowDesc
-	frox::Frox* FroxLib = FFroxPluginModule::Get().GetFrox();
-	check(FroxLib != nullptr);
-
+	// Create ComputeFlow
 	FComputeFlowListernerPerformedCallBack CallBack;
 	CallBack.BindUObject(this, &UFroxComputeFlowComponent::OnPerformed);
 	ComputeFlowListerner = TSharedPtr<FComputeFlowListerner>(new FComputeFlowListerner(CallBack));
@@ -293,10 +290,8 @@ void UFroxComputeFlowComponent::ReleaseFlow()
 {
 	if (ComputeFlow)
 	{
-		frox::Frox* FroxLib = FFroxPluginModule::Get().GetFrox();
-		check(FroxLib != nullptr);
-
-		FroxLib->DestroyComputeFlow(ComputeFlow);
+		ComputeFlow->Release();
+		ComputeFlow = nullptr;
 		ComputeFlowListerner = nullptr;
 	}
 }
@@ -361,6 +356,12 @@ void UFroxComputeFlowComponent::PerformFlow()
 
 void UFroxComputeFlowComponent::OnPerformed()
 {
+	if (ComputeFlow == nullptr)
+	{
+		UE_LOG(LogFrox, Error, TEXT("OnPerformed: ComputeFlow == null"));
+		return;
+	}
+
 	FetchFlow();
 	OnPerformCompleted.Broadcast();
 }

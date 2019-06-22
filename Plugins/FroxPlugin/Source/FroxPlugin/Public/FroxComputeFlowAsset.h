@@ -59,7 +59,7 @@ class FROXPLUGIN_API UFroxComputeFlowAsset : public UObject
 public:
 	virtual void BeginDestroy() override;
 
-	frox::ComputeFlow* CreateFlow(frox::IComputeFlowListerner* Listerner) const;
+	frox::ComputeFlow* CreateFlow(frox::IComputeFlowListerner* Listerner = nullptr) const;
 	void InitializeFlowOperations(frox::ComputeFlow* ComputeFlow, const TArray<UOpartionNode*>& Operations, const TArray<NodePair>& Pairs) const;
 	void InitializeFlowInputs(frox::ComputeFlow* ComputeFlow, const TArray<UInputPropertyNode*>& Inputs, const TArray<NodePair>& Pairs) const;
 	void InitializeFlowOutputs(frox::ComputeFlow* ComputeFlow, const TArray<UOutputPropertyNode*>& Outputs, const TArray<NodePair>& Pairs) const;

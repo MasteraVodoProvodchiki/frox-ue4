@@ -13,6 +13,17 @@ frox::ComputeNode* USubFlowNode::CreateFroxNode(frox::ComputeFlow* Flow) const
 	check(Flow != nullptr);
 
 	auto SubFlowNode = Flow->CreateNode<frox::SubFlowComputeNode>();
+	if (ComputeFlow)
+	{
+		frox::ComputeFlow* FroxFlow = ComputeFlow->CreateFlow();
+		check(FroxFlow != nullptr);
+
+		SubFlowNode->SetSubFlow(FroxFlow);
+	}
+	else
+	{
+		UE_LOG(LogFrox, Error, TEXT("ComputeFlow hasn't been set!"));
+	}
 
 	return SubFlowNode;
 }

@@ -12,12 +12,12 @@ frox::ComputeNode* UCropOpartionNode::CreateFroxNode(frox::ComputeFlow* Flow) co
 {
 	check(Flow != nullptr);
 
-	auto MakeNode = Flow->CreateNode<frox::CropComputeNode>();
-	check(MakeNode != nullptr);
+	auto CropNode = Flow->CreateNode<frox::CropComputeNode>();
+	check(CropNode != nullptr);
 
-	// MakeNode->
+	CropNode->SetRect(frox::Rect{X, Y, Width, Height});
 
-	return MakeNode;
+	return CropNode;
 }
 
 #undef LOCTEXT_NAMESPACE

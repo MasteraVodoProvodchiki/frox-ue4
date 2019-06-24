@@ -73,9 +73,11 @@ class FROXPLUGIN_API UInputPropertyNode : public UFroxNodeBase
 
 public:
 #if WITH_EDITORONLY_DATA
+	//~ Begin UEdGraphNode
 	virtual void AllocateDefaultPins() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 	virtual FLinearColor GetNodeTitleColor() const override;
+	//~ End UEdGraphNode
 #endif //WITH_EDITORONLY_DATA
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -89,9 +91,11 @@ class FROXPLUGIN_API UOutputPropertyNode : public UFroxNodeBase
 
 public:
 #if WITH_EDITORONLY_DATA
+	//~ Begin UEdGraphNode
 	virtual void AllocateDefaultPins() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 	virtual FLinearColor GetNodeTitleColor() const override;
+	//~ End UEdGraphNode
 #endif //WITH_EDITORONLY_DATA
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)

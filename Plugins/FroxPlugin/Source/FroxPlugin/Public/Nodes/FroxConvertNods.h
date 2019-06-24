@@ -10,9 +10,11 @@ class FROXPLUGIN_API UConvertToOpartionNode : public UOpartionInput1OuputNode
 	GENERATED_BODY()
 
 public:
+	//~ Begin UOpartionNode
 	virtual const char* GetTypeName() const override { return "convertto"; }
 	virtual const char* GetTitle() const override { return "ConvertTo"; }
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
+	//~ End UOpartionNode
 
 public:
 	/** type of frame  */

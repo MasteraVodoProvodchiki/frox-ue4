@@ -15,9 +15,11 @@ class FROXPLUGIN_API UMakeFrameBaseNode : public UOpartionNode
 
 public:
 #if WITH_EDITORONLY_DATA
+	//~ Begin UEdGraphNode
 	virtual void AllocateDefaultPins() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 	virtual FLinearColor GetNodeTitleColor() const override;
+	//~ End UEdGraphNode
 #endif //WITH_EDITORONLY_DATA
 
 protected:
@@ -43,10 +45,11 @@ class FROXPLUGIN_API UMakeFrameNode : public UMakeFrameBaseNode
 	GENERATED_BODY()
 
 public:
+	//~ Begin UOpartionNode
 	virtual const char* GetTypeName() const override { return "makeframe"; }
 	virtual const char* GetTitle() const override { return "MakeFrame"; }
-
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
+	//~ End UOpartionNode
 
 public:
 	/** value of frame  */
@@ -60,10 +63,11 @@ class FROXPLUGIN_API UMakeZeroFrameNode : public UMakeFrameNode
 	GENERATED_BODY()
 
 public:
+	//~ Begin UOpartionNode
 	virtual const char* GetTypeName() const override { return "makezeroframe"; }
 	virtual const char* GetTitle() const override { return "MakeZeroFrame"; }
-
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
+	//~ End UOpartionNode
 };
 
 UCLASS()
@@ -72,8 +76,9 @@ class FROXPLUGIN_API UMakeNoiseFrameNode : public UMakeFrameBaseNode
 	GENERATED_BODY()
 
 public:
+	//~ Begin UOpartionNode
 	virtual const char* GetTypeName() const override { return "makenoiseframe"; }
 	virtual const char* GetTitle() const override { return "MakeNoiseFrame"; }
-
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
+	//~ End UOpartionNode
 };

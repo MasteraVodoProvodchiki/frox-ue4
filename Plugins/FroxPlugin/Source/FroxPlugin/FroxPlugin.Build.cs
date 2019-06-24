@@ -29,6 +29,7 @@ public class FroxPlugin : ModuleRules
                 "CoreUObject",
                 "Engine",
                 "InputCore",
+                "ImageWrapper",
                 "FroxPluginLibrary",
 				"Projects"
 				// ... add other public dependencies that you statically link with here ...

@@ -21,6 +21,10 @@ class FROXPLUGIN_API UFroxComputeFrame : public UObject
 	GENERATED_BODY()
 
 public:
+	// BEGIN UObject overrides
+	virtual void PostLoad() override;
+	// End UObject
+
 	UFUNCTION(BlueprintCallable, Category = "Frox")
 	void Update();
 
@@ -47,6 +51,23 @@ public:
 
 	static frox::EComputeFrameType UETypeToFroxType(EFroxTypeEnum Type);
 	static EFroxTypeEnum FroxTypeToUEType(frox::EComputeFrameType Type);
+
+#if WITH_EDITORONLY_DATA
+	void SetComputeFrameName(const FName &InComputeFlowFileName);
+	void SetData(const TArray<uint8>& InUncompressedData);
+#endif
+
+	FName GetComputeFlowName() const;
+
+protected:
+	UPROPERTY()
+	FName ComputeFrameFileName;
+
+	UPROPERTY()
+	TArray<uint8> UncompressedData;
+
+private:
+	void InitializeFroxFrame();
 
 private:
 	frox::ComputeFramePtr _froxFrame;

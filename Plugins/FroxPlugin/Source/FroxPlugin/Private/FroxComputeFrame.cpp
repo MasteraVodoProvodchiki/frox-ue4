@@ -3,6 +3,16 @@
 
 #include "Frox/Frox/Frox.h"
 
+void UFroxComputeFrame::PostLoad()
+{
+	Super::PostLoad();
+
+	if (UncompressedData.Num() > 0)
+	{
+		InitializeFroxFrame();
+	}
+}
+
 frox::EComputeFrameType UFroxComputeFrame::UETypeToFroxType(EFroxTypeEnum Type)
 {
 	switch (Type)
@@ -105,4 +115,31 @@ void UFroxComputeFrame::SetFroxFrame(frox::ComputeFramePtr FroxFrame)
 	Width = Size.Width;
 	Height = Size.Height;
 	Type = FroxTypeToUEType(_froxFrame->GetType());
+}
+
+void UFroxComputeFrame::SetComputeFrameName(const FName &InComputeFlowFileName)
+{
+	ComputeFrameFileName = InComputeFlowFileName;
+}
+
+void UFroxComputeFrame::SetData(const TArray<uint8>& InUncompressedData)
+{
+	UncompressedData = InUncompressedData;
+}
+
+FName UFroxComputeFrame::GetComputeFlowName() const
+{
+	return ComputeFrameFileName;
+}
+
+void UFroxComputeFrame::InitializeFroxFrame()
+{
+	frox::Frox* frox = frox::FroxInstance();
+	check(frox != nullptr);
+
+	_froxFrame = frox->CreateComputeFrame(
+		frox::Size{ uint32(Width), uint32(Height) },
+		UETypeToFroxType(Type),
+		UncompressedData.GetData()
+	);
 }

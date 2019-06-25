@@ -33,8 +33,7 @@ public class FroxEditorPlugin : ModuleRules
                 "FroxPlugin",
 
                 "AssetTools",
-                "AssetRegistry"
-
+                "AssetRegistry",
                 //"EditorStyle",
                 // "KismetWidgets",
                 // "GraphEditor"
@@ -52,7 +51,9 @@ public class FroxEditorPlugin : ModuleRules
                 "UnrealEd",
                 "EditorStyle",
                 "GraphEditor",
-                "Kismet"
+                "Kismet",
+                "ImageWrapper",
+                "DesktopPlatform"
 				// ... add private dependencies that you statically link with here ...	
 			}
             );

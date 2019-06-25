@@ -3,6 +3,8 @@
 #include "FroxEditorPlugin.h"
 
 #include "FroxComputeFlowAssetTypeActions.h"
+#include "FroxComputeFrameAssetTypeActions.h"
+
 #include "ToolBarCommands.h"
 #include "FroxGraphNodeFactory.h"
 
@@ -25,6 +27,7 @@ void FFroxEditorPluginModule::StartupModule()
 
 	//Custom detail views
 	FFroxComputeFlowAssetTypeActions::RegistrateCustomPartAssetType();
+	FFroxComputeFrameAssetTypeActions::RegistrateCustomPartAssetType();
 
 	//Registrate ToolBarCommand for costom graph
 	FToolBarCommandsCommands::Register();

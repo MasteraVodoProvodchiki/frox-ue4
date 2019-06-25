@@ -7,6 +7,7 @@
 #include "Nodes/FroxConvertNods.h"
 #include "Nodes/FroxCropNods.h"
 #include "Nodes/FroxSubFlowNods.h"
+#include "Nodes/FroxConstNods.h"
 #include "Nodes/UE4CustomNods.h"
 
 #include "EdGraph/EdGraph.h"
@@ -134,6 +135,7 @@ void UEdGraphSchema_FroxEditor::GetGraphContextActions(FGraphContextMenuBuilder&
 	FroxSchemaUtils::AddAction<UMakeZeroFrameNode>(TEXT("Add Make Zero Node"), TEXT("Add make zero node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UMakeNoiseFrameNode>(TEXT("Add Make Noise Node"), TEXT("Add make noise node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UUEImageReaderNode>(TEXT("Add UE4 Img Read Node"), TEXT("Add ue4 img reader node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	FroxSchemaUtils::AddAction<UConstFrameNode>(TEXT("Add Const Frame Node"), TEXT("Add const frame node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 
 	FroxSchemaUtils::AddAction<UAddOpartionNode>(TEXT("Add Add Operation Node"), TEXT("Add Add operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<USubOpartionNode>(TEXT("Add Sub Operation Node"), TEXT("Add Sub operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);

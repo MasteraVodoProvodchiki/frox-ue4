@@ -8,7 +8,7 @@
 #include "Serialization/ArchiveSaveCompressedProxy.h"
 #include <string>
 
-#define LOCTEXT_NAMESPACE "PackComputeGraphAssetFactory"
+#define LOCTEXT_NAMESPACE "FroxComputeFlowAssetFactory"
 
 UFroxComputeFlowAssetFactory::UFroxComputeFlowAssetFactory(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

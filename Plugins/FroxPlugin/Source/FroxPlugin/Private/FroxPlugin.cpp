@@ -68,7 +68,7 @@ void FFroxPluginModule::StartupModule()
 		// Call the test function in the third party library that opens a message box
 		frox::FroxDesc FroxDesc;
 		FroxDesc.LogListerner = FroxLogListerner::Instance();
-		FroxLib = frox::FroxInit();
+		FroxLib = frox::FroxInit(FroxDesc);
 	}
 	else
 	{

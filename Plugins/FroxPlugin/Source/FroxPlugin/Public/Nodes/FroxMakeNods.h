@@ -37,6 +37,10 @@ public:
 	/** type of frame  */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	EFroxTypeEnum Type;
+
+	/** channels of frame  */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int Channels = 1;
 };
 
 UCLASS()

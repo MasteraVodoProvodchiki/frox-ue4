@@ -35,8 +35,8 @@ FLinearColor UMakeFrameBaseNode::GetNodeTitleColor() const
 
 bool UMakeFrameBaseNode::FillNode(frox::MakeFrameBaseComputeNode& FroxNode) const
 {
-	FroxNode.SetWidth(Width);
-	FroxNode.SetHeight(Width);
+	FroxNode.SetWidth(uint32(Width));
+	FroxNode.SetHeight(uint32(Height));
 
 	if (Type == EFroxTypeEnum::FTE_None)
 	{
@@ -48,6 +48,8 @@ bool UMakeFrameBaseNode::FillNode(frox::MakeFrameBaseComputeNode& FroxNode) cons
 	check(type != frox::EComputeFrameType::ECFT_None);
 
 	FroxNode.SetType(type);
+	FroxNode.SetChannels(uint32(Channels));
+
 	return true;
 }
 
@@ -64,10 +66,10 @@ frox::ComputeNode* UMakeFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) const
 		return MakeNode;
 	}
 
-	frox::EComputeFrameType type = UFroxComputeFrame::UETypeToFroxType(Type);
-	check(type != frox::EComputeFrameType::ECFT_None);
+	frox::EComputeFrameType FroxType = UFroxComputeFrame::UETypeToFroxType(Type);
+	check(FroxType != frox::EComputeFrameType::ECFT_None);
 
-	switch (type)
+	switch (FroxType)
 	{
 	case frox::ECFT_Bool:
 		MakeNode->SetValue(Value.ToBool());

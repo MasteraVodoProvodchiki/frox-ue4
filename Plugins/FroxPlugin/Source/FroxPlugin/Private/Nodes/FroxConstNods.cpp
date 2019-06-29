@@ -12,7 +12,7 @@
 #if WITH_EDITORONLY_DATA
 void UConstFrameNode::AllocateDefaultPins()
 {
-	UEdGraphPin* Output = CreatePin(EGPD_Output, TEXT(""), TEXT("Out"));
+	UEdGraphPin* Output = CreatePin(EGPD_Output, UFroxNodeBase::PC_Frame, TEXT("Out"));
 }
 
 FText UConstFrameNode::GetNodeTitle(ENodeTitleType::Type TitleType) const

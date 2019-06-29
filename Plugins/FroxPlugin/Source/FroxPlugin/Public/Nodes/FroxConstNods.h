@@ -20,7 +20,7 @@ public:
 
 	//~ Begin UOpartionNode
 	virtual const char* GetTypeName() const override { return "constframe"; }
-	virtual const char* GetTitle() const override { return "ConstFrameNode"; }
+	virtual const char* GetTitle() const override { return "Frame"; }
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
 	//~ End UOpartionNode
 

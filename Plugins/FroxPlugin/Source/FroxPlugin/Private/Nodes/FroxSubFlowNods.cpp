@@ -125,11 +125,11 @@ void USubFlowNode::AllocateDefaultPins()
 			FString PinName = entry.EntryName.ToString();
 			if (entry.Direction == EComputeFlowEntryDirection::ECFED_Input)
 			{			
-				CreatePin(EGPD_Input, TEXT(""), *PinName);
+				CreatePin(EGPD_Input, UFroxNodeBase::PC_Frame, *PinName);
 			}
 			else if (entry.Direction == EComputeFlowEntryDirection::ECFED_Output)
 			{
-				CreatePin(EGPD_Output, TEXT(""), *PinName);
+				CreatePin(EGPD_Output, UFroxNodeBase::PC_Frame, *PinName);
 			}
 		}
 	}

@@ -73,6 +73,7 @@ frox::ComputeFlow* UFroxComputeFlowAsset::CreateFlow(frox::IComputeFlowListerner
 
 
 	// Group
+	TArray<UPropertyNode*> Properties;
 	TArray<UInputPropertyNode*> Inputs;
 	TArray<UOutputPropertyNode*> Outputs;
 	TArray<UOpartionNode*> Operations;
@@ -83,6 +84,14 @@ frox::ComputeFlow* UFroxComputeFlowAsset::CreateFlow(frox::IComputeFlowListerner
 		if (OperationGraphNode)
 		{
 			Operations.Add(OperationGraphNode);
+			continue;
+		}
+
+		// Input
+		UPropertyNode* PropertyGraphNode = Cast<UPropertyNode>(Node);
+		if (PropertyGraphNode)
+		{
+			Properties.Add(PropertyGraphNode);
 			continue;
 		}
 
@@ -135,7 +144,7 @@ void UFroxComputeFlowAsset::InitializeFlowOperations(frox::ComputeFlow* ComputeF
 
 		// Only for output
 		TArray<UEdGraphPin*> OutputPins = OperationGraphNode->Pins.FilterByPredicate([](UEdGraphPin* Pin) {
-			return Pin->Direction == EEdGraphPinDirection::EGPD_Output;
+			return Pin->Direction == EEdGraphPinDirection::EGPD_Output && Pin->PinType.PinCategory == UFroxNodeBase::PC_Frame;
 		});
 		for (int32 OutPinIndex = 0; OutPinIndex < OutputPins.Num(); ++OutPinIndex)
 		{
@@ -156,11 +165,11 @@ void UFroxComputeFlowAsset::InitializeFlowOperations(frox::ComputeFlow* ComputeF
 					frox::ComputeNode* InComputeNode = InPair->Value;
 					int32 InPinIndex = NextNode->Pins
 						.FilterByPredicate([](UEdGraphPin* Pin) {
-						return Pin->Direction == EEdGraphPinDirection::EGPD_Input;
-					})
+							return Pin->Direction == EEdGraphPinDirection::EGPD_Input && Pin->PinType.PinCategory == UFroxNodeBase::PC_Frame;
+						})
 						.IndexOfByPredicate([LinkedTo](UEdGraphPin* Pin) {
-						return Pin == LinkedTo;
-					});
+							return Pin == LinkedTo;
+						});
 					check(InPinIndex != -1);
 
 					ComputeFlow->ConnectNodes(OutComputeNode, OutPinIndex, InComputeNode, InPinIndex);
@@ -183,7 +192,7 @@ void UFroxComputeFlowAsset::InitializeFlowInputs(frox::ComputeFlow* ComputeFlow,
 
 		// Only for output
 		TArray<UEdGraphPin*> OutputPins = Input->Pins.FilterByPredicate([](UEdGraphPin* Pin) {
-			return Pin->Direction == EEdGraphPinDirection::EGPD_Output;
+			return Pin->Direction == EEdGraphPinDirection::EGPD_Output && Pin->PinType.PinCategory == UFroxNodeBase::PC_Frame;
 		});
 		for (UEdGraphPin* Pin : OutputPins)
 		{
@@ -204,7 +213,7 @@ void UFroxComputeFlowAsset::InitializeFlowInputs(frox::ComputeFlow* ComputeFlow,
 
 						int32 InPinIndex = NextNode->Pins
 							.FilterByPredicate([](UEdGraphPin* Pin) {
-								return Pin->Direction == EEdGraphPinDirection::EGPD_Input;
+								return Pin->Direction == EEdGraphPinDirection::EGPD_Input && Pin->PinType.PinCategory == UFroxNodeBase::PC_Frame;
 							})
 							.IndexOfByPredicate([LinkedTo](UEdGraphPin* Pin) {
 								return Pin == LinkedTo;
@@ -231,7 +240,7 @@ void UFroxComputeFlowAsset::InitializeFlowOutputs(frox::ComputeFlow* ComputeFlow
 
 		// Only for inputs
 		TArray<UEdGraphPin*> InputPins = Output->Pins.FilterByPredicate([](UEdGraphPin* Pin) {
-			return Pin->Direction == EEdGraphPinDirection::EGPD_Input;
+			return Pin->Direction == EEdGraphPinDirection::EGPD_Input && Pin->PinType.PinCategory == UFroxNodeBase::PC_Frame;
 		});
 		for (UEdGraphPin* Pin : InputPins)
 		{
@@ -250,8 +259,8 @@ void UFroxComputeFlowAsset::InitializeFlowOutputs(frox::ComputeFlow* ComputeFlow
 					{
 						frox::ComputeNode* OutComputeNode = OutPair->Value;
 						int32 OutPinIndex = NextNode->Pins
-								.FilterByPredicate([](UEdGraphPin* Pin) {
-								return Pin->Direction == EEdGraphPinDirection::EGPD_Output;
+							.FilterByPredicate([](UEdGraphPin* Pin) {
+								return Pin->Direction == EEdGraphPinDirection::EGPD_Output && Pin->PinType.PinCategory == UFroxNodeBase::PC_Frame;
 							})
 							.IndexOfByPredicate([LinkedTo](UEdGraphPin* Pin) {
 								return Pin == LinkedTo;

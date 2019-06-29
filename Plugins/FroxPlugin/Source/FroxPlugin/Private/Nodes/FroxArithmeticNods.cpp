@@ -16,16 +16,16 @@ void UOpartionBasicNode::PostEditChangeProperty(struct FPropertyChangedEvent& e)
 #if WITH_EDITORONLY_DATA
 void UOpartionInput1OuputNode::AllocateDefaultPins()
 {
-	UEdGraphPin* In = CreatePin(EGPD_Input, TEXT(""), TEXT("In"));
-	UEdGraphPin* Output = CreatePin(EGPD_Output, TEXT(""), TEXT("Out"));
+	UEdGraphPin* In = CreatePin(EGPD_Input, UFroxNodeBase::PC_Frame, TEXT("In"));
+	UEdGraphPin* Output = CreatePin(EGPD_Output, UFroxNodeBase::PC_Frame, TEXT("Out"));
 }
 #endif //WITH_EDITORONLY_DATA
 
 #if WITH_EDITORONLY_DATA
 void UOpartionInput2OuputNode::AllocateDefaultPins()
 {
-	UEdGraphPin* Left = CreatePin(EGPD_Input, TEXT(""), TEXT("Left"));
-	UEdGraphPin* Right = CreatePin(EGPD_Input, TEXT(""), TEXT("Right"));
-	UEdGraphPin* Output = CreatePin(EGPD_Output, TEXT(""), TEXT("Out"));
+	UEdGraphPin* Left = CreatePin(EGPD_Input, UFroxNodeBase::PC_Frame, TEXT("Left"));
+	UEdGraphPin* Right = CreatePin(EGPD_Input, UFroxNodeBase::PC_Frame, TEXT("Right"));
+	UEdGraphPin* Output = CreatePin(EGPD_Output, UFroxNodeBase::PC_Frame, TEXT("Out"));
 }
 #endif //WITH_EDITORONLY_DATA

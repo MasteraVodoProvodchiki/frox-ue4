@@ -17,7 +17,7 @@
 #if WITH_EDITORONLY_DATA
 void UUEImageReaderNode::AllocateDefaultPins()
 {
-	UEdGraphPin* Output = CreatePin(EGPD_Output, TEXT(""), TEXT("Out"));
+	UEdGraphPin* Output = CreatePin(EGPD_Output, UFroxNodeBase::PC_Frame, TEXT("Out"));
 }
 
 FText UUEImageReaderNode::GetNodeTitle(ENodeTitleType::Type TitleType) const

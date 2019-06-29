@@ -21,6 +21,7 @@ static FString GetEnumValueAsString(const FString& Name, TEnum Value)
 	return enumPtr->GetEnumName((int32)Value);
 }
 
+
 /*
 UENUM(BlueprintType)
 enum class ERootType
@@ -43,6 +44,9 @@ class FROXPLUGIN_API UFroxNodeBase : public UEdGraphNode
 
 public:
 	DECLARE_MULTICAST_DELEGATE_OneParam(FOnNodeVisualsChanged, UFroxNodeBase*);
+
+	static const FName PC_Frame;
+	static const FName PC_Property;
 
 #if WITH_EDITORONLY_DATA
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;
@@ -67,11 +71,37 @@ protected:
 };
 
 UCLASS()
+class FROXPLUGIN_API UPropertyNode : public UFroxNodeBase
+{
+	GENERATED_BODY()
+
+public:
+	//~ Begin UObject
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+	//~ Begin UObject
+
+#if WITH_EDITORONLY_DATA
+	//~ Begin UEdGraphNode
+	virtual void AllocateDefaultPins() override;
+	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
+	virtual FLinearColor GetNodeTitleColor() const override;
+	//~ End UEdGraphNode
+#endif //WITH_EDITORONLY_DATA
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FName PropertyName;
+};
+
+UCLASS()
 class FROXPLUGIN_API UInputPropertyNode : public UFroxNodeBase
 {
 	GENERATED_BODY()
 
 public:
+	//~ Begin UObject
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+	//~ Begin UObject
+
 #if WITH_EDITORONLY_DATA
 	//~ Begin UEdGraphNode
 	virtual void AllocateDefaultPins() override;
@@ -90,6 +120,10 @@ class FROXPLUGIN_API UOutputPropertyNode : public UFroxNodeBase
 	GENERATED_BODY()
 
 public:
+	//~ Begin UObject
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+	//~ Begin UObject
+
 #if WITH_EDITORONLY_DATA
 	//~ Begin UEdGraphNode
 	virtual void AllocateDefaultPins() override;

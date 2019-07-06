@@ -31,10 +31,10 @@ void UDyanmicGridMeshComponent::UpdateLandscapeMesh()
 	{
 		frox::ComputeFramePtr FroxFrame = HeightMap->GetFroxFrame();
 
-		frox::EComputeFrameType FroxFrameType = FroxFrame->GetType();
+		frox::ComputeFrameType FroxFrameType = FroxFrame->GetType();
 		frox::Size FroxFrameSize = FroxFrame->GetSize();
 
-		if (FroxFrameType == frox::EComputeFrameType::ECFT_UInt16 && FroxFrameSize.Width > 0 && FroxFrameSize.Height > 0)
+		if (FroxFrameType.Type == frox::EComputeFrameType::ECFT_UInt16 && FroxFrameSize.Width > 0 && FroxFrameSize.Height > 0)
 		{		
 			const uint16_t* FroxFrameData = FroxFrame->GetData<uint16_t>();
 			UpdateLandscapeMesh(FroxFrameSize.Width, FroxFrameSize.Height, FroxFrameData);

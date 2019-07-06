@@ -115,6 +115,9 @@ private:
 
 private:
 	frox::ComputeFlow* ComputeFlow;
+	frox::FlowPerformer* FlowPerformer;
+	frox::FlowData* FlowInputData;
+	frox::FlowData* FlowOutputData;
 	TSharedPtr<class FComputeFlowListerner> ComputeFlowListerner;
 
 	bool _bRunning = false;

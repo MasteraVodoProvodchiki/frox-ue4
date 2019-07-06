@@ -70,7 +70,7 @@ void UFroxComputeFrame::Update()
 
 void UFroxComputeFrame::FillFloat(float Value)
 {
-	if (!_froxFrame || _froxFrame->GetType() != frox::EComputeFrameType::ECFT_Float)
+	if (!_froxFrame || _froxFrame->GetType().Type != frox::EComputeFrameType::ECFT_Float)
 	{
 		UE_LOG(LogFrox, Error, TEXT("Error while filing frame"));
 		return;
@@ -89,7 +89,7 @@ void UFroxComputeFrame::FillFloat(float Value)
 
 float UFroxComputeFrame::AtFloat(int Row, int Column) const
 {
-	if (!_froxFrame || _froxFrame->GetType() != frox::EComputeFrameType::ECFT_Float)
+	if (!_froxFrame || _froxFrame->GetType().Type != frox::EComputeFrameType::ECFT_Float)
 	{
 		UE_LOG(LogFrox, Error, TEXT("Error while filing frame"));
 		return 0.f;
@@ -114,7 +114,7 @@ void UFroxComputeFrame::SetFroxFrame(frox::ComputeFramePtr FroxFrame)
 	frox::Size Size = _froxFrame->GetSize();
 	Width = Size.Width;
 	Height = Size.Height;
-	Type = FroxTypeToUEType(_froxFrame->GetType());
+	Type = FroxTypeToUEType(_froxFrame->GetType().Type);
 }
 
 void UFroxComputeFrame::SetComputeFrameName(const FName &InComputeFlowFileName)

@@ -60,7 +60,7 @@ void UFroxComputeFlowAsset::BeginDestroy() {
 	Super::BeginDestroy();
 }
 
-frox::ComputeFlow* UFroxComputeFlowAsset::CreateFlow(frox::IComputeFlowListerner* Listerner) const
+frox::ComputeFlow* UFroxComputeFlowAsset::CreateFlow() const
 {
 	check(UpdateGraph != nullptr);
 
@@ -68,7 +68,7 @@ frox::ComputeFlow* UFroxComputeFlowAsset::CreateFlow(frox::IComputeFlowListerner
 	frox::Frox* FroxLib = FFroxPluginModule::Get().GetFrox();
 	check(FroxLib != nullptr);
 
-	frox::ComputeFlow* ComputeFlow = FroxLib->CreateComputeFlow(Listerner);
+	frox::ComputeFlow* ComputeFlow = FroxLib->CreateComputeFlow();
 	check(ComputeFlow != nullptr);
 
 

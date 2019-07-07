@@ -106,9 +106,9 @@ public:
 UFroxComputeFlowComponent::UFroxComputeFlowComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 	, ComputeFlow(nullptr)
-	, FlowPerformer(nullptr)
-	, FlowInputData(nullptr)
-	, FlowOutputData(nullptr)
+	, Performer(nullptr)
+	, InputData(nullptr)
+	, OutputData(nullptr)
 {
 	PrimaryComponentTick.bCanEverTick = true;
 	bWantsInitializeComponent = true;
@@ -157,7 +157,7 @@ void UFroxComputeFlowComponent::TickComponent(float DeltaTime, enum ELevelTick T
 	if (_bRunning && ComputeFlow)
 	{
 		CurrentTime += DeltaTime;
-		if (CurrentTime >= (1.f / PerformFrequency) && FlowPerformer->GetNumActiveTasks() == 0)
+		if (CurrentTime >= (1.f / PerformFrequency) && Performer->GetNumActiveTasks() == 0)
 		{
 			PerformFlow();
 			CurrentTime = 0.f;
@@ -260,14 +260,14 @@ bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 	frox::Frox* FroxLib = FFroxPluginModule::Get().GetFrox();
 	check(FroxLib != nullptr);
 
-	FlowPerformer = FroxLib->CreateFlowPerformer(ComputeFlowListerner.Get());
-	check(FlowPerformer != nullptr);
+	Performer = FroxLib->CreateFlowPerformer(ComputeFlowListerner.Get());
+	check(Performer != nullptr);
 
-	FlowInputData = FroxLib->CreateFlowData();
-	check(FlowInputData != nullptr);
+	InputData = FroxLib->CreateFlowData();
+	check(InputData != nullptr);
 
-	FlowOutputData = FroxLib->CreateFlowData();
-	check(FlowOutputData != nullptr);
+	OutputData = FroxLib->CreateFlowData();
+	check(OutputData != nullptr);
 
 	// Search IDs fro every Key
 	for (const FComputeFlowEntry& Entry : NewAsset.Keys)
@@ -278,11 +278,7 @@ bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 		if (Entry.Direction == EComputeFlowEntryDirection::ECFED_Input)
 		{
 			int32 EntryId = ComputeFlow->FindEntryByName(EntryName);
-			if (EntryId != INDEX_NONE)
-			{
-				InputHoles.Add(Entry.EntryName, FHole{ uint32(EntryId) });
-			}
-			else
+			if (EntryId == INDEX_NONE)
 			{
 				UE_LOG(LogFrox, Error, TEXT("Not found Entry '%s'. Check Inputs!"), EntryName);
 			}
@@ -290,11 +286,7 @@ bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 		else if (Entry.Direction == EComputeFlowEntryDirection::ECFED_Output)
 		{
 			int32 OutputId = ComputeFlow->FindOutputByName(EntryName);
-			if (OutputId != INDEX_NONE)
-			{
-				OuputHoles.Add(Entry.EntryName, FHole{ uint32(OutputId) });
-			}
-			else
+			if (OutputId == INDEX_NONE)
 			{
 				UE_LOG(LogFrox, Error, TEXT("Not found Output '%s'. Check Outputs!"), EntryName);
 			}
@@ -307,22 +299,22 @@ bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 
 void UFroxComputeFlowComponent::ReleaseFlow()
 {
-	if (FlowOutputData)
+	if (OutputData)
 	{
-		FlowOutputData->Release();
-		FlowOutputData = nullptr;
+		OutputData->Release();
+		OutputData = nullptr;
 	}
 
-	if (FlowInputData)
+	if (InputData)
 	{
-		FlowInputData->Release();
-		FlowInputData = nullptr;
+		InputData->Release();
+		InputData = nullptr;
 	}
 
-	if (FlowPerformer)
+	if (Performer)
 	{
-		FlowPerformer->Release();
-		FlowPerformer = nullptr;
+		Performer->Release();
+		Performer = nullptr;
 		ComputeFlowListerner = nullptr;
 	}
 
@@ -336,8 +328,8 @@ void UFroxComputeFlowComponent::ReleaseFlow()
 void UFroxComputeFlowComponent::FetchFlow()
 {
 	check(ComputeFlow != nullptr);
-	check(FlowPerformer != nullptr);
-	check(FlowOutputData != nullptr);
+	check(Performer != nullptr);
+	check(OutputData != nullptr);
 
 	// Wait
 	FlowPerformer->Fetch(ComputeFlow, FlowOutputData);
@@ -375,8 +367,8 @@ void UFroxComputeFlowComponent::FetchFlow()
 void UFroxComputeFlowComponent::PerformFlow()
 {
 	check(ComputeFlow != nullptr);
-	check(FlowPerformer != nullptr);
-	check(FlowInputData != nullptr);
+	check(Performer != nullptr);
+	check(InputData != nullptr);
 
 	// Update Inputs
 	for (const FComputeFlowEntry& Entry : ComputeFlowAsset->Keys)
@@ -398,7 +390,7 @@ void UFroxComputeFlowComponent::PerformFlow()
 	} // End every key
 
 	// Push Calculation
-	FlowPerformer->Perform(ComputeFlow, FlowInputData);
+	Performer->Perform(ComputeFlow, InputData);
 }
 
 void UFroxComputeFlowComponent::OnPerformed()

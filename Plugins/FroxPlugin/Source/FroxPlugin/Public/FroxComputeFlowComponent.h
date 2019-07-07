@@ -8,10 +8,6 @@
 class UFroxComputeFlowAsset;
 class FroxComputeFrame;
 
-class UInputPropertyNode;
-class UOutputPropertyNode;
-class UOpartionNode;
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FValueChanged, FName, Name);
 
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
@@ -36,11 +32,6 @@ UCLASS(ClassGroup = (Frox), meta = (BlueprintSpawnableComponent))
 class FROXPLUGIN_API UFroxComputeFlowComponent : public UActorComponent
 {
 	GENERATED_UCLASS_BODY()
-
-	struct FHole
-	{
-		uint32 EntryId;
-	};
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Frox)
@@ -115,12 +106,13 @@ private:
 
 private:
 	frox::ComputeFlow* ComputeFlow;
-	frox::FlowPerformer* FlowPerformer;
-	frox::FlowData* FlowInputData;
-	frox::FlowData* FlowOutputData;
+	frox::FlowPerformer* Performer;
+	frox::FlowData* InputData;
+	frox::FlowData* OutputData;
 	TSharedPtr<class FComputeFlowListerner> ComputeFlowListerner;
 
 	bool _bRunning = false;
+	float CurrentTime = 0.f;
 
 	// TODO. Add ValuesMem and Values Offset instead of maps
 	TMap<FName, int32> IntValues;
@@ -129,9 +121,4 @@ private:
 
 	UPROPERTY()
 	TMap<FName, UFroxComputeFrame*> FrameValues;
-
-	TMap<FName, FHole> InputHoles;
-	TMap<FName, FHole> OuputHoles;
-
-	float CurrentTime = 0.f;
 };

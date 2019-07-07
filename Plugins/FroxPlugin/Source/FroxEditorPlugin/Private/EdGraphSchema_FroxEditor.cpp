@@ -168,7 +168,11 @@ const FPinConnectionResponse UEdGraphSchema_FroxEditor::CanCreateConnection(cons
 	}
 
 	// Make sure the data types match
-	if (A->PinType.PinCategory != B->PinType.PinCategory)
+	if (
+		A->PinType.PinCategory != B->PinType.PinCategory &&
+		A->PinType.PinCategory != UFroxNodeBase::PC_Any &&
+		B->PinType.PinCategory != UFroxNodeBase::PC_Any
+	)
 	{
 		return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, TEXT("Not allowed"));
 	}

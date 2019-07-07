@@ -325,6 +325,30 @@ void UFroxComputeFlowComponent::ReleaseFlow()
 	}
 }
 
+UFroxComputeFrame* UFroxComputeFlowComponent::FetchFrame(const frox::FlowData& Data, FName EntryID) const
+{
+	ANSICHAR EntryName[1024];
+	EntryID.GetPlainANSIString(EntryName);
+
+	UFroxComputeFrame* ComputeFrame = nullptr;
+	frox::ComputeFramePtr FroxFrame = Data.GetFrame(EntryName);
+	if (FroxFrame)
+	{
+		ComputeFrame = GetValueAsFrame(EntryName);
+		if (ComputeFrame != nullptr)
+		{
+			ComputeFrame->SetFroxFrame(FroxFrame);
+		}
+		else
+		{
+			ComputeFrame = NewObject<UFroxComputeFrame>();
+			ComputeFrame->SetFroxFrame(FroxFrame);
+		}
+	}
+
+	return ComputeFrame;
+}
+
 void UFroxComputeFlowComponent::FetchFlow()
 {
 	check(ComputeFlow != nullptr);
@@ -332,32 +356,47 @@ void UFroxComputeFlowComponent::FetchFlow()
 	check(OutputData != nullptr);
 
 	// Wait
-	FlowPerformer->Fetch(ComputeFlow, FlowOutputData);
+	Performer->Fetch(ComputeFlow, OutputData);
 
 	// Get Outputs
 	for (const FComputeFlowEntry& Entry : ComputeFlowAsset->Keys)
 	{
-		ANSICHAR EntryName[1024];
-		Entry.EntryName.GetPlainANSIString(EntryName);
+		UComputeFlowKeyType* KeyType = Entry.KeyType;
+		FName EntryName = Entry.EntryName;
 
-		auto FoundOuput = OuputHoles.Find(Entry.EntryName);
-		if (FoundOuput)
+		if (Entry.Direction == EComputeFlowEntryDirection::ECFED_Output)
 		{
-			const FHole& Ouput = *FoundOuput;
-			frox::ComputeFramePtr FroxFrame = FlowOutputData->GetFrame(EntryName);
-			if (FroxFrame)
+			if (KeyType->IsA(UComputeFlowKeyType_Frame::StaticClass()))
 			{
-				UFroxComputeFrame* ComputeFrame = GetValueAsFrame(Entry.EntryName);
+				UFroxComputeFrame* ComputeFrame = FetchFrame(*OutputData, EntryName);
 				if (ComputeFrame != nullptr)
 				{
-					ComputeFrame->SetFroxFrame(FroxFrame);
-					SetValueAsFrame(Entry.EntryName, ComputeFrame);
+					SetValueAsFrame(EntryName, ComputeFrame);
 				}
-				else
+			}
+			else
+			{
+				ANSICHAR EntryNameAnsi[1024];
+				EntryName.GetPlainANSIString(EntryNameAnsi);
+
+				if (KeyType->IsA(UComputeFlowKeyType_Bool::StaticClass()))
 				{
-					ComputeFrame = NewObject<UFroxComputeFrame>();
-					ComputeFrame->SetFroxFrame(FroxFrame);
-					SetValueAsFrame(Entry.EntryName, ComputeFrame);
+					bool Value = OutputData->GetValue<bool>(EntryNameAnsi);
+					SetValueAsBool(EntryName, Value);
+				}
+				else if (
+					KeyType->IsA(UComputeFlowKeyType_Uint8::StaticClass()) ||
+					KeyType->IsA(UComputeFlowKeyType_Uint16::StaticClass()) ||
+					KeyType->IsA(UComputeFlowKeyType_Uint32::StaticClass())
+				)
+				{
+					int32 Value = OutputData->GetValue<int32>(EntryNameAnsi);
+					SetValueAsInt(EntryName, Value);
+				}
+				else if (KeyType->IsA(UComputeFlowKeyType_Float::StaticClass()))
+				{
+					float Value = OutputData->GetValue<float>(EntryNameAnsi);
+					SetValueAsFloat(EntryName, Value);
 				}
 			}
 		} // End input
@@ -373,18 +412,41 @@ void UFroxComputeFlowComponent::PerformFlow()
 	// Update Inputs
 	for (const FComputeFlowEntry& Entry : ComputeFlowAsset->Keys)
 	{
-		ANSICHAR EntryName[1024];
-		Entry.EntryName.GetPlainANSIString(EntryName);
+		UComputeFlowKeyType* KeyType = Entry.KeyType;
+		FName EntryName = Entry.EntryName;
 
-		auto FoundInput = InputHoles.Find(Entry.EntryName);
-		if (FoundInput)
+		ANSICHAR EntryNameAnsi[1024];
+		EntryName.GetPlainANSIString(EntryNameAnsi);
+
+		if (Entry.Direction == EComputeFlowEntryDirection::ECFED_Input)
 		{
-			const FHole& Input = *FoundInput;
-			UFroxComputeFrame* ComputeFrame = GetValueAsFrame(Entry.EntryName);
-			if (ComputeFrame != nullptr)
+			if (KeyType->IsA(UComputeFlowKeyType_Frame::StaticClass()))
 			{
-				frox::ComputeFramePtr FroxFrame = ComputeFrame->GetFroxFrame();
-				FlowInputData->SetFrame(EntryName, FroxFrame);
+				UFroxComputeFrame* ComputeFrame = GetValueAsFrame(Entry.EntryName);
+				if (ComputeFrame != nullptr)
+				{
+					frox::ComputeFramePtr FroxFrame = ComputeFrame->GetFroxFrame();
+					InputData->SetFrame(EntryNameAnsi, FroxFrame);
+				}
+			}
+			else if(KeyType->IsA(UComputeFlowKeyType_Bool::StaticClass()))
+			{
+				bool Value = GetValueAsBool(Entry.EntryName);
+				InputData->SetValue(EntryNameAnsi, Value);
+			}
+			else if (
+				KeyType->IsA(UComputeFlowKeyType_Uint8::StaticClass()) ||
+				KeyType->IsA(UComputeFlowKeyType_Uint16::StaticClass()) ||
+				KeyType->IsA(UComputeFlowKeyType_Uint32::StaticClass())
+				)
+			{
+				int32 Value = GetValueAsInt(Entry.EntryName);
+				InputData->SetValue(EntryNameAnsi, Value);
+			}
+			else if (KeyType->IsA(UComputeFlowKeyType_Float::StaticClass()))
+			{
+				float Value = GetValueAsFloat(Entry.EntryName);
+				InputData->SetValue(EntryNameAnsi, Value);
 			}
 		} // End input
 	} // End every key

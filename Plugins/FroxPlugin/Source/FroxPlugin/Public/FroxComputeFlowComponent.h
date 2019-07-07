@@ -101,8 +101,10 @@ private:
 	bool InitializeFlow(UFroxComputeFlowAsset& NewAsset);
 	void ReleaseFlow();
 
+	UFroxComputeFrame* FetchFrame(const frox::FlowData& Data, FName EntryID) const;
 	void FetchFlow();
 	void PerformFlow();
+	
 
 private:
 	frox::ComputeFlow* ComputeFlow;

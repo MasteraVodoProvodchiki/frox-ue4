@@ -57,14 +57,14 @@ class FROXPLUGIN_API UFroxComputeFlowAsset : public UObject
 	using NodePair = TKeyValuePair<UOpartionNode*, frox::ComputeNode*>;
 
 public:
+	/** BEGIN UObject overrides */
 	virtual void BeginDestroy() override;
+	// End UObject
 
 	frox::ComputeFlow* CreateFlow() const;
-	void InitializeFlowOperations(frox::ComputeFlow* ComputeFlow, const TArray<UOpartionNode*>& Operations, const TArray<NodePair>& Pairs) const;
-	void InitializeFlowInputs(frox::ComputeFlow* ComputeFlow, const TArray<UInputPropertyNode*>& Inputs, const TArray<NodePair>& Pairs) const;
-	void InitializeFlowOutputs(frox::ComputeFlow* ComputeFlow, const TArray<UOutputPropertyNode*>& Outputs, const TArray<NodePair>& Pairs) const;
-
 	FName GetComputeFlowName() const;
+
+	bool FindEntry(FName EntryName, FComputeFlowEntry& Out) const;
 
 	UPROPERTY()
 	class UEdGraph* UpdateGraph;
@@ -76,6 +76,11 @@ public:
 protected:
 	UPROPERTY()
 	FName computeFlowFileName;
+
+private:
+	void InitializeFlowOperations(frox::ComputeFlow* ComputeFlow, const TArray<UOpartionNode*>& Operations, const TArray<NodePair>& Pairs) const;
+	void InitializeFlowInputs(frox::ComputeFlow* ComputeFlow, const TArray<UInputPropertyNode*>& Inputs, const TArray<NodePair>& Pairs) const;
+	void InitializeFlowOutputs(frox::ComputeFlow* ComputeFlow, const TArray<UOutputPropertyNode*>& Outputs, const TArray<NodePair>& Pairs) const;
 
 #if WITH_EDITORONLY_DATA
 

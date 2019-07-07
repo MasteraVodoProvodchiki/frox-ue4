@@ -52,7 +52,7 @@ void UInputPropertyNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyC
 #if WITH_EDITORONLY_DATA
 void UInputPropertyNode::AllocateDefaultPins()
 {
-	UEdGraphPin* Output = CreatePin(EGPD_Output, UFroxNodeBase::PC_Frame, TEXT("Out"));
+	UEdGraphPin* Output = CreatePin(EGPD_Output, UFroxNodeBase::PC_Any, TEXT("Out"));
 }
 
 FText UInputPropertyNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
@@ -82,7 +82,7 @@ void UOutputPropertyNode::PostEditChangeProperty(FPropertyChangedEvent& Property
 #if WITH_EDITORONLY_DATA
 void UOutputPropertyNode::AllocateDefaultPins()
 {
-	UEdGraphPin* In = CreatePin(EGPD_Input, UFroxNodeBase::PC_Frame, TEXT("In"));
+	UEdGraphPin* In = CreatePin(EGPD_Input, UFroxNodeBase::PC_Any, TEXT("In"));
 }
 
 FText UOutputPropertyNode::GetNodeTitle(ENodeTitleType::Type TitleType) const

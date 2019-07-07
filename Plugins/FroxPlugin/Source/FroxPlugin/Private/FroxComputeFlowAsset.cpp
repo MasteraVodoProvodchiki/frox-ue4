@@ -1,4 +1,5 @@
 #include "FroxComputeFlowAsset.h"
+#include "Shared.h"
 #include "FroxPlugin.h"
 #include "Nodes/FroxNods.h"
 #include "EdGraph/EdGraph.h"
@@ -9,7 +10,7 @@
 #include "Frox/Frox/ComputeFrame.h"
 #include "Frox/Frox/ComputeNode.h"
 
-#define LOCTEXT_NAMESPACE "FFroxPluginModule"
+#define LOCTEXT_NAMESPACE "FroxComputeFlowAsset"
 
 bool FComputeFlowEntry::operator==(const FComputeFlowEntry& Other) const
 {
@@ -80,7 +81,7 @@ frox::ComputeFlow* UFroxComputeFlowAsset::CreateFlow() const
 	check(UpdateGraph != nullptr);
 
 	// Create ComputeFlow by FlowDesc
-	frox::Frox* FroxLib = FFroxPluginModule::Get().GetFrox();
+	frox::Frox* FroxLib = IFroxPlugin::Get().GetFrox();
 	check(FroxLib != nullptr);
 
 	frox::ComputeFlow* ComputeFlow = FroxLib->CreateComputeFlow();

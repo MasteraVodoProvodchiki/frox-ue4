@@ -1,5 +1,5 @@
 #include "Nodes/FroxSubFlowNods.h"
-#include "FroxPlugin.h"
+#include "Shared.h"
 #include "FroxComputeFlowAsset.h"
 
 #include "EdGraph/EdGraphPin.h"

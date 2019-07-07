@@ -1,5 +1,5 @@
 #include "FroxConvertNods.h"
-#include "FroxPlugin.h"
+#include "Shared.h"
 #include "FroxTypes.h"
 
 #include "Frox/Frox/ComputeFlow.h"

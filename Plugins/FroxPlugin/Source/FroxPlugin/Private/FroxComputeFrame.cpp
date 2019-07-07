@@ -1,4 +1,5 @@
 #include "FroxComputeFrame.h"
+#include "Shared.h"
 #include "FroxPlugin.h"
 
 #include "Frox/Frox/Frox.h"
@@ -53,7 +54,7 @@ EFroxTypeEnum UFroxComputeFrame::FroxTypeToUEType(frox::EComputeFrameType Type)
 
 void UFroxComputeFrame::Update()
 {
-	frox::Frox* FroxLib = FFroxPluginModule::Get().GetFrox();
+	frox::Frox* FroxLib = IFroxPlugin::Get().GetFrox();
 	check(FroxLib != nullptr);
 
 	frox::EComputeFrameType FroxType = UETypeToFroxType(Type);

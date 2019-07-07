@@ -1,12 +1,12 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
-#include "FroxPlugin.h"
-#include "Core.h"
+#include "FroxPluginImpl.h"
+#include "Shared.h"
 #include "Modules/ModuleManager.h"
 #include "Interfaces/IPluginManager.h"
 #include "Frox/Frox/Frox.h"
 
-#define LOCTEXT_NAMESPACE "FFroxPluginModule"
+#define LOCTEXT_NAMESPACE "FroxPlugin"
 
 DEFINE_LOG_CATEGORY(LogFrox);
 
@@ -46,7 +46,7 @@ public:
 	}
 };
 
-void FFroxPluginModule::StartupModule()
+void FFroxPlugin::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
 
@@ -76,7 +76,7 @@ void FFroxPluginModule::StartupModule()
 	}
 }
 
-void FFroxPluginModule::ShutdownModule()
+void FFroxPlugin::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
@@ -94,4 +94,4 @@ void FFroxPluginModule::ShutdownModule()
 
 #undef LOCTEXT_NAMESPACE
 	
-IMPLEMENT_MODULE(FFroxPluginModule, FroxPlugin)
+IMPLEMENT_MODULE(FFroxPlugin, FroxPlugin)

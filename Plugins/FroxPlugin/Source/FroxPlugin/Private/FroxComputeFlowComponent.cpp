@@ -2,6 +2,7 @@
 #include "FroxComputeFlowAsset.h"
 #include "FroxComputeFrame.h"
 #include "FroxPlugin.h"
+#include "Shared.h"
 #include "Nodes/FroxNods.h"
 
 #include "Frox/Frox/ComputeFlow.h"
@@ -16,7 +17,7 @@
 #include "EdGraph/EdGraph.h"
 #include "LatentActions.h"
 
-#define LOCTEXT_NAMESPACE "FFroxPluginModule"
+#define LOCTEXT_NAMESPACE "FroxComputeFlowComponent"
 
 // FPendingLatentAction
 class FFlowPerfromDelayAction : public FPendingLatentAction
@@ -257,7 +258,7 @@ bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 	check(ComputeFlow != nullptr);
 
 	// Create Data and Performer
-	frox::Frox* FroxLib = FFroxPluginModule::Get().GetFrox();
+	frox::Frox* FroxLib = IFroxPlugin::Get().GetFrox();
 	check(FroxLib != nullptr);
 
 	Performer = FroxLib->CreateFlowPerformer(ComputeFlowListerner.Get());

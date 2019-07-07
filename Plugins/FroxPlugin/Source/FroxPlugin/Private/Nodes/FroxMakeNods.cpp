@@ -1,7 +1,7 @@
 #include "Nodes/FroxMakeNods.h"
 #include "OperationLogic.h"
 #include "Utils.h"
-#include "FroxPlugin.h"
+#include "Shared.h"
 #include "FroxTypes.h"
 
 #include "EdGraph/EdGraphPin.h"

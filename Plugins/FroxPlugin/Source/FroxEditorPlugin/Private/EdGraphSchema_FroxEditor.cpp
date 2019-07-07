@@ -28,6 +28,7 @@ namespace
 	const int32 NodeDistance = 60;
 }
 
+/// FFroxSchemaAction_NewNode
 UEdGraphNode* FFroxSchemaAction_NewNode::PerformAction(class UEdGraph* ParentGraph, UEdGraphPin* FromPin, const FVector2D Location, bool bSelectNewNode/* = true*/)
 {
 	UEdGraphNode* ResultNode = NULL;
@@ -102,19 +103,8 @@ void FFroxSchemaAction_NewNode::AddReferencedObjects(FReferenceCollector& Collec
 	// These don't get saved to disk, but we want to make sure the objects don't get GC'd while the action array is around
 	Collector.AddReferencedObject(NodeTemplate);
 }
-FString Combine(const TArray<FString> Array, FString Separator)
-{
-	// TODO: Use a string builder
-	FString Result;
-	for (const FString& Item : Array) {
-		if (Result.Len() > 0) {
-			Result += Separator;
-		}
-		Result += Item;
-	}
-	return Result;
-}
 
+/// UEdGraphSchema_FroxEditor
 UEdGraphSchema_FroxEditor::UEdGraphSchema_FroxEditor(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {

@@ -2,25 +2,18 @@
 
 #pragma once
 
-#include "Modules/ModuleManager.h"
+#include "ModuleManager.h"
 
 namespace frox {
 class Frox;
 } // End frox.
 
-DECLARE_LOG_CATEGORY_EXTERN(LogFrox, Warning, All);
-
-class FFroxPluginModule : public IModuleInterface
+class IFroxPlugin : public IModuleInterface
 {
 public:
-
-	/** IModuleInterface implementation */
-	virtual void StartupModule() override;
-	virtual void ShutdownModule() override;
-
-	static inline FFroxPluginModule& Get()
+	static inline IFroxPlugin& Get()
 	{
-		return FModuleManager::LoadModuleChecked<FFroxPluginModule>("FroxPlugin");
+		return FModuleManager::LoadModuleChecked<IFroxPlugin>("FroxPlugin");
 	}
 
 	static inline bool IsAvailable()
@@ -28,13 +21,5 @@ public:
 		return FModuleManager::Get().IsModuleLoaded("FroxPlugin");
 	}
 
-	frox::Frox* GetFrox() const
-	{
-		return FroxLib;
-	}
-
-private:
-	/** Handle to the test dll we will load */
-	void*	FroxLibraryHandle;
-	frox::Frox* FroxLib;
+	virtual frox::Frox* GetFrox() const = 0;
 };

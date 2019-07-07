@@ -1,6 +1,6 @@
 #include "Nodes/UE4CustomNods.h"
 #include "Utils.h"
-#include "FroxPlugin.h"
+#include "Shared.h"
 
 #include "EdGraph/EdGraphPin.h"
 #include "Frox/Frox/ComputeFlow.h"

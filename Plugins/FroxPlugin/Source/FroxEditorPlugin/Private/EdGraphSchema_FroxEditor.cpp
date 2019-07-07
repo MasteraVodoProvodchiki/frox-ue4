@@ -8,6 +8,7 @@
 #include "Nodes/FroxCropNods.h"
 #include "Nodes/FroxSubFlowNods.h"
 #include "Nodes/FroxConstNods.h"
+#include "Nodes/FroxFrameNods.h"
 #include "Nodes/UE4CustomNods.h"
 
 #include "EdGraph/EdGraph.h"
@@ -146,7 +147,7 @@ void UEdGraphSchema_FroxEditor::GetGraphContextActions(FGraphContextMenuBuilder&
 
 	FroxSchemaUtils::AddAction<UConvertToOpartionNode>(TEXT("Add ConverTo Operation Node"), TEXT("Add ConverTo operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UCropOpartionNode>(TEXT("Add Crop Operation Node"), TEXT("Add Crop operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-
+	FroxSchemaUtils::AddAction<UFrameSizeOpartionNode>(TEXT("Add FramSize Node"), TEXT("Add FrameSize node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<USubFlowNode>(TEXT("Add SubFlow Operation Node"), TEXT("Add SubFlow operation node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 
 	for (TSharedPtr<FEdGraphSchemaAction> Action : Actions)

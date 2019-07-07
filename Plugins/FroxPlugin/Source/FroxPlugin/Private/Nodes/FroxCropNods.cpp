@@ -13,6 +13,15 @@ void UCropOpartionNode::AllocateDefaultPins()
 {
 	Super::AllocateDefaultPins();
 
+	UEdGraphPin* OffsetPin = CreatePin(EGPD_Input, UFroxNodeBase::PC_Property, FFroxTypeDefinition::IntType, TEXT("Offset"));
+	OffsetPin->DefaultValue = TEXT("0, 0");
+	OffsetPin->bAdvancedView = true;
+
+	UEdGraphPin* SizePin = CreatePin(EGPD_Input, UFroxNodeBase::PC_Property, FFroxTypeDefinition::IntType, TEXT("Size"));
+	SizePin->DefaultValue = TEXT("1, 1");
+	SizePin->bAdvancedView = true;
+
+	/*
 	UEdGraphPin* XPin = CreatePin(EGPD_Input, UFroxNodeBase::PC_Property, FFroxTypeDefinition::IntType, TEXT("X"));
 	XPin->DefaultValue = TEXT("0");
 	XPin->bAdvancedView = true;
@@ -28,7 +37,7 @@ void UCropOpartionNode::AllocateDefaultPins()
 	UEdGraphPin* HeightPin = CreatePin(EGPD_Input, UFroxNodeBase::PC_Property, FFroxTypeDefinition::IntType, TEXT("Height"));
 	HeightPin->DefaultValue = TEXT("1");
 	HeightPin->bAdvancedView = true;
-
+	*/
 	if (ENodeAdvancedPins::NoPins == AdvancedPinDisplay)
 	{
 		AdvancedPinDisplay = ENodeAdvancedPins::Hidden;
@@ -43,7 +52,8 @@ frox::ComputeNode* UCropOpartionNode::CreateFroxNode(frox::ComputeFlow* Flow) co
 	auto CropNode = Flow->CreateNode<frox::CropComputeNode>();
 	check(CropNode != nullptr);
 
-	CropNode->SetRect(frox::Rect{X, Y, Width, Height});
+	CropNode->SetOffset(frox::Point{ Offset.X, Offset.Y });
+	CropNode->SetSize(frox::Size{ uint32(Size.X), uint32(Size.Y) });
 
 	return CropNode;
 }

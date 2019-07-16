@@ -56,9 +56,9 @@ void FFroxPlugin::StartupModule()
 	// Add on the relative location of the third party dll and load it
 	FString LibraryPath;
 #if PLATFORM_WINDOWS
-	LibraryPath = FPaths::Combine(*BaseDir, TEXT("Binaries/ThirdParty/FroxPluginLibrary/Win64/Frox.dll"));
+	LibraryPath = FPaths::Combine(*BaseDir, TEXT("Binaries/Win64/Frox.dll"));
 #elif PLATFORM_MAC
-    LibraryPath = FPaths::Combine(*BaseDir, TEXT("Source/ThirdParty/FroxPluginLibrary/Mac/Release/libFrox.dylib"));
+    LibraryPath = FPaths::Combine(*BaseDir, TEXT("Source/Mac/Release/libFrox.dylib"));
 #endif // PLATFORM_WINDOWS
 
 	FroxLibraryHandle = !LibraryPath.IsEmpty() ? FPlatformProcess::GetDllHandle(*LibraryPath) : nullptr;

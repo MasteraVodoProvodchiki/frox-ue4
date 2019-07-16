@@ -20,6 +20,11 @@
       "LoadingPhase": "Default"
     },
     {
+      "Name": "FroxDepthSensorPlugin",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
       "Name": "FroxEditorPlugin",
       "Type": "Editor",
       "LoadingPhase": "Default"

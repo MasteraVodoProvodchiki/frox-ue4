@@ -25,6 +25,11 @@
       "LoadingPhase": "Default"
     },
     {
+      "Name": "FroxIntelRealSensePlugin",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
       "Name": "FroxEditorPlugin",
       "Type": "Editor",
       "LoadingPhase": "Default"

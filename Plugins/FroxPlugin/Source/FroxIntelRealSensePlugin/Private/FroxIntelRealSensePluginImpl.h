@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "FroxDepthSensorPlugin.h"
+#include "FroxIntelRealSensePlugin.h"
 
-class FFroxDepthSensorPlugin : public IFroxDepthSensorPlugin
+class FFroxIntelRealSensePlugin : public IFroxIntelRealSensePlugin
 {
 public:
 	/** IModuleInterface implementation */

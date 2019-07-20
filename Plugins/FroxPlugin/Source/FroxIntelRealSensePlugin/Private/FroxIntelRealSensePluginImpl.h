@@ -2,23 +2,16 @@
 
 #pragma once
 
-#include "FroxPlugin.h"
+#include "FroxIntelRealSensePlugin.h"
 
-class FFroxPlugin : public IFroxPlugin
+class FFroxIntelRealSensePlugin : public IFroxIntelRealSensePlugin
 {
 public:
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
-	/** IFroxPlugin implementation */
-	virtual frox::Frox* GetFrox() const override
-	{
-		return FroxLib;
-	}
-
 private:
 	/** Handle to the test dll we will load */
-	void* FroxLibraryHandle = nullptr;
-	frox::Frox* FroxLib;
+	void* LibraryHandle = nullptr;
 };

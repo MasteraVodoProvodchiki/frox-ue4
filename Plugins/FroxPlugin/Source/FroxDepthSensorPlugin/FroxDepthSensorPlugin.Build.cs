@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using UnrealBuildTool;
 
-public class FroxPlugin : ModuleRules
+public class FroxDepthSensorPlugin : ModuleRules
 {
     private void CopyFile(string FilePath, string DirectoryTo)
     {
@@ -17,35 +17,35 @@ public class FroxPlugin : ModuleRules
             File.Copy(FilePath, Path.Combine(DirectoryTo, FileName), true);
     }
 
-    public FroxPlugin(ReadOnlyTargetRules Target) : base(Target)
+    public FroxDepthSensorPlugin(ReadOnlyTargetRules Target) : base(Target)
 	{
         /*
         if (Target.Platform == UnrealTargetPlatform.Win64)
         {
-            PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "../ThirdParty/Frox/", "Frox"));
+            PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "../ThirdParty/FroxDepthSensor/", "Frox"));
 
             // Add the import library
             string BinariesPath = Path.Combine(ModuleDirectory, "../ThirdParty/Frox/", "x64", "Release");
             PublicLibraryPaths.Add(BinariesPath);
-            PublicAdditionalLibraries.Add("Frox.lib");
+            PublicAdditionalLibraries.Add("FroxDepthSensor.lib");
 
             // Delay-load the DLL, so we can load it from the right place first
-            PublicDelayLoadDLLs.Add("Frox.dll");
+            PublicDelayLoadDLLs.Add("FroxDepthSensor.dll");
 
             string PlatformString = Target.Platform.ToString();
             string ProjectPath = Path.Combine(ModuleDirectory, "../..");
             string ProjectBinariesPath = Path.Combine(ProjectPath, "Binaries/", PlatformString);
-            CopyFile(Path.Combine(BinariesPath, "Frox.dll"), ProjectBinariesPath);
+            CopyFile(Path.Combine(BinariesPath, "FroxDepthSensor.dll"), ProjectBinariesPath);
         }
         else if (Target.Platform == UnrealTargetPlatform.Mac)
         {
-            PublicDelayLoadDLLs.Add(Path.Combine(ModuleDirectory, "Mac", "Release", "libFrox.dylib"));
+            PublicDelayLoadDLLs.Add(Path.Combine(ModuleDirectory, "Mac", "Release", "libFroxDepthSensor.dylib"));
         }
         */
 
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		
-		PublicIncludePaths.AddRange(
+
+        PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...
 			}
@@ -66,9 +66,9 @@ public class FroxPlugin : ModuleRules
                 "CoreUObject",
                 "Engine",
                 "InputCore",
-                "ImageWrapper",
                 "FroxPluginLibrary",
-				"Projects"
+                "FroxPlugin",
+                "Projects"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

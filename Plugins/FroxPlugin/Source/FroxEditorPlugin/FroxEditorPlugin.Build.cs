@@ -31,6 +31,7 @@ public class FroxEditorPlugin : ModuleRules
                 "Engine",
                 "UnrealEd",
                 "FroxPlugin",
+                "FroxDepthSensorPlugin",
 
                 "AssetTools",
                 "AssetRegistry",

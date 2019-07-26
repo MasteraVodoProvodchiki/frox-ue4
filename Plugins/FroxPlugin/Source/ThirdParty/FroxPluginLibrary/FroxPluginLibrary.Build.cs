@@ -45,6 +45,7 @@ public class FroxPluginLibrary : ModuleRules
             CopyFile(Path.Combine(BinariesPath, "FroxDepthSensor.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "FroxIntelRealSense.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "realsense2.dll"), ProjectBinariesPath);
+            CopyFile(Path.Combine(BinariesPath, "opencv_world410.dll"), ProjectBinariesPath);
         }
         else if (Target.Platform == UnrealTargetPlatform.Mac)
         {

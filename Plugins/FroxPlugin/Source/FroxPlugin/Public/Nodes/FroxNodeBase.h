@@ -37,7 +37,9 @@ public:
 #if WITH_EDITORONLY_DATA
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;
 	bool CycleInspection(uint32 UniqueID);
+	bool ReallocatePins();
 #endif //WITH_EDITORONLY_DATA
+
 
 	/** Identify that this node has undergone changes that will require synchronization with a compiled script.*/
 	void MarkNodeRequiresSynchronization(FString Reason, bool bRaiseGraphNeedsRecompile);

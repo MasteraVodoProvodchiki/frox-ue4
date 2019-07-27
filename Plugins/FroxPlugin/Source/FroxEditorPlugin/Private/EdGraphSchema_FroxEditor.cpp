@@ -7,6 +7,7 @@
 #include "Nodes/FroxConvertNods.h"
 #include "Nodes/FroxCropNods.h"
 #include "Nodes/FroxSubFlowNods.h"
+#include "Nodes/FroxTaskNode.h"
 #include "Nodes/FroxConstNods.h"
 #include "Nodes/FroxFrameNods.h"
 #include "Nodes/UE4CustomNods.h"
@@ -140,7 +141,8 @@ void UEdGraphSchema_FroxEditor::GetGraphContextActions(FGraphContextMenuBuilder&
 	FroxSchemaUtils::AddAction<UCropOpartionNode>(TEXT("Add Crop Operation Node"), TEXT("Add Crop operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UFrameSizeOpartionNode>(TEXT("Add FramSize Node"), TEXT("Add FrameSize node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<USubFlowNode>(TEXT("Add SubFlow Operation Node"), TEXT("Add SubFlow operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-
+	FroxSchemaUtils::AddAction<UFroxTaskNode>(TEXT("Add Task Node"), TEXT("Add Task to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	
 	FroxSchemaUtils::AddAction<UFroxSensorDepthFrameNode>(TEXT("Add SensorDepthFrame Operation Node"), TEXT("Add SensorDepthFrame operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UFroxSensorColorFrameNode>(TEXT("Add SensorColorFrame Operation Node"), TEXT("Add SensorColorFrame operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UFroxSensorInfraredFrameNode>(TEXT("Add SensorInfraredFrame Operation Node"), TEXT("Add SensorInfraredFrame operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);

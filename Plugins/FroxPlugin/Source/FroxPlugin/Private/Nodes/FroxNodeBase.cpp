@@ -2,6 +2,7 @@
 
 const FName UFroxNodeBase::PC_Frame(TEXT("frame"));
 const FName UFroxNodeBase::PC_Property(TEXT("property"));
+const FName UFroxNodeBase::PC_Data(TEXT("data"));
 const FName UFroxNodeBase::PC_Any(TEXT("any"));
 
 #if WITH_EDITORONLY_DATA

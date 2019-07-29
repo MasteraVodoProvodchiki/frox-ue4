@@ -32,6 +32,7 @@ public:
 
 	static const FName PC_Frame;
 	static const FName PC_Property;
+	static const FName PC_Data;
 	static const FName PC_Any;
 
 #if WITH_EDITORONLY_DATA

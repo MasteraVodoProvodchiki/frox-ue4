@@ -10,6 +10,7 @@
 #include "Nodes/FroxTaskNode.h"
 #include "Nodes/FroxConstNods.h"
 #include "Nodes/FroxFrameNods.h"
+#include "Nodes/FroxFindContoursNode.h"
 #include "Nodes/UE4CustomNods.h"
 #include "FroxSensorFrameNods.h"
 
@@ -140,6 +141,9 @@ void UEdGraphSchema_FroxEditor::GetGraphContextActions(FGraphContextMenuBuilder&
 	FroxSchemaUtils::AddAction<UConvertToOpartionNode>(TEXT("Add ConverTo Operation Node"), TEXT("Add ConverTo operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UCropOpartionNode>(TEXT("Add Crop Operation Node"), TEXT("Add Crop operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UFrameSizeOpartionNode>(TEXT("Add FramSize Node"), TEXT("Add FrameSize node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	
+	FroxSchemaUtils::AddAction<UFroxFindContoursNode>(TEXT("Add FindContours Node"), TEXT("Add FindContours node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+
 	FroxSchemaUtils::AddAction<USubFlowNode>(TEXT("Add SubFlow Operation Node"), TEXT("Add SubFlow operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UFroxTaskNode>(TEXT("Add Task Node"), TEXT("Add Task to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	

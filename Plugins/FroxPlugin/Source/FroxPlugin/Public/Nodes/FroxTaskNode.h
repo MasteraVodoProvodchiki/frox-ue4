@@ -33,4 +33,6 @@ public:
 	/** value of frame  */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UFroxTask_BlueprintBase* Task;
+
+	void OnReceiveExecute();
 };

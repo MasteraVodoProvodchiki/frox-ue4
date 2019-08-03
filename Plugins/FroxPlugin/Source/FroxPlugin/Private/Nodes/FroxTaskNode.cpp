@@ -51,7 +51,7 @@ public:
 	}
 };
 
-FROX_COMPUTENODE_IMPL(UE4CustomTaskComputeNode)
+// FROX_COMPUTENODE_IMPL(UE4CustomTaskComputeNode)
 
 } // End frox
 

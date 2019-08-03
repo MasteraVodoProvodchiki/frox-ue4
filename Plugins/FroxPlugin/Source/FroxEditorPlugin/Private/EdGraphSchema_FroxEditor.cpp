@@ -143,6 +143,7 @@ void UEdGraphSchema_FroxEditor::GetGraphContextActions(FGraphContextMenuBuilder&
 	FroxSchemaUtils::AddAction<UFrameSizeOpartionNode>(TEXT("Add FramSize Node"), TEXT("Add FrameSize node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	
 	FroxSchemaUtils::AddAction<UFroxFindContoursNode>(TEXT("Add FindContours Node"), TEXT("Add FindContours node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	FroxSchemaUtils::AddAction<UFroxCenterOfContourNode>(TEXT("Add CenterOfContour Node"), TEXT("Add CenterOfContour node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 
 	FroxSchemaUtils::AddAction<USubFlowNode>(TEXT("Add SubFlow Operation Node"), TEXT("Add SubFlow operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UFroxTaskNode>(TEXT("Add Task Node"), TEXT("Add Task to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);

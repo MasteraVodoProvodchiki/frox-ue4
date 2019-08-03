@@ -21,6 +21,21 @@ bool FComputeFlowEntry::operator==(const FComputeFlowEntry& Other) const
 		) || (KeyType == NULL && Other.KeyType == NULL));
 }
 
+frox::EPinValueType FlowKeyTypeToPionType(UComputeFlowKeyType* KeyType)
+{
+	if (KeyType->IsA(UComputeFlowKeyType_Frame::StaticClass()))
+	{
+		return frox::EPinValueType::Frame;
+	}
+	if (KeyType->IsA(UComputeFlowKeyType_Data::StaticClass()))
+	{
+		return frox::EPinValueType::Data;
+	}
+	
+	return frox::EPinValueType::Value;
+}
+
+
 FName UFroxComputeFlowAsset::GetComputeFlowName() const
 {
 	return computeFlowFileName;
@@ -212,10 +227,7 @@ void UFroxComputeFlowAsset::InitializeFlowInputs(frox::ComputeFlow* ComputeFlow,
 			continue;
 		}
 
-		frox::EPinValueType PinValueType = Entry.KeyType->IsA(UComputeFlowKeyType_Frame::StaticClass()) ?
-			frox::EPinValueType::Frame :
-			frox::EPinValueType::Value;
-	
+		frox::EPinValueType PinValueType = FlowKeyTypeToPionType(Entry.KeyType);
 		uint32_t EntryId = ComputeFlow->FindOrCreateEntry(EntryName, PinValueType);
 
 		// Only for output

@@ -252,6 +252,10 @@ FLinearColor UEdGraphSchema_FroxEditor::GetPinTypeColor(const FEdGraphPinType& P
 	{
 		return Settings->ExecutionPinTypeColor;
 	}
+	else if (PinType.PinCategory == UFroxNodeBase::PC_Data)
+	{
+		return Settings->ExecutionPinTypeColor;
+	}
 	else if (PinType.PinCategory == UFroxNodeBase::PC_Property)
 	{
 		if (PinType.PinSubCategory == FFroxTypeDefinition::BoolType)

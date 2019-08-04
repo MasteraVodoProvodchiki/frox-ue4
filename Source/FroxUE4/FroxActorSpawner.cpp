@@ -5,7 +5,7 @@
 #include "FroxComputeData.h"
 #include "Engine/World.h"
 
-#include "Frox/Frox/CenterOfContourComputeNode.h"
+#include "Frox/Frox/RadiusOfContourComputeNode.h"
 
 // Sets default values
 AFroxActorSpawner::AFroxActorSpawner()
@@ -56,22 +56,28 @@ void AFroxActorSpawner::UpdateActors()
 	check(ComputeData != nullptr && SpawnClass != nullptr);
 
 	frox::ComputeDataPtr FroxComputeData = ComputeData->GetFroxData();
-	frox::CenterOfContourComputeData* CenterOfContourData = FroxComputeData->As<frox::CenterOfContourComputeData>();
+	frox::RadiusOfContourComputeData* RadiusOfContourData = FroxComputeData->As<frox::RadiusOfContourComputeData>();
 
-	if (CenterOfContourData != nullptr && SpawnedActors.Num() != CenterOfContourData->Points.size())
+	if (RadiusOfContourData != nullptr && SpawnedActors.Num() != RadiusOfContourData->Values.size())
 	{
-		for (frox::Point point : CenterOfContourData->Points)
+		for (auto& value : RadiusOfContourData->Values)
 		{
 			FTransform Transform = GetActorTransform();
-			FTransform LocalTransform = FTransform(FVector{
-				float(point.X),
-				float(point.Y),
-				0.f
-			} * Scale);
-
+			FTransform LocalTransform = FTransform(
+				FRotator::ZeroRotator,
+				FVector{
+					float(value.Center.X),
+					float(value.Center.Y),
+					0.f
+				} * Scale,
+				FVector(value.Radius)
+			);
+			
 			FTransform WorldTransform = LocalTransform * Transform;
 			AActor* SpawnedActor = GetWorld()->SpawnActor(SpawnClass, &WorldTransform);
 			SpawnedActors.Add(SpawnedActor);
+
+			SpawnedActor->SetActorScale3D(FVector(value.Radius));
 		}
 	}
 }

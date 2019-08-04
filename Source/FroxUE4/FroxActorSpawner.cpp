@@ -62,14 +62,15 @@ void AFroxActorSpawner::UpdateActors()
 	{
 		for (frox::Point point : CenterOfContourData->Points)
 		{
-			FVector Local = FVector{
+			FTransform Transform = GetActorTransform();
+			FTransform LocalTransform = FTransform(FVector{
 				float(point.X),
 				float(point.Y),
 				0.f
-			} * Scale;
+			} * Scale);
 
-			FVector Location = Local + GetActorLocation();
-			AActor* SpawnedActor = GetWorld()->SpawnActor(SpawnClass, &Location);
+			FTransform WorldTransform = LocalTransform * Transform;
+			AActor* SpawnedActor = GetWorld()->SpawnActor(SpawnClass, &WorldTransform);
 			SpawnedActors.Add(SpawnedActor);
 		}
 	}

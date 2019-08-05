@@ -34,7 +34,7 @@ public:
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	EFroxFindContoursMode Mode;
+	EFroxFindContoursMode Mode = EFroxFindContoursMode::External;
 };
 
 UCLASS()

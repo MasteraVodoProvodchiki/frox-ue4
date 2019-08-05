@@ -64,3 +64,12 @@ class UComputeFlowKeyType_Frame : public UComputeFlowKeyType
 public:
 
 };
+
+UCLASS(EditInlineNew, meta = (DisplayName = "Data"))
+class UComputeFlowKeyType_Data : public UComputeFlowKeyType
+{
+	GENERATED_BODY()
+
+public:
+
+};

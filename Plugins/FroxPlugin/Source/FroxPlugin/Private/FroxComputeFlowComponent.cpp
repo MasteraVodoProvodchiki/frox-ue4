@@ -1,6 +1,7 @@
 #include "FroxComputeFlowComponent.h"
 #include "FroxComputeFlowAsset.h"
 #include "FroxComputeFrame.h"
+#include "FroxComputeData.h"
 #include "FroxPlugin.h"
 #include "Shared.h"
 #include "Nodes/FroxNods.h"
@@ -9,6 +10,7 @@
 #include "Frox/Frox/FlowPerformer.h"
 #include "Frox/Frox/FlowData.h"
 #include "Frox/Frox/ComputeFrame.h"
+#include "Frox/Frox/ComputeData.h"
 #include "Frox/Frox/ComputeNode.h"
 
 #include "Engine/Engine.h"
@@ -223,6 +225,12 @@ UFroxComputeFrame* UFroxComputeFlowComponent::GetValueAsFrame(const FName& KeyNa
 	return Found ? *Found : nullptr;
 }
 
+UFroxComputeData* UFroxComputeFlowComponent::GetValueAsData(const FName& KeyName) const
+{
+	auto Found = DataValues.Find(KeyName);
+	return Found ? *Found : nullptr;
+}
+
 void UFroxComputeFlowComponent::SetValueAsInt(const FName& KeyName, int32 IntValue)
 {
 	IntValues.Add(KeyName, IntValue);
@@ -244,6 +252,12 @@ void UFroxComputeFlowComponent::SetValueAsBool(const FName& KeyName, bool BoolVa
 void UFroxComputeFlowComponent::SetValueAsFrame(const FName& KeyName, UFroxComputeFrame* ComputeFrame)
 {
 	FrameValues.Add(KeyName, ComputeFrame);
+	OnValueChanged.Broadcast(KeyName);
+}
+
+void UFroxComputeFlowComponent::SetValueAsData(const FName& KeyName, UFroxComputeData* ComputeData)
+{
+	DataValues.Add(KeyName, ComputeData);
 	OnValueChanged.Broadcast(KeyName);
 }
 
@@ -350,6 +364,30 @@ UFroxComputeFrame* UFroxComputeFlowComponent::FetchFrame(const frox::FlowData& D
 	return ComputeFrame;
 }
 
+UFroxComputeData* UFroxComputeFlowComponent::FetchData(const frox::FlowData& Data, FName EntryID) const
+{
+	ANSICHAR EntryName[1024];
+	EntryID.GetPlainANSIString(EntryName);
+
+	UFroxComputeData* ComputeData = nullptr;
+	frox::ComputeDataPtr FroxData = Data.GetData(EntryName);
+	if (FroxData)
+	{
+		ComputeData = GetValueAsData(EntryName);
+		if (ComputeData != nullptr)
+		{
+			ComputeData->SetFroxData(FroxData);
+		}
+		else
+		{
+			ComputeData = NewObject<UFroxComputeData>();
+			ComputeData->SetFroxData(FroxData);
+		}
+	}
+
+	return ComputeData;
+}
+
 void UFroxComputeFlowComponent::FetchFlow()
 {
 	check(ComputeFlow != nullptr);
@@ -373,6 +411,14 @@ void UFroxComputeFlowComponent::FetchFlow()
 				if (ComputeFrame != nullptr)
 				{
 					SetValueAsFrame(EntryName, ComputeFrame);
+				}
+			}
+			else if (KeyType->IsA(UComputeFlowKeyType_Data::StaticClass()))
+			{
+				UFroxComputeData* ComputeData = FetchData(*OutputData, EntryName);
+				if (ComputeData != nullptr)
+				{
+					SetValueAsData(EntryName, ComputeData);
 				}
 			}
 			else
@@ -428,6 +474,15 @@ void UFroxComputeFlowComponent::PerformFlow()
 				{
 					frox::ComputeFramePtr FroxFrame = ComputeFrame->GetFroxFrame();
 					InputData->SetFrame(EntryNameAnsi, FroxFrame);
+				}
+			}
+			else if (KeyType->IsA(UComputeFlowKeyType_Data::StaticClass()))
+			{
+				UFroxComputeData* ComputeData = GetValueAsData(Entry.EntryName);
+				if (ComputeData != nullptr)
+				{
+					frox::ComputeDataPtr FroxData = ComputeData->GetFroxData();
+					InputData->SetData(EntryNameAnsi, FroxData);
 				}
 			}
 			else if(KeyType->IsA(UComputeFlowKeyType_Bool::StaticClass()))

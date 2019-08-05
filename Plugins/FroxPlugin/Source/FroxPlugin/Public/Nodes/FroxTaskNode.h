@@ -1,19 +1,19 @@
 #pragma once
 
 #include "FroxNods.h"
-#include "FroxSubFlowNods.generated.h"
+#include "FroxTaskNode.generated.h"
 
-class UFroxComputeFlowAsset;
+class UFroxTask_BlueprintBase;
 
 UCLASS()
-class FROXPLUGIN_API USubFlowNode : public UOpartionNode
+class FROXPLUGIN_API UFroxTaskNode : public UOpartionNode
 {
 	GENERATED_BODY()
 
 public:
 	//~ Begin UOpartionNode
-	virtual const char* GetTypeName() const override { return "subflow"; }
-	virtual const char* GetTitle() const override { return "SubFlow"; }
+	virtual const char* GetTypeName() const override { return "task"; }
+	virtual const char* GetTitle() const override { return "Taks"; }
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
 	//~ Begin UOpartionNode
 
@@ -32,5 +32,7 @@ public:
 public:
 	/** value of frame  */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	UFroxComputeFlowAsset* ComputeFlow;
+	UFroxTask_BlueprintBase* Task;
+
+	void OnReceiveExecute();
 };

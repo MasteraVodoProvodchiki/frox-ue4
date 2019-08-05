@@ -17,4 +17,5 @@ public:
 	static const FName EnumType;
 	static const FName FloatType;
 	static const FName FrameType;
+	static const FName DataType;
 };

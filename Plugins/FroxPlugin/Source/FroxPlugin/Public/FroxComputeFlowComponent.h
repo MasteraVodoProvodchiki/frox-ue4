@@ -6,7 +6,8 @@
 #include "FroxComputeFlowComponent.generated.h"
 
 class UFroxComputeFlowAsset;
-class FroxComputeFrame;
+class UFroxComputeFrame;
+class UFroxComputeData;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FValueChanged, FName, Name);
 
@@ -77,6 +78,9 @@ public:
 	UFroxComputeFrame* GetValueAsFrame(const FName& KeyName = NAME_None) const;
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	UFroxComputeData* GetValueAsData(const FName& KeyName = NAME_None) const;
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
 	void SetValueAsInt(const FName& KeyName = NAME_None, int32 IntValue = 0);
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
@@ -87,6 +91,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
 	void SetValueAsFrame(const FName& KeyName, UFroxComputeFrame* ComputeFrame);
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	void SetValueAsData(const FName& KeyName, UFroxComputeData* ComputeData);
 
 	UPROPERTY(BlueprintAssignable, Category = "Frox|Components|Data")
 	FValueChanged OnValueChanged;
@@ -102,6 +109,7 @@ private:
 	void ReleaseFlow();
 
 	UFroxComputeFrame* FetchFrame(const frox::FlowData& Data, FName EntryID) const;
+	UFroxComputeData* FetchData(const frox::FlowData& Data, FName EntryID) const;
 	void FetchFlow();
 	void PerformFlow();
 	
@@ -123,4 +131,7 @@ private:
 
 	UPROPERTY()
 	TMap<FName, UFroxComputeFrame*> FrameValues;
+
+	UPROPERTY()
+	TMap<FName, UFroxComputeData*> DataValues;
 };

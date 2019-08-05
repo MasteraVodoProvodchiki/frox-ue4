@@ -8,3 +8,4 @@ const FName FFroxTypeDefinition::UInt32Type(TEXT("uint32"));
 const FName FFroxTypeDefinition::EnumType(TEXT("enum"));
 const FName FFroxTypeDefinition::FloatType(TEXT("float"));
 const FName FFroxTypeDefinition::FrameType(TEXT("frame"));
+const FName FFroxTypeDefinition::DataType(TEXT("data"));

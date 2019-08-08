@@ -12,6 +12,7 @@
 #include "Nodes/FroxFrameNods.h"
 #include "Nodes/FroxFindContoursNode.h"
 #include "Nodes/UE4ImageReaderNode.h"
+#include "Nodes/UE4CustomNode.h"
 #include "FroxSensorFrameNods.h"
 
 #include "EdGraph/EdGraph.h"

@@ -10,6 +10,10 @@ class UFroxComputeFlowGraph : public UEdGraph
 {
 	GENERATED_UCLASS_BODY()
 
-protected:
-
+public:
+	virtual void PostInitProperties() override;
+	virtual void PostLoad() override;
+private:
+	UEdGraphNode* CreateInputNode();
+	UEdGraphNode* CreateOutputNode();
 };

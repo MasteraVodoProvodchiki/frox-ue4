@@ -54,9 +54,20 @@ FEdGraphSchemaAction_ComputeFlowEntry::FEdGraphSchemaAction_ComputeFlowEntry(UFr
 	Update();
 }
 
+template<typename TEnum>
+static FORCEINLINE FString GetEnumValueAsString(const FString& Name, TEnum Value)
+{
+	const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, *Name, true);
+	if (!enumPtr)
+	{
+		return FString("Invalid");
+	}
+	return enumPtr->GetNameByValue((int64)Value).ToString();
+}
+
 void FEdGraphSchemaAction_ComputeFlowEntry::Update()
 {
-	UpdateSearchData(FText::FromName(Key.EntryName), FText::Format(LOCTEXT("ComputePropsEntryFormat", "{0} '{1}'"), Key.KeyType ? Key.KeyType->GetClass()->GetDisplayNameText() : LOCTEXT("NullKeyDesc", "None"), FText::FromName(Key.EntryName)), FText(), FText());
+	UpdateSearchData(FText::FromName(Key.EntryName), FText::Format(LOCTEXT("ComputePropsEntryFormat", "{0} '{1}'"), FText::FromString(GetEnumValueAsString("EComputeFlowKeyType", Key.KeyType)), FText::FromName(Key.EntryName)), FText(), FText());
 	SectionID = EComputePropsSectionTitles::Keys; // bIsInherited ? EComputePropsSectionTitles::InheritedKeys : EComputePropsSectionTitles::Keys;
 }
 
@@ -118,9 +129,9 @@ private:
 		check(InGraphAction->GetTypeId() == FEdGraphSchemaAction_ComputeFlowEntry::StaticGetTypeId());
 		TSharedPtr<FEdGraphSchemaAction_ComputeFlowEntry> ComputeFlowAction = StaticCastSharedPtr<FEdGraphSchemaAction_ComputeFlowEntry>(InGraphAction);
 
-		if (ComputeFlowAction->Key.KeyType)
+		if (ComputeFlowAction->Key.KeyType != EComputeFlowKeyType::ECFKT_None)
 		{
-			OutIconBrush = FSlateIconFinder::FindIconBrushForClass(ComputeFlowAction->Key.KeyType->GetClass());
+			//OutIconBrush = FSlateIconFinder::FindIconBrushForClass(ComputeFlowAction->Key.KeyType->GetClass());
 		}
 	}
 

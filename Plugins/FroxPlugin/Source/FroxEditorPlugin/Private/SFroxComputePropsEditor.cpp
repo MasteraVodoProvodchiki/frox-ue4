@@ -168,18 +168,19 @@ public:
 
 	virtual bool IsClassAllowed(const FClassViewerInitializationOptions& InInitOptions, const UClass* InClass, TSharedRef< FClassViewerFilterFuncs > InFilterFuncs) override
 	{
-		if (InClass != nullptr)
+		/*if (InClass != nullptr)
 		{
 			return !InClass->HasAnyClassFlags(CLASS_Abstract | CLASS_HideDropDown) &&
 				InClass->HasAnyClassFlags(CLASS_EditInlineNew) &&
 				InClass->IsChildOf(UComputeFlowKeyType::StaticClass());
-		}
+		}*/
 		return false;
 	}
 
 	virtual bool IsUnloadedClassAllowed(const FClassViewerInitializationOptions& InInitOptions, const TSharedRef< const IUnloadedBlueprintData > InUnloadedClassData, TSharedRef< FClassViewerFilterFuncs > InFilterFuncs) override
 	{
-		return InUnloadedClassData->IsChildOf(UComputeFlowKeyType::StaticClass());
+		//return InUnloadedClassData->IsChildOf(UComputeFlowKeyType::StaticClass());
+		return false;
 	}
 };
 
@@ -218,7 +219,7 @@ void SFroxComputePropsEditor::HandleKeyClassPicked(UClass* InClass)
 	FSlateApplication::Get().DismissAllMenus();
 
 	check(InClass);
-	check(InClass->IsChildOf(UComputeFlowKeyType::StaticClass()));
+	//check(InClass->IsChildOf(UComputeFlowKeyType::StaticClass()));
 
 	const FScopedTransaction Transaction(LOCTEXT("ComputeFlowdEntryAddTransaction", "Add ComputeFlow Entry"));
 	ComputeFlow->SetFlags(RF_Transactional);
@@ -257,7 +258,7 @@ void SFroxComputePropsEditor::HandleKeyClassPicked(UClass* InClass)
 
 	FComputeFlowEntry Entry;
 	Entry.EntryName = FName(*NewKeyName);
-	Entry.KeyType = NewObject<UComputeFlowKeyType>(ComputeFlow, InClass);
+	//Entry.KeyType = NewObject<UComputeFlowKeyType>(ComputeFlow, InClass);
 
 	ComputeFlow->Keys.Add(Entry);
 

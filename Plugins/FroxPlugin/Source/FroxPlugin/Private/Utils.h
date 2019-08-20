@@ -3,4 +3,4 @@
 #include "ComputeFlowKeyType.h"
 #include "Frox/Frox/ComputeFrame.h"
 
-frox::EComputeFrameType KeyTypeToFroxType(UComputeFlowKeyType* KeyType);
+frox::EComputeFrameType KeyTypeToFroxType(EComputeFlowKeyType KeyType);

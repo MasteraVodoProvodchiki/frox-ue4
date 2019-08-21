@@ -19,6 +19,7 @@
 #include "Styling/CoreStyle.h"
 #include "ScopedTransaction.h"
 #include "AssetRegistryModule.h"
+#include "FroxNodeBase.h"
 
 #define LOCTEXT_NAMESPACE "SFroxComputePropsView"
 
@@ -52,17 +53,6 @@ FEdGraphSchemaAction_ComputeFlowEntry::FEdGraphSchemaAction_ComputeFlowEntry(UFr
 {
 	check(ComputeFlow);
 	Update();
-}
-
-template<typename TEnum>
-static FORCEINLINE FString GetEnumValueAsString(const FString& Name, TEnum Value)
-{
-	const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, *Name, true);
-	if (!enumPtr)
-	{
-		return FString("Invalid");
-	}
-	return enumPtr->GetNameByValue((int64)Value).ToString();
 }
 
 void FEdGraphSchemaAction_ComputeFlowEntry::Update()

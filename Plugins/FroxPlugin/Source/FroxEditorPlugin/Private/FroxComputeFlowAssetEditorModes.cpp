@@ -154,9 +154,8 @@ FFroxComputePropsEditorApplicationMode::FFroxComputePropsEditorApplicationMode(T
 {
 	ComputeFlowEditor = InComputeFlowEditor;
 
-/*	ComputePropsTabFactories.RegisterFactory(MakeShareable(new FFroxComputePropsEditorSummoner(InComputeFlowEditor)));
-	ComputePropsTabFactories.RegisterFactory(MakeShareable(new FFroxComputePropsDetailsSummoner(InComputeFlowEditor)));
-	*/
+	/*ComputePropsTabFactories.RegisterFactory(MakeShareable(new FFroxComputePropsEditorSummoner(InComputeFlowEditor)));
+	ComputePropsTabFactories.RegisterFactory(MakeShareable(new FFroxComputePropsDetailsSummoner(InComputeFlowEditor)));*/
 
 	TabLayout = FTabManager::NewLayout("Standalone_FroxPropsEditor_Layout_v2")
 		->AddArea

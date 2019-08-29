@@ -471,7 +471,8 @@ bool FFroxComputeFlowAssetEditor::CanDeleteNodes() const
 	const FGraphPanelSelectionSet SelectedNodes = GraphEditor->GetSelectedNodes();
 	for (FGraphPanelSelectionSet::TConstIterator NodeIt(SelectedNodes); NodeIt; ++NodeIt)
 	{
-		if (!CanDeleteNode(CastChecked<UEdGraphNode>(*NodeIt))) {
+		if (!CanDeleteNode(CastChecked<UEdGraphNode>(*NodeIt)))
+		{
 			return false;
 		}
 	}

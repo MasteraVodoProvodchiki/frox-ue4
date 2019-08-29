@@ -26,7 +26,7 @@ void UFroxComputeFlowGraph::PostLoad()
 	UEdGraphNode* InputNode = nullptr;
 	UEdGraphNode* OutputNode = nullptr;
 	TArray<UEdGraphNode*> Remove;
-	for (auto* Node : Nodes)
+	for (UEdGraphNode* Node : Nodes)
 	{
 		// Input
 		if (Node->IsA(UInputPropertyNode::StaticClass()))
@@ -53,7 +53,8 @@ void UFroxComputeFlowGraph::PostLoad()
 		}
 	}
 
-	for (UEdGraphNode* Node : Remove) {
+	for (UEdGraphNode* Node : Remove)
+	{
 		RemoveNode(Node);
 	}
 
@@ -74,19 +75,17 @@ void UFroxComputeFlowGraph::PostLoad()
 UEdGraphNode* UFroxComputeFlowGraph::CreateInputNode()
 {
 	UEdGraphNode* InputNode = CreateNode(UInputPropertyNode::StaticClass(), false, false);
-	auto pos = GetGoodPlaceForNewNode();
-	InputNode->NodePosX = pos.X;
-	InputNode->NodePosY = pos.Y;
-	//InputNode->Rename(TEXT("Input"), nullptr, REN_NonTransactional | REN_ForceNoResetLoaders);
+	FVector2D Pos = GetGoodPlaceForNewNode();
+	InputNode->NodePosX = Pos.X;
+	InputNode->NodePosY = Pos.Y;
 	return InputNode;
 }
 
 UEdGraphNode* UFroxComputeFlowGraph::CreateOutputNode()
 {
 	UEdGraphNode* OutputNode = CreateNode(UOutputPropertyNode::StaticClass(), false, false);
-	auto pos = GetGoodPlaceForNewNode();
-	OutputNode->NodePosX = pos.X;
-	OutputNode->NodePosY = pos.Y;
-	//OutputNode->Rename(TEXT("Output"), nullptr, REN_NonTransactional | REN_ForceNoResetLoaders);
+	FVector2D Pos = GetGoodPlaceForNewNode();
+	OutputNode->NodePosX = Pos.X;
+	OutputNode->NodePosY = Pos.Y;
 	return OutputNode;
 }

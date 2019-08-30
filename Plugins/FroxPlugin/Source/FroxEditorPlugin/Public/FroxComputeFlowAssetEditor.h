@@ -85,7 +85,7 @@ protected:
 	void SelectAllNodes();
 	bool CanSelectAllNodes() const;
 	void DeleteSelectedNodes();
-	bool CanDeleteNode(class UEdGraphNode* Node);
+	bool CanDeleteNode(const class UEdGraphNode* Node) const;
 	bool CanDeleteNodes() const;
 	void DeleteNodes(const TArray<class UEdGraphNode*>& NodesToDelete);
 	void CopySelectedNodes();

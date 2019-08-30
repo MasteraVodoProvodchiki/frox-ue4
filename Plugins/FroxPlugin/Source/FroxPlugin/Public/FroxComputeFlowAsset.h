@@ -33,17 +33,21 @@ struct FComputeFlowEntry
 #if WITH_EDITORONLY_DATA
 	UPROPERTY(EditAnywhere, Category = Frox, Meta = (ToolTip = "Optional description."))
 	FString EntryDescription;
+
+	UPROPERTY()
+	FGuid UniqueId;
 #endif // WITH_EDITORONLY_DATA
 
 	/** key type and additional properties */
-	UPROPERTY(EditAnywhere, Instanced, Category = Frox)
-	UComputeFlowKeyType* KeyType;
+	UPROPERTY(EditAnywhere, Category = Frox)
+	EComputeFlowKeyType KeyType;
 
 	UPROPERTY(EditAnywhere, Category = Frox)
 	EComputeFlowEntryDirection Direction;
 
 	FComputeFlowEntry()
-		: KeyType(nullptr)
+		: UniqueId(FGuid::NewGuid()),
+		KeyType(EComputeFlowKeyType::ECFKT_None)
 	{}
 
 	bool operator==(const FComputeFlowEntry& Other) const;
@@ -79,11 +83,11 @@ protected:
 
 private:
 	void InitializeFlowOperations(frox::ComputeFlow* ComputeFlow, const TArray<UOpartionNode*>& Operations, const TArray<NodePair>& Pairs) const;
-	void InitializeFlowInputs(frox::ComputeFlow* ComputeFlow, const TArray<UInputPropertyNode*>& Inputs, const TArray<NodePair>& Pairs) const;
-	void InitializeFlowOutputs(frox::ComputeFlow* ComputeFlow, const TArray<UOutputPropertyNode*>& Outputs, const TArray<NodePair>& Pairs) const;
+	void InitializeFlowInputs(frox::ComputeFlow* ComputeFlow, const UInputPropertyNode* Inputs, const TArray<NodePair>& Pairs) const;
+	void InitializeFlowOutputs(frox::ComputeFlow* ComputeFlow, const UOutputPropertyNode* Outputs, const TArray<NodePair>& Pairs) const;
 
 #if WITH_EDITORONLY_DATA
-
+	virtual void PostLoad() override;
 public:
 	void SetComputeFlowName(const FName &ComputeFlowFileName);
 

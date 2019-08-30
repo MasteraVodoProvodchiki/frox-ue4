@@ -461,13 +461,21 @@ void FFroxComputeFlowAssetEditor::DeleteSelectedNodes()
 	DeleteNodes(NodesToDelete);
 }
 
-bool FFroxComputeFlowAssetEditor::CanDeleteNode(UEdGraphNode* Node)
+bool FFroxComputeFlowAssetEditor::CanDeleteNode(const UEdGraphNode* Node) const
 {
-	return true;
+	return Node && Node->CanUserDeleteNode();
 }
 
 bool FFroxComputeFlowAssetEditor::CanDeleteNodes() const
 {
+	const FGraphPanelSelectionSet SelectedNodes = GraphEditor->GetSelectedNodes();
+	for (FGraphPanelSelectionSet::TConstIterator NodeIt(SelectedNodes); NodeIt; ++NodeIt)
+	{
+		if (!CanDeleteNode(CastChecked<UEdGraphNode>(*NodeIt)))
+		{
+			return false;
+		}
+	}
 	return true;
 }
 

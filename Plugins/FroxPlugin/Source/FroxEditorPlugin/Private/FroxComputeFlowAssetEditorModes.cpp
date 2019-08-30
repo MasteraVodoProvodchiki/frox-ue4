@@ -154,8 +154,8 @@ FFroxComputePropsEditorApplicationMode::FFroxComputePropsEditorApplicationMode(T
 {
 	ComputeFlowEditor = InComputeFlowEditor;
 
-	ComputePropsTabFactories.RegisterFactory(MakeShareable(new FFroxComputePropsEditorSummoner(InComputeFlowEditor)));
-	ComputePropsTabFactories.RegisterFactory(MakeShareable(new FFroxComputePropsDetailsSummoner(InComputeFlowEditor)));
+	/*ComputePropsTabFactories.RegisterFactory(MakeShareable(new FFroxComputePropsEditorSummoner(InComputeFlowEditor)));
+	ComputePropsTabFactories.RegisterFactory(MakeShareable(new FFroxComputePropsDetailsSummoner(InComputeFlowEditor)));*/
 
 	TabLayout = FTabManager::NewLayout("Standalone_FroxPropsEditor_Layout_v2")
 		->AddArea
@@ -170,7 +170,8 @@ FFroxComputePropsEditorApplicationMode::FFroxComputePropsEditorApplicationMode(T
 			)
 			->Split
 			(
-				FTabManager::NewSplitter()->SetOrientation(Orient_Horizontal)
+				FTabManager::NewStack()
+				/*FTabManager::NewSplitter()->SetOrientation(Orient_Horizontal)
 				->Split
 				(
 					FTabManager::NewStack()
@@ -180,9 +181,10 @@ FFroxComputePropsEditorApplicationMode::FFroxComputePropsEditorApplicationMode(T
 				(
 					FTabManager::NewStack()
 					->AddTab(FFroxEditorTabs::PropsDetailsID, ETabState::OpenedTab)
-				)
+				)*/
 			)
 		);
+//*/
 	
 	InComputeFlowEditor->GetToolbarBuilder()->AddModesToolbar(ToolbarExtender);
 }
@@ -202,10 +204,10 @@ void FFroxComputePropsEditorApplicationMode::RegisterTabFactories(TSharedPtr<FTa
 
 void FFroxComputePropsEditorApplicationMode::PostActivateMode()
 {
-	// Reopen any documents that were open when the BT was last saved
+	/*// Reopen any documents that were open when the BT was last saved
 	check(ComputeFlowEditor.IsValid());
 	TSharedPtr<FFroxComputeFlowAssetEditor> ComputeFlowEditorPtr = ComputeFlowEditor.Pin();
-	//	BehaviorTreeEditorPtr->StartEditingDefaults();
+	//	BehaviorTreeEditorPtr->StartEditingDefaults();*/
 
 	FApplicationMode::PostActivateMode();
 }

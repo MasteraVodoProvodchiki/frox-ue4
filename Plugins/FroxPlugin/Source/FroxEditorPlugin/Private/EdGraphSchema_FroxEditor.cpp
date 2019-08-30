@@ -123,8 +123,8 @@ void UEdGraphSchema_FroxEditor::GetGraphContextActions(FGraphContextMenuBuilder&
 	TArray<TSharedPtr<FEdGraphSchemaAction> > Actions;
 
 	// FroxSchemaUtils::AddAction<UPropertyNode>(TEXT("Add Property"), TEXT("Add input property node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UInputPropertyNode>(TEXT("Add Input Property"), TEXT("Add input property node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UOutputPropertyNode>(TEXT("Add Output Property"), TEXT("Add output property node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	// FroxSchemaUtils::AddAction<UInputPropertyNode>(TEXT("Add Input Property"), TEXT("Add input property node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
+	// FroxSchemaUtils::AddAction<UOutputPropertyNode>(TEXT("Add Output Property"), TEXT("Add output property node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	
 	FroxSchemaUtils::AddAction<UMakeFrameNode>(TEXT("Add Make Node"), TEXT("Add make node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	FroxSchemaUtils::AddAction<UMakeZeroFrameNode>(TEXT("Add Make Zero Node"), TEXT("Add make zero node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);

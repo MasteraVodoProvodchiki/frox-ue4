@@ -2,74 +2,15 @@
 
 #include "ComputeFlowKeyType.generated.h"
 
-UCLASS(EditInlineNew, Abstract, CollapseCategories, HideDropDown)
-class FROXPLUGIN_API UComputeFlowKeyType : public UObject
+UENUM(BlueprintType)
+enum class EComputeFlowKeyType : uint8
 {
-	GENERATED_BODY()
-
-public:
-
-};
-
-UCLASS(EditInlineNew, meta = (DisplayName = "UInt8"))
-class UComputeFlowKeyType_Uint8 : public UComputeFlowKeyType
-{
-	GENERATED_BODY()
-
-public:
-
-};
-
-UCLASS(EditInlineNew, meta = (DisplayName = "UInt16"))
-class UComputeFlowKeyType_Uint16 : public UComputeFlowKeyType
-{
-	GENERATED_BODY()
-
-public:
-
-};
-
-UCLASS(EditInlineNew, meta = (DisplayName = "UInt32"))
-class UComputeFlowKeyType_Uint32 : public UComputeFlowKeyType
-{
-	GENERATED_BODY()
-
-public:
-
-};
-
-UCLASS(EditInlineNew, meta = (DisplayName = "Float"))
-class UComputeFlowKeyType_Float : public UComputeFlowKeyType
-{
-	GENERATED_BODY()
-
-public:
-
-};
-
-UCLASS(EditInlineNew, meta = (DisplayName = "Bool"))
-class UComputeFlowKeyType_Bool : public UComputeFlowKeyType
-{
-	GENERATED_BODY()
-
-public:
-
-};
-
-UCLASS(EditInlineNew, meta = (DisplayName = "Frame"))
-class UComputeFlowKeyType_Frame : public UComputeFlowKeyType
-{
-	GENERATED_BODY()
-
-public:
-
-};
-
-UCLASS(EditInlineNew, meta = (DisplayName = "Data"))
-class UComputeFlowKeyType_Data : public UComputeFlowKeyType
-{
-	GENERATED_BODY()
-
-public:
-
+	ECFKT_None			UMETA(DisplayName = "None"),
+	ECFKT_Uint8			UMETA(DisplayName = "UInt8"),
+	ECFKT_Uint16		UMETA(DisplayName = "UInt16"),
+	ECFKT_Uint32		UMETA(DisplayName = "UInt32"),
+	ECFKT_Float			UMETA(DisplayName = "Float"),
+	ECFKT_Bool			UMETA(DisplayName = "Bool"),
+	ECFKT_Frame			UMETA(DisplayName = "Frame"),
+	ECFKT_Data			UMETA(DisplayName = "Data"),
 };

@@ -17,11 +17,11 @@ public:
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
 	//~ Begin UOpartionNode
 
+#if WITH_EDITORONLY_DATA
 	//~ Begin UObject
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 	//~ Begin UObject
 
-#if WITH_EDITORONLY_DATA
 	//~ Begin UEdGraphNode
 	virtual void AllocateDefaultPins() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;

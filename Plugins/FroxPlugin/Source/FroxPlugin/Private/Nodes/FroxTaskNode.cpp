@@ -69,6 +69,7 @@ frox::ComputeNode* UFroxTaskNode::CreateFroxNode(frox::ComputeFlow* Flow) const
 	return CustomTaskNode;
 }
 
+#if WITH_EDITORONLY_DATA
 void UFroxTaskNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	FName PropertyName = (PropertyChangedEvent.Property != nullptr) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
@@ -82,7 +83,6 @@ void UFroxTaskNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 	Modify();
 }
 
-#if WITH_EDITORONLY_DATA
 void UFroxTaskNode::AllocateDefaultPins()
 {
 	if (Task)

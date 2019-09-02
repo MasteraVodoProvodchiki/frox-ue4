@@ -17,7 +17,7 @@
 #include "EdGraph/EdGraph.h"
 #include "EdGraph/EdGraphPin.h"
 #include "GraphEditorSettings.h"
-#include "GenericCommands.h"
+#include "Framework/Commands/GenericCommands.h"
 #include "GraphEditorActions.h"
 #include "FroxConnectionDrawingPolicy.h"
 

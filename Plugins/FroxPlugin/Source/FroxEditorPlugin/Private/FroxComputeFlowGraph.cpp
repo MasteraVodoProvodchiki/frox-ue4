@@ -1,6 +1,6 @@
 #include "FroxComputeFlowGraph.h"
 #include "EdGraphSchema_FroxEditor.h"
-#include "FroxNods.h"
+#include "Nodes/FroxNods.h"
 
 UFroxComputeFlowGraph::UFroxComputeFlowGraph(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

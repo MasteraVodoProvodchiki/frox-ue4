@@ -1,4 +1,4 @@
-#include "FroxNods.h"
+#include "Nodes/FroxNods.h"
 #include "OperationLogic.h"
 
 #include "EdGraph/EdGraphPin.h"

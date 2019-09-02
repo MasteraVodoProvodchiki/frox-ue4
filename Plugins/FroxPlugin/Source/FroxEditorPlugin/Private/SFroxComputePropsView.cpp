@@ -19,7 +19,7 @@
 #include "Styling/CoreStyle.h"
 #include "ScopedTransaction.h"
 #include "AssetRegistryModule.h"
-#include "FroxNodeBase.h"
+#include "Nodes/FroxNodeBase.h"
 
 #define LOCTEXT_NAMESPACE "SFroxComputePropsView"
 

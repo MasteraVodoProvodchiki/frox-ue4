@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CoreMinimal.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "FroxComputeFrame.h"
 #include "FroxBlueprintLibrary.generated.h"
 

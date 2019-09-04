@@ -2,7 +2,7 @@
 
 #include "FroxNods.h"
 #include "FroxComputeFrame.h"
-#include "UE4CustomNods.generated.h"
+#include "UE4ImageReaderNode.generated.h"
 
 UCLASS()
 class FROXPLUGIN_API UUEImageReaderNode : public UOpartionNode

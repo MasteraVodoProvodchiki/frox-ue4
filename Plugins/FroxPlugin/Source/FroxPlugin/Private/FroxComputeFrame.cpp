@@ -118,6 +118,7 @@ void UFroxComputeFrame::SetFroxFrame(frox::ComputeFramePtr FroxFrame)
 	Type = FroxTypeToUEType(_froxFrame->GetType().Type);
 }
 
+#if WITH_EDITORONLY_DATA
 void UFroxComputeFrame::SetComputeFrameName(const FName &InComputeFlowFileName)
 {
 	ComputeFrameFileName = InComputeFlowFileName;
@@ -127,6 +128,7 @@ void UFroxComputeFrame::SetData(const TArray<uint8>& InUncompressedData)
 {
 	UncompressedData = InUncompressedData;
 }
+#endif
 
 FName UFroxComputeFrame::GetComputeFlowName() const
 {

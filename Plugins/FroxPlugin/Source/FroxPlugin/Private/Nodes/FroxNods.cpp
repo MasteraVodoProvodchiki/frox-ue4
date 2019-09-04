@@ -1,4 +1,4 @@
-#include "FroxNods.h"
+#include "Nodes/FroxNods.h"
 #include "OperationLogic.h"
 
 #include "EdGraph/EdGraphPin.h"
@@ -43,6 +43,7 @@ FName SubCategoryForType(EComputeFlowKeyType Type)
 }
 
 /// Property
+#if WITH_EDITORONLY_DATA
 void UPropertyNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	FName ChangedPropertyName = (PropertyChangedEvent.Property != nullptr) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
@@ -56,7 +57,6 @@ void UPropertyNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 	Modify();
 }
 
-#if WITH_EDITORONLY_DATA
 void UPropertyNode::AllocateDefaultPins()
 {
 	UEdGraphPin* Output = CreatePin(EGPD_Output, UFroxNodeBase::PC_Property, TEXT("Out"));
@@ -76,11 +76,16 @@ FLinearColor UPropertyNode::GetNodeTitleColor() const
 UInputPropertyNode::UInputPropertyNode(const FObjectInitializer& ObjectInitializer)
 	: UFroxNodeBase(ObjectInitializer)
 {
+#if WITH_EDITORONLY_DATA
 	CreateNewGuid();
+#endif
 	LowLevelRename(*NodeGuid.ToString(), nullptr);
+#if WITH_EDITORONLY_DATA
 	bCanRenameNode = 0;
+#endif
 }
 
+#if WITH_EDITORONLY_DATA
 void UInputPropertyNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	FName ChangedPropertyName = PropertyChangedEvent.GetPropertyName();
@@ -90,7 +95,6 @@ void UInputPropertyNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyC
 	Modify();
 }
 
-#if WITH_EDITORONLY_DATA
 void UInputPropertyNode::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
 {
 	FName ChangedPropertyName = PropertyChangedEvent.GetPropertyName();
@@ -313,11 +317,16 @@ FLinearColor UInputPropertyNode::GetNodeTitleColor() const
 UOutputPropertyNode::UOutputPropertyNode(const FObjectInitializer& ObjectInitializer)
 	: UFroxNodeBase(ObjectInitializer)
 {
+#if WITH_EDITORONLY_DATA
 	CreateNewGuid();
+#endif
 	LowLevelRename(*NodeGuid.ToString(), nullptr);
+#if WITH_EDITORONLY_DATA
 	bCanRenameNode = 0;
+#endif
 }
 
+#if WITH_EDITORONLY_DATA
 void UOutputPropertyNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	FName ChangedPropertyName = (PropertyChangedEvent.Property != nullptr) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
@@ -327,7 +336,6 @@ void UOutputPropertyNode::PostEditChangeProperty(FPropertyChangedEvent& Property
 	Modify();
 }
 
-#if WITH_EDITORONLY_DATA
 void UOutputPropertyNode::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
 {
 	FName ChangedPropertyName = PropertyChangedEvent.GetPropertyName();

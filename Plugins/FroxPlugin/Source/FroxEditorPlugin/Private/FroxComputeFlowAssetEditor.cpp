@@ -11,9 +11,9 @@
 #include "FroxEditorPlugin.h"
 #include "FroxComputePropsDataDetails.h"
 
-#include "SDockTab.h"
-#include "GenericCommands.h"
-#include "BlueprintEditorUtils.h"
+#include "Widgets/Docking/SDockTab.h"
+#include "Framework/Commands/GenericCommands.h"
+#include "Kismet2/BlueprintEditorUtils.h"
 #include "EdGraphUtilities.h"
 #include "ScopedTransaction.h"
 #include "SNodePanel.h"

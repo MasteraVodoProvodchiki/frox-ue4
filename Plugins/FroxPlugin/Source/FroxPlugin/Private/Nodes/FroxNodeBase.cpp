@@ -1,4 +1,4 @@
-#include "FroxNodeBase.h"
+#include "Nodes/FroxNodeBase.h"
 
 const FName UFroxNodeBase::PC_Frame(TEXT("frame"));
 const FName UFroxNodeBase::PC_Property(TEXT("property"));

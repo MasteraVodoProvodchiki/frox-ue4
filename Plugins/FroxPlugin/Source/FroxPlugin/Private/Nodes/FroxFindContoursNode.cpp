@@ -1,4 +1,4 @@
-#include "FroxFindContoursNode.h"
+#include "Nodes/FroxFindContoursNode.h"
 #include "Shared.h"
 #include "FroxTypes.h"
 

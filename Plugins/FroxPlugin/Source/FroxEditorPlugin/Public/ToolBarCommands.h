@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SlateBasics.h"
-#include "Commands.h"
+#include "Framework/Commands/Commands.h"
 #include "EditorStyle.h"
 
 class FToolBarCommandsCommands : public TCommands<FToolBarCommandsCommands>

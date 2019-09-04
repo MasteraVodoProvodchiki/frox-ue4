@@ -28,6 +28,7 @@ frox::ComputeNode* USubFlowNode::CreateFroxNode(frox::ComputeFlow* Flow) const
 	return SubFlowNode;
 }
 
+#if WITH_EDITORONLY_DATA
 void USubFlowNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	FName PropertyName = (PropertyChangedEvent.Property != nullptr) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
@@ -41,7 +42,6 @@ void USubFlowNode::PostEditChangeProperty(FPropertyChangedEvent& PropertyChanged
 	Modify();
 }
 
-#if WITH_EDITORONLY_DATA
 void USubFlowNode::AllocateDefaultPins()
 {
 	if (ComputeFlow)

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
+#include "Engine/LatentActionManager.h"
+
 #include "Frox/Frox/Frox.h"
 
 #include "FroxComputeFlowComponent.generated.h"

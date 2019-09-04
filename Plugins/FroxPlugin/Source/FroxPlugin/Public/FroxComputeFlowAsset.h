@@ -33,10 +33,11 @@ struct FComputeFlowEntry
 #if WITH_EDITORONLY_DATA
 	UPROPERTY(EditAnywhere, Category = Frox, Meta = (ToolTip = "Optional description."))
 	FString EntryDescription;
+#endif // WITH_EDITORONLY_DATA
 
 	UPROPERTY()
 	FGuid UniqueId;
-#endif // WITH_EDITORONLY_DATA
+
 
 	/** key type and additional properties */
 	UPROPERTY(EditAnywhere, Category = Frox)
@@ -46,6 +47,8 @@ struct FComputeFlowEntry
 	EComputeFlowEntryDirection Direction;
 
 	FComputeFlowEntry()
+#if WITH_EDITORONLY_DATA
+#endif
 		: UniqueId(FGuid::NewGuid()),
 		KeyType(EComputeFlowKeyType::ECFKT_None)
 	{}

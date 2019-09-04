@@ -17,22 +17,26 @@
     {
       "Name": "FroxPlugin",
       "Type": "Runtime",
-      "LoadingPhase": "Default"
+      "LoadingPhase": "Default",
+      "WhitelistPlatforms": [ "Win64" ]
     },
     {
       "Name": "FroxDepthSensorPlugin",
       "Type": "Runtime",
-      "LoadingPhase": "Default"
+      "LoadingPhase": "Default",
+      "WhitelistPlatforms": [ "Win64" ]
     },
     {
       "Name": "FroxIntelRealSensePlugin",
       "Type": "Runtime",
-      "LoadingPhase": "Default"
+      "LoadingPhase": "Default",
+      "WhitelistPlatforms": [ "Win64" ]
     },
     {
       "Name": "FroxEditorPlugin",
       "Type": "Editor",
-      "LoadingPhase": "Default"
+      "LoadingPhase": "Default",
+      "WhitelistPlatforms": [ "Win64" ]
     }
   ]
 }

@@ -36,7 +36,11 @@ struct FComputeFlowNodeEntry
 	EComputeFlowKeyType KeyType;
 
 	FComputeFlowNodeEntry()
+#if WITH_EDITORONLY_DATA
 		: UniqueId(FGuid::NewGuid()),
+#else
+		:
+#endif
 		KeyType(EComputeFlowKeyType::ECFKT_None)
 		  
 	{}
@@ -51,11 +55,11 @@ class FROXPLUGIN_API UPropertyNode : public UFroxNodeBase
 	GENERATED_BODY()
 
 public:
+#if WITH_EDITORONLY_DATA
 	//~ Begin UObject
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 	//~ Begin UObject
 
-#if WITH_EDITORONLY_DATA
 	//~ Begin UEdGraphNode
 	virtual void AllocateDefaultPins() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
@@ -75,22 +79,19 @@ class FROXPLUGIN_API UInputPropertyNode : public UFroxNodeBase
 public:
 	UInputPropertyNode(const FObjectInitializer& ObjectInitializer);
 
+#if WITH_EDITORONLY_DATA
 	//~ Begin UObject
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-#if WITH_EDITORONLY_DATA
 	virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent&) override;
 	virtual void PostLoad() override;
 	virtual void PreSave(const class ITargetPlatform*) override;
-#endif
 	//~ Begin UObject
 
-#if WITH_EDITORONLY_DATA
 	//~ Begin UEdGraphNode
 	virtual void AllocateDefaultPins() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 	virtual FLinearColor GetNodeTitleColor() const override;
 	//~ End UEdGraphNode
-#endif //WITH_EDITORONLY_DATA
 
 	virtual bool CanUserDeleteNode() const override
 	{
@@ -101,6 +102,7 @@ public:
 	{
 		return false;
 	}
+#endif //WITH_EDITORONLY_DATA
 
 	UPROPERTY(SimpleDisplay, Transient, EditDefaultsOnly)
 	TArray<FComputeFlowNodeEntry> Keys;
@@ -114,14 +116,13 @@ class FROXPLUGIN_API UOutputPropertyNode : public UFroxNodeBase
 public:
 	UOutputPropertyNode(const FObjectInitializer& ObjectInitializer);
 
+#if WITH_EDITORONLY_DATA
 	//~ Begin UObject
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-#ifdef WITH_EDITORONLY_DATA
+
 	virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent&) override;
 	virtual void PostLoad() override;
 	virtual void PreSave(const class ITargetPlatform*) override;
-#endif // WITH_EDITORONLY_DATA
-
 	//~ Begin UObject
 
 	virtual bool CanUserDeleteNode() const override
@@ -134,7 +135,6 @@ public:
 		return false;
 	}
 
-#if WITH_EDITORONLY_DATA
 	//~ Begin UEdGraphNode
 	virtual void AllocateDefaultPins() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;

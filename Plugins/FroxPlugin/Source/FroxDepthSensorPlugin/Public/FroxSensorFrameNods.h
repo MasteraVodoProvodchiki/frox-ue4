@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FroxNods.h"
+#include "Nodes/FroxNods.h"
 #include "FroxSensorFrameNods.generated.h"
 
 UCLASS()

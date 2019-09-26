@@ -5,7 +5,7 @@
 
 class UFroxComputeFlowAsset;
 
-UCLASS()
+UCLASS(DisplayName = "SubFlow Operation Node")
 class FROXPLUGIN_API USubFlowNode : public UOpartionNode
 {
 	GENERATED_BODY()

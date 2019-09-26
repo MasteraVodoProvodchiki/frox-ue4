@@ -121,41 +121,38 @@ void UEdGraphSchema_FroxEditor::GetGraphContextActions(FGraphContextMenuBuilder&
 	Args.Add(TEXT("Attribute"), FText::FromName(AttrName));
 	const UEdGraphPin* FromPin = ContextMenuBuilder.FromPin;
 	const UEdGraph* Graph = ContextMenuBuilder.CurrentGraph;
-	TArray<TSharedPtr<FEdGraphSchemaAction> > Actions;
 
 	// FroxSchemaUtils::AddAction<UPropertyNode>(TEXT("Add Property"), TEXT("Add input property node to the prop graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	// FroxSchemaUtils::AddAction<UInputPropertyNode>(TEXT("Add Input Property"), TEXT("Add input property node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 	// FroxSchemaUtils::AddAction<UOutputPropertyNode>(TEXT("Add Output Property"), TEXT("Add output property node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	
-	FroxSchemaUtils::AddAction<UMakeFrameNode>(TEXT("Add Make Node"), TEXT("Add make node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UMakeZeroFrameNode>(TEXT("Add Make Zero Node"), TEXT("Add make zero node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UMakeNoiseFrameNode>(TEXT("Add Make Noise Node"), TEXT("Add make noise node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UUEImageReaderNode>(TEXT("Add UE4 Img Read Node"), TEXT("Add ue4 img reader node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UConstFrameNode>(TEXT("Add Const Frame Node"), TEXT("Add const frame node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
 
-	FroxSchemaUtils::AddAction<UAddOpartionNode>(TEXT("Add Add Operation Node"), TEXT("Add Add operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<USubOpartionNode>(TEXT("Add Sub Operation Node"), TEXT("Add Sub operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UMulOpartionNode>(TEXT("Add Mul Operation Node"), TEXT("Add Mul operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UDivOpartionNode>(TEXT("Add Div Operation Node"), TEXT("Add Div operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UAvgOpartionNode>(TEXT("Add Avg Operation Node"), TEXT("Add Avg operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-
-	FroxSchemaUtils::AddAction<UConvertToOpartionNode>(TEXT("Add ConverTo Operation Node"), TEXT("Add ConverTo operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UCropOpartionNode>(TEXT("Add Crop Operation Node"), TEXT("Add Crop operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UFrameSizeOpartionNode>(TEXT("Add FramSize Node"), TEXT("Add FrameSize node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	
-	FroxSchemaUtils::AddAction<UFroxFindContoursNode>(TEXT("Add FindContours Node"), TEXT("Add FindContours node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UFroxCenterOfContourNode>(TEXT("Add CenterOfContour Node"), TEXT("Add CenterOfContour node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UFroxRadiusOfContourNode>(TEXT("Add RadiusOfContour Node"), TEXT("Add RadiusOfContour node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-
-	FroxSchemaUtils::AddAction<USubFlowNode>(TEXT("Add SubFlow Operation Node"), TEXT("Add SubFlow operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UFroxTaskNode>(TEXT("Add Task Node"), TEXT("Add Task to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	
-	FroxSchemaUtils::AddAction<UFroxSensorDepthFrameNode>(TEXT("Add SensorDepthFrame Operation Node"), TEXT("Add SensorDepthFrame operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UFroxSensorColorFrameNode>(TEXT("Add SensorColorFrame Operation Node"), TEXT("Add SensorColorFrame operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-	FroxSchemaUtils::AddAction<UFroxSensorInfraredFrameNode>(TEXT("Add SensorInfraredFrame Operation Node"), TEXT("Add SensorInfraredFrame operation node to the graph"), Actions, ContextMenuBuilder.OwnerOfTemporaries);
-
-	for (TSharedPtr<FEdGraphSchemaAction> Action : Actions)
+	UClass* Base = UFroxNodeBase::StaticClass();
+	for (TObjectIterator< UClass > ClassIt; ClassIt; ++ClassIt)
 	{
+		UClass* Class = *ClassIt;
+
+		// Only interested in native C++ classes
+		if (!Class->IsNative())
+		{
+			continue;
+		}
+
+		// Ignore deprecated
+		if (Class->HasAnyClassFlags(CLASS_Deprecated | CLASS_NewerVersionExists | CLASS_Abstract | CLASS_HideDropDown))
+		{
+			continue;
+		}
+
+		// Check this class is a subclass of Base
+		if (!Class->IsChildOf(Base))
+		{
+			continue;
+		}
+
+		// Add this class
+		FString Title = FString::Format(TEXT("Add {0}"), TArray<FStringFormatArg>({ Class->GetDisplayNameText().ToString() }));
+		FString ToolTip = FString::Format(TEXT("Add {0} to the graph"), TArray<FStringFormatArg>({ Class->GetDisplayNameText().ToString() }));
+		TSharedPtr<FEdGraphSchemaAction> Action = FroxSchemaUtils::CreateAction<UFroxNodeBase>(Class, Title, ToolTip, ContextMenuBuilder.OwnerOfTemporaries);
 		ContextMenuBuilder.AddAction(Action);
 	}
 }

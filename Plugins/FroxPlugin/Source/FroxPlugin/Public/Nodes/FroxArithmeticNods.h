@@ -3,7 +3,7 @@
 #include "FroxNods.h"
 #include "FroxArithmeticNods.generated.h"
 
-UCLASS(HideDropDown)
+UCLASS(Abstract)
 class FROXPLUGIN_API UOpartionBasicNode : public UOpartionNode
 {
 	GENERATED_BODY()
@@ -20,7 +20,7 @@ public:
 #endif //WITH_EDITORONLY_DATA
 };
 
-UCLASS(HideDropDown)
+UCLASS(Abstract)
 class FROXPLUGIN_API UOpartionInput1OuputNode : public UOpartionBasicNode
 {
 	GENERATED_BODY()
@@ -31,7 +31,7 @@ public:
 #endif //WITH_EDITORONLY_DATA
 };
 
-UCLASS(HideDropDown)
+UCLASS(Abstract)
 class FROXPLUGIN_API UOpartionInput2OuputNode : public UOpartionNode
 {
 	GENERATED_BODY()
@@ -42,7 +42,7 @@ public:
 #endif //WITH_EDITORONLY_DATA
 };
 
-UCLASS()
+UCLASS(DisplayName = "Add Operation Node")
 class FROXPLUGIN_API UAddOpartionNode : public UOpartionInput2OuputNode
 {
 	GENERATED_BODY()
@@ -54,7 +54,7 @@ public:
 	//~ End UOpartionNode
 };
 
-UCLASS()
+UCLASS(DisplayName = "Sub Operation Node")
 class FROXPLUGIN_API USubOpartionNode : public UOpartionInput2OuputNode
 {
 	GENERATED_BODY()
@@ -66,7 +66,7 @@ public:
 	//~ End UOpartionNode
 };
 
-UCLASS()
+UCLASS(DisplayName = "Mul Operation Node")
 class FROXPLUGIN_API UMulOpartionNode : public UOpartionInput2OuputNode
 {
 	GENERATED_BODY()
@@ -78,7 +78,7 @@ public:
 	//~ End UOpartionNode
 };
 
-UCLASS()
+UCLASS(DisplayName = "Div Operation Node")
 class FROXPLUGIN_API UDivOpartionNode : public UOpartionInput2OuputNode
 {
 	GENERATED_BODY()
@@ -90,7 +90,7 @@ public:
 	//~ End UOpartionNode
 };
 
-UCLASS()
+UCLASS(DisplayName = "Avg Operation Node")
 class FROXPLUGIN_API UAvgOpartionNode : public UOpartionInput1OuputNode
 {
 	GENERATED_BODY()

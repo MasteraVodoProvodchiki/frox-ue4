@@ -4,7 +4,7 @@
 #include "FroxComputeFrame.h"
 #include "FroxFrameNods.generated.h"
 
-UCLASS()
+UCLASS(DisplayName = "FrameSize Node")
 class FROXPLUGIN_API UFrameSizeOpartionNode : public UOpartionNode
 {
 	GENERATED_BODY()

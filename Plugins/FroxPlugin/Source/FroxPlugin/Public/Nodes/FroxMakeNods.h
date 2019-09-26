@@ -8,7 +8,7 @@ namespace frox {
 class MakeFrameBaseComputeNode;
 } // End frox
 
-UCLASS()
+UCLASS(Abstract)
 class FROXPLUGIN_API UMakeFrameBaseNode : public UOpartionNode
 {
 	GENERATED_BODY()
@@ -43,7 +43,7 @@ public:
 	int Channels = 1;
 };
 
-UCLASS()
+UCLASS(DisplayName = "Make Node")
 class FROXPLUGIN_API UMakeFrameNode : public UMakeFrameBaseNode
 {
 	GENERATED_BODY()
@@ -61,7 +61,7 @@ public:
 	FString Value;
 };
 
-UCLASS()
+UCLASS(DisplayName = "Make Zero Node")
 class FROXPLUGIN_API UMakeZeroFrameNode : public UMakeFrameNode
 {
 	GENERATED_BODY()
@@ -74,7 +74,7 @@ public:
 	//~ End UOpartionNode
 };
 
-UCLASS()
+UCLASS(DisplayName = "Make Noise Node")
 class FROXPLUGIN_API UMakeNoiseFrameNode : public UMakeFrameBaseNode
 {
 	GENERATED_BODY()

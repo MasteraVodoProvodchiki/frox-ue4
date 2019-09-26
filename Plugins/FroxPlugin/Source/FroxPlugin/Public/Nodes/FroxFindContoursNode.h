@@ -14,7 +14,7 @@ enum class EFroxFindContoursMode : uint8
 	FloodFill	UMETA(DisplayName = "FloodFill")
 };
 
-UCLASS()
+UCLASS(DisplayName = "FindContours Node")
 class FROXPLUGIN_API UFroxFindContoursNode : public UOpartionBasicNode
 {
 	GENERATED_BODY()
@@ -37,7 +37,7 @@ public:
 	EFroxFindContoursMode Mode = EFroxFindContoursMode::External;
 };
 
-UCLASS()
+UCLASS(DisplayName = "CenterOfContour Node")
 class FROXPLUGIN_API UFroxCenterOfContourNode : public UOpartionBasicNode
 {
 	GENERATED_BODY()
@@ -56,7 +56,7 @@ public:
 	//~ End UOpartionNode
 };
 
-UCLASS()
+UCLASS(DisplayName = "RadiusOfContour Node")
 class FROXPLUGIN_API UFroxRadiusOfContourNode : public UOpartionBasicNode
 {
 	GENERATED_BODY()

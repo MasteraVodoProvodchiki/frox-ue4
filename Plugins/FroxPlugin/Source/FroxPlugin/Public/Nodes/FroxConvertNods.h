@@ -4,7 +4,7 @@
 #include "FroxComputeFrame.h"
 #include "FroxConvertNods.generated.h"
 
-UCLASS()
+UCLASS(DisplayName = "ConvertTo Operation Node")
 class FROXPLUGIN_API UConvertToOpartionNode : public UOpartionInput1OuputNode
 {
 	GENERATED_BODY()

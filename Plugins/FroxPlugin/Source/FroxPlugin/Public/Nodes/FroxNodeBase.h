@@ -22,7 +22,7 @@ public:
 	virtual void OnPropertyChanged(class UEdGraphNode* Sender, const FName& PropertyName) = 0;
 };
 
-UCLASS()
+UCLASS(Abstract)
 class FROXPLUGIN_API UFroxNodeBase : public UEdGraphNode
 {
 	GENERATED_BODY()

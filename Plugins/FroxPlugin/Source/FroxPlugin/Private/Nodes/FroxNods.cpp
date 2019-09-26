@@ -117,7 +117,7 @@ void UInputPropertyNode::PostEditChangeChainProperty(FPropertyChangedChainEvent&
 			}
 		}
 		KeysChangeHandled = true;
-	} 
+	}
 	if (KeysChanged && (PropertyChangedEvent.ChangeType & EPropertyChangeType::ArrayClear))
 	{
 		Reconstruct = true;
@@ -525,7 +525,7 @@ void UOutputPropertyNode::PreSave(const class ITargetPlatform* TargetPlatform)
 
 void UOutputPropertyNode::AllocateDefaultPins()
 {
-	
+
 }
 
 FText UOutputPropertyNode::GetNodeTitle(ENodeTitleType::Type TitleType) const

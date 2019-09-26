@@ -4,7 +4,7 @@
 #include "FroxComputeFrame.h"
 #include "FroxConstNods.generated.h"
 
-UCLASS()
+UCLASS(DisplayName = "Const Frame Node")
 class FROXPLUGIN_API UConstFrameNode : public UOpartionNode
 {
 	GENERATED_BODY()

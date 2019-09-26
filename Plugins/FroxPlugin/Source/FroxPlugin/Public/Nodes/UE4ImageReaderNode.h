@@ -4,7 +4,7 @@
 #include "FroxComputeFrame.h"
 #include "UE4ImageReaderNode.generated.h"
 
-UCLASS()
+UCLASS(DisplayName = "UE4 Img Read Node")
 class FROXPLUGIN_API UUEImageReaderNode : public UOpartionNode
 {
 	GENERATED_BODY()

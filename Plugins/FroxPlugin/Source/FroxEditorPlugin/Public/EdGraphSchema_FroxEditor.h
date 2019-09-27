@@ -55,6 +55,18 @@ public:
 		NewActorNodeAction->NodeTemplate = ActorNode;
 	}
 
+	template<typename T>
+	static TSharedPtr<FEdGraphSchemaAction> CreateAction(UClass* Class, FString Title, FString Tooltip, UEdGraph* OwnerOfTemporaries)
+	{
+		const FText MenuDesc = FText::FromString(Title);
+		const FText Category = FText::FromString(TEXT("Nodes"));
+		const FText TooltipText = FText::FromString(Tooltip);
+		TSharedPtr<FFroxSchemaAction_NewNode> NewActorNodeAction = TSharedPtr<FFroxSchemaAction_NewNode>(new FFroxSchemaAction_NewNode(Category, MenuDesc, TooltipText, 0));
+		T* ActorNode = NewObject<T>((UObject *)OwnerOfTemporaries, Class);
+		NewActorNodeAction->NodeTemplate = ActorNode;
+		return NewActorNodeAction;
+	}
+
 	static TSharedPtr<FFroxSchemaAction_NewNode> AddNewNodeAction(TArray<TSharedPtr<FEdGraphSchemaAction> >& OutActions, const FText& Category, const FText& MenuDesc, const FText& Tooltip)
 	{
 		TSharedPtr<FFroxSchemaAction_NewNode> NewAction = TSharedPtr<FFroxSchemaAction_NewNode>(new FFroxSchemaAction_NewNode(Category, MenuDesc, Tooltip, 0));

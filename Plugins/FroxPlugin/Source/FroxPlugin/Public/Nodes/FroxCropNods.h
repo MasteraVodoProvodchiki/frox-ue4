@@ -3,7 +3,7 @@
 #include "FroxArithmeticNods.h"
 #include "FroxCropNods.generated.h"
 
-UCLASS()
+UCLASS(DisplayName = "Crop Operation Node")
 class FROXPLUGIN_API UCropOpartionNode : public UOpartionInput1OuputNode
 {
 	GENERATED_BODY()

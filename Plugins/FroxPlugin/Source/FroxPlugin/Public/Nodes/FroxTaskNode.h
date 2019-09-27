@@ -5,7 +5,7 @@
 
 class UFroxTask_BlueprintBase;
 
-UCLASS()
+UCLASS(DisplayName = "Task Node")
 class FROXPLUGIN_API UFroxTaskNode : public UOpartionNode
 {
 	GENERATED_BODY()

@@ -3,7 +3,7 @@
 #include "Nodes/FroxNods.h"
 #include "FroxSensorFrameNods.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class FROXDEPTHSENSORPLUGIN_API UFroxSensorFrameNode : public UOpartionNode
 {
 	GENERATED_BODY()
@@ -18,7 +18,7 @@ public:
 #endif //WITH_EDITORONLY_DATA
 };
 
-UCLASS()
+UCLASS(DisplayName = "SensorDepthFrame Operation Node")
 class FROXDEPTHSENSORPLUGIN_API UFroxSensorDepthFrameNode : public UFroxSensorFrameNode
 {
 	GENERATED_BODY()
@@ -31,7 +31,7 @@ public:
 	//~ End UOpartionNode
 };
 
-UCLASS()
+UCLASS(DisplayName = "SensorColorFrame Operation Node")
 class FROXDEPTHSENSORPLUGIN_API UFroxSensorColorFrameNode : public UFroxSensorFrameNode
 {
 	GENERATED_BODY()
@@ -44,7 +44,7 @@ public:
 	//~ End UOpartionNode
 };
 
-UCLASS()
+UCLASS(DisplayName = "SensorInfraredFrame Operation Node")
 class FROXDEPTHSENSORPLUGIN_API UFroxSensorInfraredFrameNode : public UFroxSensorFrameNode
 {
 	GENERATED_BODY()

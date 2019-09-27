@@ -4,7 +4,7 @@
 #include "FroxComputeFrame.h"
 #include "UE4CustomNode.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class FROXPLUGIN_API UUE4CustomNode : public UOpartionNode
 {
 	GENERATED_BODY()

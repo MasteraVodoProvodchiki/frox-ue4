@@ -71,7 +71,7 @@ public:
 	FName PropertyName;
 };
 
-UCLASS()
+UCLASS(Abstract)
 class FROXPLUGIN_API UInputPropertyNode : public UFroxNodeBase
 {
 	GENERATED_BODY()
@@ -108,7 +108,7 @@ public:
 	TArray<FComputeFlowNodeEntry> Keys;
 };
 
-UCLASS()
+UCLASS(Abstract)
 class FROXPLUGIN_API UOutputPropertyNode : public UFroxNodeBase
 {
 	GENERATED_BODY()
@@ -146,7 +146,7 @@ public:
 	TArray<FComputeFlowNodeEntry> Keys;
 };
 
-UCLASS(HideDropDown)
+UCLASS(Abstract)
 class FROXPLUGIN_API UOpartionNode : public UFroxNodeBase
 {
 	GENERATED_BODY()

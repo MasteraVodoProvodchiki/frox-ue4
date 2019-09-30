@@ -261,6 +261,16 @@ void UFroxComputeFlowComponent::SetValueAsData(const FName& KeyName, UFroxComput
 	OnValueChanged.Broadcast(KeyName);
 }
 
+void UFroxComputeFlowComponent::BeforePerformFlow()
+{
+
+}
+
+void UFroxComputeFlowComponent::AfterFetchFlow()
+{
+
+}
+
 bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
 {
 	// Create ComputeFlow
@@ -448,6 +458,8 @@ void UFroxComputeFlowComponent::FetchFlow()
 			}
 		} // End input
 	} // End every key
+
+	this->AfterFetchFlow();
 }
 
 void UFroxComputeFlowComponent::PerformFlow()
@@ -455,6 +467,8 @@ void UFroxComputeFlowComponent::PerformFlow()
 	check(ComputeFlow != nullptr);
 	check(Performer != nullptr);
 	check(InputData != nullptr);
+
+	this->BeforePerformFlow();
 
 	// Update Inputs
 	for (const FComputeFlowEntry& Entry : ComputeFlowAsset->Keys)

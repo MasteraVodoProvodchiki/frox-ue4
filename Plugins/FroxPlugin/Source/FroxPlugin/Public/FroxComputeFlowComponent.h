@@ -105,6 +105,10 @@ public:
 	/** The final call related to screenshots, after they've been taken, and after they've been compared (or not if automation isn't running). */
 	FSimpleMulticastDelegate OnPerformCompleted;
 
+protected:
+	virtual void BeforePerformFlow();
+	virtual void AfterFetchFlow();
+
 private:
 	/** setup component for using given computeflow asset */
 	bool InitializeFlow(UFroxComputeFlowAsset& NewAsset);
@@ -114,7 +118,6 @@ private:
 	UFroxComputeData* FetchData(const frox::FlowData& Data, FName EntryID) const;
 	void FetchFlow();
 	void PerformFlow();
-	
 
 private:
 	frox::ComputeFlow* ComputeFlow;

@@ -77,6 +77,12 @@ public:
 	bool GetValueAsBool(const FName& KeyName = NAME_None) const;
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	FIntPoint GetValueAsPoint(const FName& KeyName = NAME_None) const;
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	FVector2D GetValueAsVector2D(const FName& KeyName = NAME_None) const;
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
 	UFroxComputeFrame* GetValueAsFrame(const FName& KeyName = NAME_None) const;
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
@@ -90,6 +96,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
 	void SetValueAsBool(const FName& KeyName = NAME_None, bool BoolValue = true);
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	void SetValueAsPoint(const FName& KeyName, FIntPoint PointValue);
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	void SetValueAsVector2D(const FName& KeyName, FVector2D Vector2dValue);
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
 	void SetValueAsFrame(const FName& KeyName, UFroxComputeFrame* ComputeFrame);
@@ -133,6 +145,8 @@ private:
 	TMap<FName, int32> IntValues;
 	TMap<FName, float> FloatValues;
 	TMap<FName, bool> BoolValues;
+	TMap<FName, FIntPoint> PointValues;
+	TMap<FName, FVector2D> Vector2DValues;
 
 	UPROPERTY()
 	TMap<FName, UFroxComputeFrame*> FrameValues;

@@ -6,18 +6,18 @@
 #include "GameFramework/Actor.h"
 #include "FroxComputeFrame.h"
 
-#include "Frox/FroxDepthSensor/MOCSensorDeviceManager.h"
+#include "Frox/FroxDepthSensor/MockSensorDeviceManager.h"
 
-#include "FroxMOCSensorDevice.generated.h"
+#include "FroxMockSensorDevice.generated.h"
 
 UCLASS()
-class FROXDEPTHSENSORPLUGIN_API AFroxMOCSensorDevice : public AActor
+class FROXDEPTHSENSORPLUGIN_API AFroxMockSensorDevice : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	AFroxMOCSensorDevice();
+	AFroxMockSensorDevice();
 
 protected:
 	// Called when the game starts or when spawned
@@ -34,5 +34,5 @@ public:
 	UFroxComputeFrame* ComputeFrame;
 
 private:
-	frox::MOCSensorDeviceManagerPtr _MocDeviceManager;
+	frox::MockSensorDeviceManagerPtr _MockDeviceManager;
 };

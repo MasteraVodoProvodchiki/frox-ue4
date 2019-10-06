@@ -243,13 +243,14 @@ void UFroxComputeFlowAsset::InitializeFlowInputs(frox::ComputeFlow* ComputeFlow,
 	{
 		if (Entry.Direction == EComputeFlowEntryDirection::ECFED_Input && KeySet.Contains(Entry.UniqueId))
 		{
+			UEdGraphPin* Pin = KeySet[Entry.UniqueId];
 			KeySet.Remove(Entry.UniqueId);
 			frox::EPinValueType PinValueType = FlowKeyTypeToPionType(Entry.KeyType);
 			ANSICHAR EntryName[1024];
 			Entry.EntryName.GetPlainANSIString(EntryName);
 			uint32_t EntryId = ComputeFlow->FindOrCreateEntry(EntryName, PinValueType);
 			// Only for output
-			for (UEdGraphPin* Pin : OutputPins)
+			// for (UEdGraphPin* Pin : OutputPins)
 			{
 				// Every input
 				for (UEdGraphPin* LinkedTo : Pin->LinkedTo)
@@ -309,6 +310,9 @@ void UFroxComputeFlowAsset::InitializeFlowOutputs(frox::ComputeFlow* ComputeFlow
 	{
 		if (Entry.Direction == EComputeFlowEntryDirection::ECFED_Output && KeySet.Contains(Entry.UniqueId))
 		{
+			UEdGraphPin* Pin = KeySet[Entry.UniqueId];
+			KeySet.Remove(Entry.UniqueId);
+
 			frox::EPinValueType PinValueType = Entry.KeyType == EComputeFlowKeyType::ECFKT_Frame ?
 				frox::EPinValueType::Frame :
 				frox::EPinValueType::Value;
@@ -317,7 +321,7 @@ void UFroxComputeFlowAsset::InitializeFlowOutputs(frox::ComputeFlow* ComputeFlow
 			uint32_t OutputId = ComputeFlow->FindOrCreateOutput(EntryName, PinValueType);
 
 			// Only for inputs
-			for (UEdGraphPin* Pin : InputPins)
+			// for (UEdGraphPin* Pin : InputPins)
 			{
 				// Every input
 				for (UEdGraphPin* LinkedTo : Pin->LinkedTo)

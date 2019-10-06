@@ -219,6 +219,18 @@ bool UFroxComputeFlowComponent::GetValueAsBool(const FName& KeyName) const
 	return Found ? *Found : false;
 }
 
+FIntPoint UFroxComputeFlowComponent::GetValueAsPoint(const FName& KeyName) const
+{
+	const FIntPoint* Found = PointValues.Find(KeyName);
+	return Found ? *Found : FIntPoint();
+}
+
+FVector2D UFroxComputeFlowComponent::GetValueAsVector2D(const FName& KeyName) const
+{
+	const FVector2D* Found = Vector2DValues.Find(KeyName);
+	return Found ? *Found : FVector2D();
+}
+
 UFroxComputeFrame* UFroxComputeFlowComponent::GetValueAsFrame(const FName& KeyName) const
 {
 	auto Found = FrameValues.Find(KeyName);
@@ -249,6 +261,18 @@ void UFroxComputeFlowComponent::SetValueAsBool(const FName& KeyName, bool BoolVa
 	OnValueChanged.Broadcast(KeyName);
 }
 
+void UFroxComputeFlowComponent::SetValueAsPoint(const FName& KeyName, FIntPoint PointValue)
+{
+	PointValues.Add(KeyName, PointValue);
+	OnValueChanged.Broadcast(KeyName);
+}
+
+void UFroxComputeFlowComponent::SetValueAsVector2D(const FName& KeyName, FVector2D Vector2DValue)
+{
+	Vector2DValues.Add(KeyName, Vector2DValue);
+	OnValueChanged.Broadcast(KeyName);
+}
+
 void UFroxComputeFlowComponent::SetValueAsFrame(const FName& KeyName, UFroxComputeFrame* ComputeFrame)
 {
 	FrameValues.Add(KeyName, ComputeFrame);
@@ -259,6 +283,16 @@ void UFroxComputeFlowComponent::SetValueAsData(const FName& KeyName, UFroxComput
 {
 	DataValues.Add(KeyName, ComputeData);
 	OnValueChanged.Broadcast(KeyName);
+}
+
+void UFroxComputeFlowComponent::BeforePerformFlow()
+{
+
+}
+
+void UFroxComputeFlowComponent::AfterFetchFlow()
+{
+
 }
 
 bool UFroxComputeFlowComponent::InitializeFlow(UFroxComputeFlowAsset& NewAsset)
@@ -440,14 +474,30 @@ void UFroxComputeFlowComponent::FetchFlow()
 					int32 Value = OutputData->GetValue<int32>(EntryNameAnsi);
 					SetValueAsInt(EntryName, Value);
 				}
+				else if (
+					KeyType == EComputeFlowKeyType::ECFKT_Point ||
+					KeyType == EComputeFlowKeyType::ECFKT_Size
+				)
+				{
+					frox::Point Value = OutputData->GetValue<frox::Point>(EntryNameAnsi);
+					SetValueAsPoint(EntryName, FIntPoint(Value.X, Value.Y));
+				}
 				else if (KeyType == EComputeFlowKeyType::ECFKT_Float)
 				{
 					float Value = OutputData->GetValue<float>(EntryNameAnsi);
 					SetValueAsFloat(EntryName, Value);
 				}
+				else if (KeyType == EComputeFlowKeyType::ECFKT_Vector2D)
+				{
+					frox::float2 Value = OutputData->GetValue<frox::float2>(EntryNameAnsi);
+					SetValueAsVector2D(EntryName, FVector2D(Value.X, Value.Y));
+				}
+
 			}
 		} // End input
 	} // End every key
+
+	this->AfterFetchFlow();
 }
 
 void UFroxComputeFlowComponent::PerformFlow()
@@ -455,6 +505,8 @@ void UFroxComputeFlowComponent::PerformFlow()
 	check(ComputeFlow != nullptr);
 	check(Performer != nullptr);
 	check(InputData != nullptr);
+
+	this->BeforePerformFlow();
 
 	// Update Inputs
 	for (const FComputeFlowEntry& Entry : ComputeFlowAsset->Keys)
@@ -499,10 +551,23 @@ void UFroxComputeFlowComponent::PerformFlow()
 				int32 Value = GetValueAsInt(Entry.EntryName);
 				InputData->SetValue(EntryNameAnsi, Value);
 			}
+			else if (
+				KeyType == EComputeFlowKeyType::ECFKT_Point ||
+				KeyType == EComputeFlowKeyType::ECFKT_Size
+				)
+			{
+				FIntPoint Value = GetValueAsPoint(Entry.EntryName);
+				InputData->SetValue(EntryNameAnsi, frox::Point{ Value.X, Value.Y });
+			}
 			else if (KeyType == EComputeFlowKeyType::ECFKT_Float)
 			{
 				float Value = GetValueAsFloat(Entry.EntryName);
 				InputData->SetValue(EntryNameAnsi, Value);
+			}
+			else if (KeyType == EComputeFlowKeyType::ECFKT_Vector2D)
+			{
+				FVector2D Value = GetValueAsVector2D(Entry.EntryName);
+				InputData->SetValue(EntryNameAnsi, frox::float2{ Value.X, Value.Y });
 			}
 		} // End input
 	} // End every key

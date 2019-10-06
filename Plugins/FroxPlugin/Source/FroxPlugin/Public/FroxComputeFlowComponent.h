@@ -77,6 +77,12 @@ public:
 	bool GetValueAsBool(const FName& KeyName = NAME_None) const;
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	FIntPoint GetValueAsPoint(const FName& KeyName = NAME_None) const;
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	FVector2D GetValueAsVector2D(const FName& KeyName = NAME_None) const;
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
 	UFroxComputeFrame* GetValueAsFrame(const FName& KeyName = NAME_None) const;
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
@@ -92,6 +98,12 @@ public:
 	void SetValueAsBool(const FName& KeyName = NAME_None, bool BoolValue = true);
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	void SetValueAsPoint(const FName& KeyName, FIntPoint PointValue);
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
+	void SetValueAsVector2D(const FName& KeyName, FVector2D Vector2dValue);
+
+	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
 	void SetValueAsFrame(const FName& KeyName, UFroxComputeFrame* ComputeFrame);
 
 	UFUNCTION(BlueprintCallable, Category="Frox|Components|Data")
@@ -105,6 +117,10 @@ public:
 	/** The final call related to screenshots, after they've been taken, and after they've been compared (or not if automation isn't running). */
 	FSimpleMulticastDelegate OnPerformCompleted;
 
+protected:
+	virtual void BeforePerformFlow();
+	virtual void AfterFetchFlow();
+
 private:
 	/** setup component for using given computeflow asset */
 	bool InitializeFlow(UFroxComputeFlowAsset& NewAsset);
@@ -114,7 +130,6 @@ private:
 	UFroxComputeData* FetchData(const frox::FlowData& Data, FName EntryID) const;
 	void FetchFlow();
 	void PerformFlow();
-	
 
 private:
 	frox::ComputeFlow* ComputeFlow;
@@ -130,6 +145,8 @@ private:
 	TMap<FName, int32> IntValues;
 	TMap<FName, float> FloatValues;
 	TMap<FName, bool> BoolValues;
+	TMap<FName, FIntPoint> PointValues;
+	TMap<FName, FVector2D> Vector2DValues;
 
 	UPROPERTY()
 	TMap<FName, UFroxComputeFrame*> FrameValues;

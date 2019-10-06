@@ -14,8 +14,11 @@ public:
 	static const FName UInt8Type;
 	static const FName UInt16Type;
 	static const FName UInt32Type;
+	static const FName PointType;
+	static const FName SizeType;
 	static const FName EnumType;
 	static const FName FloatType;
+	static const FName Vector2DType;
 	static const FName FrameType;
 	static const FName DataType;
 };

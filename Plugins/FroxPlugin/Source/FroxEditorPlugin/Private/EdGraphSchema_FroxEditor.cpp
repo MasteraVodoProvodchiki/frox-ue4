@@ -266,7 +266,9 @@ FLinearColor UEdGraphSchema_FroxEditor::GetPinTypeColor(const FEdGraphPinType& P
 			PinType.PinSubCategory == FFroxTypeDefinition::IntType ||
 			PinType.PinSubCategory == FFroxTypeDefinition::UInt8Type ||
 			PinType.PinSubCategory == FFroxTypeDefinition::UInt16Type ||
-			PinType.PinSubCategory == FFroxTypeDefinition::UInt32Type
+			PinType.PinSubCategory == FFroxTypeDefinition::UInt32Type ||
+			PinType.PinSubCategory == FFroxTypeDefinition::PointType ||
+			PinType.PinSubCategory == FFroxTypeDefinition::SizeType
 		)
 		{
 			return Settings->IntPinTypeColor;

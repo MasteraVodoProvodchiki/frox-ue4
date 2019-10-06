@@ -279,6 +279,10 @@ FLinearColor UEdGraphSchema_FroxEditor::GetPinTypeColor(const FEdGraphPinType& P
 		{
 			return Settings->FloatPinTypeColor;
 		}
+		else if (PinType.PinSubCategory == FFroxTypeDefinition::Vector2DType)
+		{
+			return Settings->FloatPinTypeColor;
+		}
 		else
 		{
 			return Settings->DefaultPinTypeColor;

@@ -487,16 +487,12 @@ void UFroxComputeFlowComponent::FetchFlow()
 					float Value = OutputData->GetValue<float>(EntryNameAnsi);
 					SetValueAsFloat(EntryName, Value);
 				}
-				/*
-				else if (
-					KeyType == EComputeFlowKeyType::ECFKT_Vector2D
-				)
+				else if (KeyType == EComputeFlowKeyType::ECFKT_Vector2D)
 				{
-					// TODO. Add float2, float3, float4
 					frox::float2 Value = OutputData->GetValue<frox::float2>(EntryNameAnsi);
-					SetValueAsVector2D(EntryName, );
+					SetValueAsVector2D(EntryName, FVector2D(Value.X, Value.Y));
 				}
-				*/
+
 			}
 		} // End input
 	} // End every key
@@ -568,14 +564,11 @@ void UFroxComputeFlowComponent::PerformFlow()
 				float Value = GetValueAsFloat(Entry.EntryName);
 				InputData->SetValue(EntryNameAnsi, Value);
 			}
-			/*
-			else if (
-				KeyType == EComputeFlowKeyType::ECFKT_Vector2D
-			)
+			else if (KeyType == EComputeFlowKeyType::ECFKT_Vector2D)
 			{
-				// TODO. Add float2, float3, float4
+				FVector2D Value = GetValueAsVector2D(Entry.EntryName);
+				InputData->SetValue(EntryNameAnsi, frox::float2{ Value.X, Value.Y });
 			}
-			*/
 		} // End input
 	} // End every key
 

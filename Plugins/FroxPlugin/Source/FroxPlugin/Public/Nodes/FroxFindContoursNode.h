@@ -14,6 +14,15 @@ enum class EFroxFindContoursMode : uint8
 	FloodFill	UMETA(DisplayName = "FloodFill")
 };
 
+UENUM(BlueprintType)		//"BlueprintType" is essential to include
+enum class EFroxContourApproximationMode : uint8
+{
+	ChainApproxNone 		UMETA(DisplayName = "ChainApproxNone"),
+	ChainApproxSimple 		UMETA(DisplayName = "ChainApproxSimple"),
+	ChainApproxTC89_L1 		UMETA(DisplayName = "ChainApproxTC89_L1"),
+	ChainApproxTC89_KCOS	UMETA(DisplayName = "ChainApproxTC89_KCOS")
+};
+
 UCLASS(DisplayName = "FindContours Node")
 class FROXPLUGIN_API UFroxFindContoursNode : public UOpartionBasicNode
 {
@@ -35,6 +44,9 @@ public:
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	EFroxFindContoursMode Mode = EFroxFindContoursMode::External;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	EFroxContourApproximationMode Method = EFroxContourApproximationMode::ChainApproxSimple;
 };
 
 UCLASS(DisplayName = "CenterOfContour Node")

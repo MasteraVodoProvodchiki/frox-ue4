@@ -313,9 +313,7 @@ void UFroxComputeFlowAsset::InitializeFlowOutputs(frox::ComputeFlow* ComputeFlow
 			UEdGraphPin* Pin = KeySet[Entry.UniqueId];
 			KeySet.Remove(Entry.UniqueId);
 
-			frox::EPinValueType PinValueType = Entry.KeyType == EComputeFlowKeyType::ECFKT_Frame ?
-				frox::EPinValueType::Frame :
-				frox::EPinValueType::Value;
+			frox::EPinValueType PinValueType = FlowKeyTypeToPionType(Entry.KeyType);
 			ANSICHAR EntryName[1024];
 			Entry.EntryName.GetPlainANSIString(EntryName);
 			uint32_t OutputId = ComputeFlow->FindOrCreateOutput(EntryName, PinValueType);

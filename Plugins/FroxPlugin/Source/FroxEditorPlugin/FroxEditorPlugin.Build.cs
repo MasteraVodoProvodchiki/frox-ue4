@@ -30,6 +30,7 @@ public class FroxEditorPlugin : ModuleRules
                 "InputCore",
                 "Engine",
                 "UnrealEd",
+                "FroxPluginLibrary",
                 "FroxPlugin",
                 "FroxDepthSensorPlugin",
 

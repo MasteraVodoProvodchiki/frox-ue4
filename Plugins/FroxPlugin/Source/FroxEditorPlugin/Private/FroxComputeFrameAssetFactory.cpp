@@ -11,6 +11,9 @@
 #include "Developer/DesktopPlatform/Public/IDesktopPlatform.h"
 #include "Developer/DesktopPlatform/Public/DesktopPlatformModule.h"
 #include "UnrealEd/Public/EditorDirectories.h"
+#include "Misc/Paths.h"
+
+#include "Frox/Frox/Frox.h"
 
 #define LOCTEXT_NAMESPACE "FroxComputeFrameAssetFactory"
 
@@ -26,7 +29,7 @@ UFroxComputeFrameAssetFactory::UFroxComputeFrameAssetFactory(const FObjectInitia
 }
 UObject* UFroxComputeFrameAssetFactory::FactoryCreateNew(UClass* Class, UObject* InParent, FName Name, EObjectFlags Flags, UObject* Context, FFeedbackContext* Warn)
 {
-	const FString Filter(TEXT("Frox ComputeFrame Files (*.png)|*.png"));
+	const FString Filter(TEXT("Image (*.png)|*.png; Frox ComputeFrame Files (*.frame)|*.frame"));
 
 	UFroxComputeFrame* ComputeFrame = NewObject<UFroxComputeFrame>(InParent, Class, Name, Flags);
 
@@ -58,6 +61,17 @@ bool UFroxComputeFrameAssetFactory::ImportSourceFile(UFroxComputeFrame *ForCompu
 		return false;
 	}
 	
+	FString FileExtension = FPaths::GetExtension(CreatureFilename);
+	if(FileExtension.ToLower() == "frame")
+	{
+		return ImportGamexFile(ForComputeFrame, CreatureFilename);
+	}
+
+	return ImportImageFile(ForComputeFrame, CreatureFilename);
+}
+
+bool UFroxComputeFrameAssetFactory::ImportImageFile(class UFroxComputeFrame *ForComputeFrame, const FString& CreatureFilename) const
+{
 	TArray<uint8> RawFileData;
 	if (FFileHelper::LoadFileToArray(RawFileData, *CreatureFilename))
 	{
@@ -80,9 +94,27 @@ bool UFroxComputeFrameAssetFactory::ImportSourceFile(UFroxComputeFrame *ForCompu
 				ForComputeFrame->Height = Height;
 				ForComputeFrame->Type = EFroxTypeEnum::FTE_UInt8;
 				ForComputeFrame->SetData(*UncompressedData);
+
+				return true;
 			}
 		}
 	} // End LoadFileToArray
+
+	return false;
+}
+
+bool UFroxComputeFrameAssetFactory::ImportGamexFile(class UFroxComputeFrame *ForComputeFrame, const FString& CreatureFilename) const
+{
+	auto Conv = StringCast<ANSICHAR>(*CreatureFilename);
+	frox::FroxInstance()->CreateComputeFrame(frox::Size{ 1, 1 }, frox::EComputeFrameType::ECFT_Float);
+
+	auto FroxFrame = frox::FroxInstance()->LoadComputeFrame(Conv.Get()); // TCHAR_TO_ANSI(*CreatureFilename)
+	if (FroxFrame == nullptr)
+	{
+		return false;
+	}
+
+	ForComputeFrame->SetFroxFrame(FroxFrame);
 
 	return true;
 }

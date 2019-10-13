@@ -24,15 +24,30 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	UFUNCTION(BlueprintSetter)
+	void SetDepthFrame(UFroxComputeFrame* Frame);
+
+	UFUNCTION(BlueprintSetter)
+	void SetColorFrame(UFroxComputeFrame* Frame);
+
+	UFUNCTION(BlueprintSetter)
+	void SetInfraredFrame(UFroxComputeFrame* Frame);
+
 private:
 	void InitializeSensor();
 	void ReleaseSensor();
 
 public:
-	/** width of frame */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	UFroxComputeFrame* ComputeFrame;
+	UPROPERTY(EditAnywhere, BlueprintSetter = SetDepthFrame)
+	UFroxComputeFrame* DepthFrame;
+
+	UPROPERTY(EditAnywhere, BlueprintSetter = SetColorFrame)
+	UFroxComputeFrame* ColorFrame;
+
+	UPROPERTY(EditAnywhere, BlueprintSetter = SetInfraredFrame)
+	UFroxComputeFrame* InfraredFrame;
 
 private:
 	frox::MockSensorDeviceManagerPtr _MockDeviceManager;
+	frox::MockSensorDevicePtr _MocDevice;
 };

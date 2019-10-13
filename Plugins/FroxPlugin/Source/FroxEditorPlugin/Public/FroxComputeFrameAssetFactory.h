@@ -23,5 +23,8 @@ class FROXEDITORPLUGIN_API UFroxComputeFrameAssetFactory : public UFactory, publ
 	virtual int32 GetPriority() const override;
 	// End FReimportHandler interface
 
-	bool ImportSourceFile(class UFroxComputeFrame *forAsset) const;
+	bool ImportSourceFile(class UFroxComputeFrame *ForAsset) const;
+
+	bool ImportImageFile(class UFroxComputeFrame *ForAsset, const FString& CreatureFilename) const;
+	bool ImportGamexFile(class UFroxComputeFrame *ForAsset, const FString& CreatureFilename) const; // Import from my game engine
 };

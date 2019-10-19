@@ -4,6 +4,15 @@
 
 #include "Frox/Frox/Frox.h"
 
+void UFroxComputeFrame::PreSave(const class ITargetPlatform* TargetPlatform)
+{
+	Super::PreSave(TargetPlatform);
+
+	if (UncompressedData.Num() > 0)
+	{
+	}
+}
+
 void UFroxComputeFrame::PostLoad()
 {
 	Super::PostLoad();
@@ -113,9 +122,24 @@ void UFroxComputeFrame::SetFroxFrame(frox::ComputeFramePtr FroxFrame)
 	_froxFrame = FroxFrame;
 
 	frox::Size Size = _froxFrame->GetSize();
+	uint32 ElementSize = _froxFrame->GetElementSize();
+
 	Width = Size.Width;
 	Height = Size.Height;
 	Type = FroxTypeToUEType(_froxFrame->GetType().Type);
+
+	// Save to UncompressedData
+	uint32 NbBytes = Size.Width * Size.Height * ElementSize;
+	UncompressedData.Empty(NbBytes);
+	UncompressedData.AddZeroed(NbBytes);
+
+	for (uint32 Row=0; Row <Size.Height; ++Row)
+	{
+		auto RowData = _froxFrame->GetRowData(Row);
+
+		uint8* dst = UncompressedData.GetData() + Row * Size.Width * ElementSize;
+		FMemory::Memcpy(dst, RowData, Size.Width * ElementSize);
+	}
 }
 
 #if WITH_EDITORONLY_DATA

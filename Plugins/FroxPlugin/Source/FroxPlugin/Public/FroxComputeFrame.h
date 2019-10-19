@@ -22,6 +22,7 @@ class FROXPLUGIN_API UFroxComputeFrame : public UObject
 
 public:
 	// BEGIN UObject overrides
+	virtual void PreSave(const class ITargetPlatform* TargetPlatform) override;
 	virtual void PostLoad() override;
 	// End UObject
 

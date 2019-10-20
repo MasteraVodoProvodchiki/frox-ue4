@@ -16,8 +16,9 @@ class FROXUE4_API UDyanmicGridMeshComponent : public UProceduralMeshComponent
 	GENERATED_BODY()
 	
 public:
+#if WITH_EDITOR
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;
-
+#endif
 	
 	UFUNCTION(BlueprintCallable, Category="Frox|Components")
 	void SetHeightMap(UFroxComputeFrame* InHeightMap);

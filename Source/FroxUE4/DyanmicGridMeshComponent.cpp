@@ -5,6 +5,7 @@
 #include "FroxComputeFrame.h"
 #include "NavigationSystem.h"
 
+#if WITH_EDITOR
 void UDyanmicGridMeshComponent::PostEditChangeProperty(struct FPropertyChangedEvent& e)
 {
 	FName PropertyName = (e.Property != NULL) ? e.Property->GetFName() : NAME_None;
@@ -18,6 +19,7 @@ void UDyanmicGridMeshComponent::PostEditChangeProperty(struct FPropertyChangedEv
 
 	Super::PostEditChangeProperty(e);
 }
+#endif
 
 void UDyanmicGridMeshComponent::SetHeightMap(UFroxComputeFrame* InHeightMap)
 {

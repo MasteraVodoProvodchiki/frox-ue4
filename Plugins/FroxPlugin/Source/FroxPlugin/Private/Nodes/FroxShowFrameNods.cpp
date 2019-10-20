@@ -29,10 +29,12 @@ frox::ComputeNode* UFroxShowFrameNode::CreateFroxNode(frox::ComputeFlow* Flow) c
 {
 	check(Flow != nullptr);
 
-	auto FroxNode = Flow->CreateNode<frox::ShowFrameNode>();
-	check(FroxNode != nullptr);
+	auto NewNode = Flow->CreateNode<frox::ShowFrameNode>();
+	check(NewNode != nullptr);
 
-	return FroxNode;
+	NewNode->SetName(TCHAR_TO_UTF8(*FrameName));
+
+	return NewNode;
 }
 
 #if WITH_EDITORONLY_DATA
@@ -60,10 +62,12 @@ frox::ComputeNode* UFroxShowFrameWithContoursNode::CreateFroxNode(frox::ComputeF
 {
 	check(Flow != nullptr);
 
-	auto FroxNode = Flow->CreateNode<frox::ShowFrameWithContoursNode>();
-	check(FroxNode != nullptr);
+	auto NewNode = Flow->CreateNode<frox::ShowFrameWithContoursNode>();
+	check(NewNode != nullptr);
 
-	return FroxNode;
+	NewNode->SetName(TCHAR_TO_UTF8(*FrameName));
+
+	return NewNode;
 }
 
 #undef LOCTEXT_NAMESPACE

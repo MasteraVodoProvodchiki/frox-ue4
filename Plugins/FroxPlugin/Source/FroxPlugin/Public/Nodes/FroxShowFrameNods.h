@@ -21,6 +21,9 @@ public:
 	virtual const char* GetTitle() const override { return "ShowFrame"; }
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
 	//~ End UOpartionNode
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FString FrameName = FString("ShowFrame");
 };
 
 UCLASS(DisplayName = "ShowFrame with Contours Node")
@@ -40,4 +43,7 @@ public:
 	virtual const char* GetTitle() const override { return "ShowFrameWithContours"; }
 	virtual frox::ComputeNode* CreateFroxNode(frox::ComputeFlow* Flow) const override;
 	//~ End UOpartionNode
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FString FrameName = FString("ShowFrameWithContours");
 };

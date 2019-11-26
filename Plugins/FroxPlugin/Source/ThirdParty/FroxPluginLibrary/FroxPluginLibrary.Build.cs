@@ -32,11 +32,13 @@ public class FroxPluginLibrary : ModuleRules
             PublicAdditionalLibraries.Add("Frox.lib");
             PublicAdditionalLibraries.Add("FroxDepthSensor.lib");
             PublicAdditionalLibraries.Add("FroxIntelRealSense.lib");
+            PublicAdditionalLibraries.Add("FroxAstra.lib");
 
             // Delay-load the DLL, so we can load it from the right place first
             PublicDelayLoadDLLs.Add("Frox.dll");
             PublicDelayLoadDLLs.Add("FroxDepthSensor.dll");
             PublicDelayLoadDLLs.Add("FroxIntelRealSense.dll");
+            PublicDelayLoadDLLs.Add("FroxAstra.dll");
 
             string PlatformString = Target.Platform.ToString();
             string ProjectPath = Path.Combine(ModuleDirectory, "../../..");
@@ -44,8 +46,15 @@ public class FroxPluginLibrary : ModuleRules
             CopyFile(Path.Combine(BinariesPath, "Frox.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "FroxDepthSensor.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "FroxIntelRealSense.dll"), ProjectBinariesPath);
+            CopyFile(Path.Combine(BinariesPath, "FroxAstra.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "realsense2.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "opencv_world410.dll"), ProjectBinariesPath);
+
+            CopyFile(Path.Combine(BinariesPath, "astra.dll"), ProjectBinariesPath);
+            CopyFile(Path.Combine(BinariesPath, "astra_core.dll"), ProjectBinariesPath);
+            CopyFile(Path.Combine(BinariesPath, "astra_core_api.dll"), ProjectBinariesPath);
+            CopyFile(Path.Combine(BinariesPath, "ORBBEC.dll"), ProjectBinariesPath);
+            CopyFile(Path.Combine(BinariesPath, "orbbec.ini"), ProjectBinariesPath);
         }
         else if (Target.Platform == UnrealTargetPlatform.Mac)
         {

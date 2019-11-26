@@ -33,6 +33,12 @@
       "WhitelistPlatforms": [ "Win64" ]
     },
     {
+      "Name": "FroxAstraPlugin",
+      "Type": "Runtime",
+      "LoadingPhase": "Default",
+      "WhitelistPlatforms": [ "Win64" ]
+    },
+    {
       "Name": "FroxEditorPlugin",
       "Type": "Editor",
       "LoadingPhase": "Default",

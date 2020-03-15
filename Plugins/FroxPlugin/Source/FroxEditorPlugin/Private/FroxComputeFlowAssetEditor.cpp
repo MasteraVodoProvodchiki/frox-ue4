@@ -10,6 +10,8 @@
 #include "FroxComputeFlowCommands.h"
 #include "FroxEditorPlugin.h"
 #include "FroxComputePropsDataDetails.h"
+#include "FroxNods.h"
+#include "FroxComputeFlowKeysEditor.h"
 
 #include "Widgets/Docking/SDockTab.h"
 #include "Framework/Commands/GenericCommands.h"
@@ -21,6 +23,7 @@
 #include "BlueprintEditorModule.h"
 #include "PropertyEditorModule.h"
 #include "WorkflowOrientedApp/WorkflowTabManager.h"
+#include "Widgets/Layout/SWidgetSwitcher.h"
 
 #define LOCTEXT_NAMESPACE "FroxComputeFlowAssetEditor"
 
@@ -284,12 +287,25 @@ TSharedRef<SWidget> FFroxComputeFlowAssetEditor::SpawnProperties()
 
 	TSharedRef<IDetailsView> PropertyEditorRef = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
 	PropertyEditor = PropertyEditorRef;
+	PinsEditor = SNew(SFroxComputeFlowKeysEditor);
+
+	DetailsSwitcher = SNew(SWidgetSwitcher)
+		+SWidgetSwitcher::Slot()
+		[
+			PropertyEditorRef
+		]
+		+SWidgetSwitcher::Slot()
+		[
+			PinsEditor.ToSharedRef()
+		];
+
+	DetailsSwitcher->SetActiveWidgetIndex(0);
 
 	//DetailsView->SetObject(NULL);
 	//DetailsView->SetIsPropertyEditingEnabledDelegate(FIsPropertyEditingEnabled::CreateSP(this, &FFroxComputeFlowAssetEditor::IsPropertyEditable));
 	//DetailsView->OnFinishedChangingProperties().AddSP(this, &FFroxComputeFlowAssetEditor::OnFinishedChangingProperties);
 
-	return PropertyEditorRef;
+	return DetailsSwitcher.ToSharedRef();
 
 	/*
 	// Spawn the tab
@@ -426,11 +442,28 @@ TSharedRef<SGraphEditor> FFroxComputeFlowAssetEditor::CreateGraphEditorWidget(UE
 void FFroxComputeFlowAssetEditor::OnSelectedNodesChanged(const TSet<UObject*>& NewSelection)
 {
 	TArray<UObject*> SelectedObjects;
+	bool Pins = false;
 	for (UObject* Object : NewSelection)
 	{
+		if (Object->IsA(UBaseNodeWithKeys::StaticClass()))
+		{
+			Pins = true;
+		}
 		SelectedObjects.Add(Object);
 	}
-	PropertyEditor->SetObjects(SelectedObjects);
+	if (Pins)
+	{
+		DetailsSwitcher->SetActiveWidgetIndex(1);
+		if (SelectedObjects.Num() == 1)
+		{
+			PinsEditor->SetObject(Cast<UBaseNodeWithKeys>(SelectedObjects[0]));
+		}
+	}
+	else
+	{
+		DetailsSwitcher->SetActiveWidgetIndex(0);
+		PropertyEditor->SetObjects(SelectedObjects);
+	}
 }
 
 void FFroxComputeFlowAssetEditor::OnNodeDoubleClicked(UEdGraphNode* Node)

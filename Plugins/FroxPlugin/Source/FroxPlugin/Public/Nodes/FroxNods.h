@@ -36,13 +36,11 @@ struct FComputeFlowNodeEntry
 	EComputeFlowKeyType KeyType;
 
 	FComputeFlowNodeEntry()
-#if WITH_EDITORONLY_DATA
-		: UniqueId(FGuid::NewGuid()),
-#else
 		:
+#if WITH_EDITORONLY_DATA
+		UniqueId(FGuid::NewGuid()),
 #endif
 		KeyType(EComputeFlowKeyType::ECFKT_None)
-		  
 	{}
 
 	bool operator==(const FComputeFlowEntry& Other) const;
@@ -71,8 +69,26 @@ public:
 	FName PropertyName;
 };
 
+UCLASS(Abstract)
+class FROXPLUGIN_API UBaseNodeWithKeys : public UFroxNodeBase
+{
+	GENERATED_BODY()
+
+public:
+	UBaseNodeWithKeys(const FObjectInitializer& ObjectInitializer)
+		: UFroxNodeBase(ObjectInitializer)
+	{
+		TestObject = 12345;
+	}
+	UPROPERTY(SimpleDisplay, Transient, EditDefaultsOnly)
+	TArray<FComputeFlowNodeEntry> Keys;
+
+	UPROPERTY(SimpleDisplay, Transient, EditDefaultsOnly)
+	int TestObject;
+};
+
 UCLASS(HideDropDown)
-class FROXPLUGIN_API UInputPropertyNode : public UFroxNodeBase
+class FROXPLUGIN_API UInputPropertyNode : public UBaseNodeWithKeys
 {
 	GENERATED_BODY()
 		
@@ -103,13 +119,10 @@ public:
 		return false;
 	}
 #endif //WITH_EDITORONLY_DATA
-
-	UPROPERTY(SimpleDisplay, Transient, EditDefaultsOnly)
-	TArray<FComputeFlowNodeEntry> Keys;
 };
 
 UCLASS(HideDropDown)
-class FROXPLUGIN_API UOutputPropertyNode : public UFroxNodeBase
+class FROXPLUGIN_API UOutputPropertyNode : public UBaseNodeWithKeys
 {
 	GENERATED_BODY()
 
@@ -119,8 +132,8 @@ public:
 #if WITH_EDITORONLY_DATA
 	//~ Begin UObject
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-
 	virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent&) override;
+
 	virtual void PostLoad() override;
 	virtual void PreSave(const class ITargetPlatform*) override;
 	//~ Begin UObject
@@ -141,9 +154,6 @@ public:
 	virtual FLinearColor GetNodeTitleColor() const override;
 	//~ End UEdGraphNode
 #endif //WITH_EDITORONLY_DATA
-
-	UPROPERTY(SimpleDisplay, Transient, EditDefaultsOnly)
-	TArray<FComputeFlowNodeEntry> Keys;
 };
 
 UCLASS(Abstract)

@@ -74,7 +74,7 @@ FLinearColor UPropertyNode::GetNodeTitleColor() const
 #endif //WITH_EDITORONLY_DATA
 
 UInputPropertyNode::UInputPropertyNode(const FObjectInitializer& ObjectInitializer)
-	: UFroxNodeBase(ObjectInitializer)
+	: UBaseNodeWithKeys(ObjectInitializer)
 {
 #if WITH_EDITORONLY_DATA
 	CreateNewGuid();
@@ -315,7 +315,7 @@ FLinearColor UInputPropertyNode::GetNodeTitleColor() const
 #endif
 
 UOutputPropertyNode::UOutputPropertyNode(const FObjectInitializer& ObjectInitializer)
-	: UFroxNodeBase(ObjectInitializer)
+	: UBaseNodeWithKeys(ObjectInitializer)
 {
 #if WITH_EDITORONLY_DATA
 	CreateNewGuid();

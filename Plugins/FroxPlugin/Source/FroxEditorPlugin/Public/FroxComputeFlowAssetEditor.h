@@ -11,6 +11,7 @@
 class FDocumentTracker;
 class FDocumentTabFactory;
 class UFroxComputeFlowAsset;
+class SFroxComputeFlowKeysEditor;
 struct FComputeFlowEntry;
 
 class FFroxComputeFlowAssetEditor : public FWorkflowCentricApplication, public FEditorUndoClient, public FNotifyHook
@@ -111,6 +112,8 @@ protected:
 	TSharedPtr<SGraphEditor> GraphEditor;
 	TSharedPtr<FUICommandList> GraphEditorCommands;
 	TSharedPtr<IDetailsView> PropertyEditor;
+	TSharedPtr<SWidgetSwitcher> DetailsSwitcher;
+	TSharedPtr<SFroxComputeFlowKeysEditor> PinsEditor;
 	UFroxComputeFlowAsset* PropBeingEdited;
 
 	TSharedPtr<FDocumentTracker> DocumentManager;

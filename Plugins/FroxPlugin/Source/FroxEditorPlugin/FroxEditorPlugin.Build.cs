@@ -36,6 +36,7 @@ public class FroxEditorPlugin : ModuleRules
 
                 "AssetTools",
                 "AssetRegistry",
+				"ToolMenus"
                 //"EditorStyle",
                 // "KismetWidgets",
                 // "GraphEditor"

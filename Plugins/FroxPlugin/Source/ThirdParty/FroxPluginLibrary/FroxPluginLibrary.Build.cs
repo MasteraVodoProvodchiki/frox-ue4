@@ -23,16 +23,16 @@ public class FroxPluginLibrary : ModuleRules
 
         if (Target.Platform == UnrealTargetPlatform.Win64)
         {
-            PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "../Frox/", "Frox"));
-            PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "../FroxDepthSensor/", "Frox"));
+            PublicIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "../Frox/", "Frox")));
+            PublicIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "../Frox/", "FroxDepthSensor")));
 
             // Add the import library
-            string BinariesPath = Path.Combine(ModuleDirectory, "../Frox/", "x64", "Release");
+            string BinariesPath = Path.GetFullPath(Path.Combine(ModuleDirectory, "../Frox/", "x64", "Release"));
             PublicLibraryPaths.Add(BinariesPath);
-            PublicAdditionalLibraries.Add("Frox.lib");
-            PublicAdditionalLibraries.Add("FroxDepthSensor.lib");
-            PublicAdditionalLibraries.Add("FroxIntelRealSense.lib");
-            PublicAdditionalLibraries.Add("FroxAstra.lib");
+            PublicAdditionalLibraries.Add(Path.Combine(BinariesPath, "Frox.lib"));
+            PublicAdditionalLibraries.Add(Path.Combine(BinariesPath, "FroxDepthSensor.lib"));
+            PublicAdditionalLibraries.Add(Path.Combine(BinariesPath, "FroxIntelRealSense.lib"));
+            PublicAdditionalLibraries.Add(Path.Combine(BinariesPath, "FroxAstra.lib"));
 
             // Delay-load the DLL, so we can load it from the right place first
             PublicDelayLoadDLLs.Add("Frox.dll");
@@ -41,8 +41,9 @@ public class FroxPluginLibrary : ModuleRules
             PublicDelayLoadDLLs.Add("FroxAstra.dll");
 
             string PlatformString = Target.Platform.ToString();
-            string ProjectPath = Path.Combine(ModuleDirectory, "../../..");
-            string ProjectBinariesPath = Path.Combine(ProjectPath, "Binaries/", PlatformString);
+            string ProjectPath = Path.GetFullPath(Path.Combine(PluginDirectory, "../.."));
+            string ProjectBinariesPath = Path.GetFullPath(Path.Combine(ProjectPath, "Binaries/", PlatformString));
+
             CopyFile(Path.Combine(BinariesPath, "Frox.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "FroxDepthSensor.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "FroxIntelRealSense.dll"), ProjectBinariesPath);

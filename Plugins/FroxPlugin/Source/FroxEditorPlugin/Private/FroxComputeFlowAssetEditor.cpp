@@ -24,6 +24,7 @@
 #include "PropertyEditorModule.h"
 #include "WorkflowOrientedApp/WorkflowTabManager.h"
 #include "Widgets/Layout/SWidgetSwitcher.h"
+#include "Toolkits/AssetEditorManager.h"
 
 #define LOCTEXT_NAMESPACE "FroxComputeFlowAssetEditor"
 

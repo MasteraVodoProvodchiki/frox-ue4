@@ -39,6 +39,12 @@
       "WhitelistPlatforms": [ "Win64" ]
     },
     {
+      "Name": "FroxKinect2Plugin",
+      "Type": "Runtime",
+      "LoadingPhase": "Default",
+      "WhitelistPlatforms": [ "Win64" ]
+    },
+    {
       "Name": "FroxEditorPlugin",
       "Type": "Editor",
       "LoadingPhase": "Default",

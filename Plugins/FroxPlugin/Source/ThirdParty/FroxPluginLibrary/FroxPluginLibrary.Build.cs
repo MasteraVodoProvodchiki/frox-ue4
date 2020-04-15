@@ -33,21 +33,25 @@ public class FroxPluginLibrary : ModuleRules
             PublicAdditionalLibraries.Add(Path.Combine(BinariesPath, "FroxDepthSensor.lib"));
             PublicAdditionalLibraries.Add(Path.Combine(BinariesPath, "FroxIntelRealSense.lib"));
             PublicAdditionalLibraries.Add(Path.Combine(BinariesPath, "FroxAstra.lib"));
+            PublicAdditionalLibraries.Add(Path.Combine(BinariesPath, "FroxKinect2.lib"));
+
 
             // Delay-load the DLL, so we can load it from the right place first
             PublicDelayLoadDLLs.Add("Frox.dll");
             PublicDelayLoadDLLs.Add("FroxDepthSensor.dll");
             PublicDelayLoadDLLs.Add("FroxIntelRealSense.dll");
             PublicDelayLoadDLLs.Add("FroxAstra.dll");
+            PublicDelayLoadDLLs.Add("FroxKinect2.dll");
 
             string PlatformString = Target.Platform.ToString();
-            string ProjectPath = Path.GetFullPath(Path.Combine(PluginDirectory, "../.."));
+            string ProjectPath = Path.GetFullPath(PluginDirectory);
             string ProjectBinariesPath = Path.GetFullPath(Path.Combine(ProjectPath, "Binaries/", PlatformString));
 
             CopyFile(Path.Combine(BinariesPath, "Frox.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "FroxDepthSensor.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "FroxIntelRealSense.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "FroxAstra.dll"), ProjectBinariesPath);
+            CopyFile(Path.Combine(BinariesPath, "FroxKinect2.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "realsense2.dll"), ProjectBinariesPath);
             CopyFile(Path.Combine(BinariesPath, "opencv_world410.dll"), ProjectBinariesPath);
 

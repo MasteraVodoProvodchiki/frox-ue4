@@ -206,6 +206,8 @@ void FFroxComputeFlowAssetEditor::RestoreComputeFlow()
 	}
 	else
 	{
+		PropBeingEdited->UpdateGraph->Schema = UEdGraphSchema_FroxEditor::StaticClass();
+
 		// OnLoaded
 	}
 
